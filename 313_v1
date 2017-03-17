@@ -1,0 +1,24 @@
+public class Solution {
+    public int NthSuperUglyNumber(int n, int[] primes) {
+        int[] dp = new int[n];
+        int len = primes.Length;
+        int[] index = new int[len];
+        dp[0] = 1;
+
+        for(int i = 1;i<n;i++){
+          var v = int.MaxValue;
+          for(int j = 0;j<len;j++){
+            v = Math.Min(v,primes[j]*dp[index[j]]);
+          }
+          for(int j = 0;j<len;j++){
+            if(v == primes[j]*dp[index[j]]){
+              index[j]++;
+            }
+          }
+
+          dp[i] = v;
+        }
+
+      return dp[n-1];
+    }
+}
