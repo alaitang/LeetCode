@@ -1,0 +1,82 @@
+public class Solution {
+
+    public IList<IList<int>> PalindromePairs(string[] words) {
+        int len = words.Length;
+        bool[,] visited = new bool[len,len];
+        var root = new TireNode();
+        for(int ii = 0;ii<len;ii++){
+            var item = words[ii];
+            int wlen = item.Length;
+            var current = root;
+            for(int i = wlen-1;i>=0;i--){
+                if(current.children[item[i]-'a'] == null){
+                    current.children[item[i]-'a'] = new TireNode();
+                    current.children[item[i]-'a'].c = item[i];
+                }
+
+                current = current.children[item[i]-'a'];
+            }
+            current.index = ii;
+        }
+        var result = new List<IList<int>>();
+        for(int ii = 0;ii<len;ii++){
+            var r = new List<int>();
+
+            Helper(words[ii],0,root,r);
+            foreach(var item in r){
+                if(ii != item && !visited[ii,item]){
+                    result.Add(new List<int>(){ii,item});
+                    visited[ii,item] = true;
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+    private void Helper(string s,int index, TireNode root,List<int> result){
+        if(root.index != -1){
+            if(verify(s.Substring(index)))
+                result.Add(root.index);
+        }
+
+        if(index >= s.Length){
+            Helper(root,"",result);
+        }else if(root.children[s[index]-'a'] != null){
+            Helper(s,index+1,root.children[s[index]-'a'],result);
+        }
+    }
+
+    private void Helper(TireNode root,string s,List<int> result){
+        if(root.index != -1){
+            if(verify(s))
+            {
+                result.Add(root.index);
+            }
+        }
+        foreach(var item in root.children){
+            if(item != null){
+                Helper(item,s+item.c,result);
+            }
+        }
+    }
+
+    private bool verify(string s){
+        int i = 0;
+        int j = s.Length-1;
+        while(i < j){
+            if(s[i++] != s[j--])
+                return false;
+        }
+        return true;
+    }
+}
+
+public class TireNode{
+    public TireNode[] children = new TireNode[26];
+
+    public int index = -1;
+
+    public char c = (char)('a'-1);
+}

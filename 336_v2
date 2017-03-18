@@ -1,0 +1,5 @@
+public class Solution {
+    public IList<IList<int>> PalindromePairs(string[] words) {
+      // verify each word[i] ... 0-> ii, ii-> word[i].Length-1
+    }
+  }

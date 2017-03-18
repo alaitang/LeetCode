@@ -1,0 +1,21 @@
+public class Solution {
+    public void ReorderList(ListNode head) {
+        var stack = new Stack<ListNode>();
+        var current = head;
+        while(current != null){
+            stack.Push(current);
+            current = current.next;
+        }
+
+        var n1 = head;
+        while(stack.Any() && stack.Peek() != n1 && n1.next != stack.Peek()){
+            var n2 = stack.Pop();
+            n2.next = n1.next;
+            n1.next = n2;
+            n1 = n2.next;
+        }
+        if(stack.Any())
+            stack.Peek().next = null;
+
+    }
+}

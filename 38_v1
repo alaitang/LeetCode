@@ -1,0 +1,26 @@
+public class Solution {
+    public string CountAndSay(int n) {
+        string result = "1";
+        string s = "1";
+        for(int i = 1;i<n;i++){
+            char pc = 'a';
+            int count = 0;
+            result = "";
+            foreach(var c in s){
+                if(pc == c){
+                    count++;
+                }else{
+                    if(count != 0)
+                        result += count+""+pc;
+                    count = 1;
+                    pc = c;
+                }
+            }
+            if(count != 0)
+                result += count+""+pc;
+            s = result;
+        }
+
+        return result;
+    }
+}

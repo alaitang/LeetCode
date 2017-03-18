@@ -1,0 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int x) { val = x; }
+ * }
+ */
+
+ // OUT OF Memory
+public class Solution {
+    ListNode node = null;
+
+    public void ReorderList(ListNode head) {
+        node = head;
+        Helper(head);
+    }
+
+    private void Helper(ListNode head){
+        if(head == null)
+            return;
+
+        Helper(head.next);
+
+        if(node != null){
+            if(node != head && node.next != head){
+                head.next = node.next;
+                node.next = head;
+                node = head.next;
+            }else{
+                head.next = null;
+                node = null;
+            }
+        }
+    }
+}

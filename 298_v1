@@ -1,0 +1,19 @@
+public class Solution {
+    int result = 0;
+    public int LongestConsecutive(TreeNode root) {
+        result = 0;
+        Helper(root,((long)int.MinValue)-2,0);
+        return result;
+    }
+
+    private void Helper(TreeNode root,long v,int count){
+        if(root == null)
+            return;
+
+        count = root.val == v+1 ? count+1 : 1;
+
+        result = Math.Max(result,count);
+        Helper(root.left,(long)root.val,count);
+        Helper(root.right,(long)root.val,count);
+    }
+}
