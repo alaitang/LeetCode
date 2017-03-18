@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    int result = 0;
+    public int PathSum(TreeNode root, int sum) {
+        var mapping = new Dictionary<long,int>();
+        mapping.Add(0,1);
+        Helper(root,0,sum,mapping);
+        return result;
+    }
+
+    private void Helper(TreeNode root,long sum,int target,Dictionary<long,int> mapping){
+        if(root == null)
+            return;
+
+        sum += root.val;
+
+        if(mapping.ContainsKey(sum-target)){
+            result += mapping[sum-target];
+        }
+
+        if(!mapping.ContainsKey(sum))
+            mapping.Add(sum,0);
+
+        mapping[sum]++;
+
+        Helper(root.left,sum,target,mapping);
+        Helper(root.right,sum,target,mapping);
+
+        mapping[sum]--;
+    }
+}

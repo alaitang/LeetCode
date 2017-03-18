@@ -1,0 +1,35 @@
+public class Solution {
+    public string Multiply(string num1, string num2) {
+        int len1 = num1.Length;
+        int len2 = num2.Length;
+
+        int[] dp = new int[len1+len2];
+
+        for(int i = len1-1;i>=0;i--){
+            for(int j = len2-1;j>=0;j--){
+                dp[i+1+j]+=(num1[i]-'0')*(num2[j]-'0');
+            }
+        }
+        int add = 0;
+        for(int i = len1+len2-1;i>=0;i--){
+            int r = (add+dp[i]) % 10;
+            add = (add+dp[i])/10;
+            dp[i] = r;
+        }
+
+        string result = string.Join("",dp);
+
+        if(add != 0)
+            result = add + result;
+
+        int index = 0;
+        while(index < result.Length && result[index] == '0'){
+            index++;
+        }
+        if(index >= result.Length)
+            result = "0";
+        else
+            result = result.Substring(index);
+        return result;
+    }
+}

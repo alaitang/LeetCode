@@ -1,0 +1,29 @@
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int len = prices.Length;
+        if(len <= 1)
+            return 0;
+
+        int[] dp1 = new int[len];
+        int[] dp2 = new int[len];
+
+        int min = prices[0];
+        for(int i = 1;i<len;i++){
+            min = Math.Min(prices[i],min);
+            dp1[i] = Math.Max(dp1[i-1],prices[i]-min);
+        }
+        int max = prices[len-1];
+        for(int i = len-2;i>=0;i--){
+            max = Math.Max(prices[i],max);
+            dp2[i] = Math.Max(dp2[i+1],max-prices[i]);
+        }
+        int result = Math.Max(dp1[len-1],dp2[0]);
+        for(int i = 0;i<len-1;i++){
+            int r1 = dp1[i];
+            int r2 = dp2[i+1];
+
+            result = Math.Max(r1+r2,result);
+        }
+        return result;
+    }
+}
