@@ -1,0 +1,32 @@
+public class Solution {
+    public bool Exist(char[,] board, string word) {
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        var visited = new bool[rows,cols];
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(Helper(board,visited,i,j,rows,cols,0,word))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool Helper(char[,] board,bool[,] visited,int i,int j,int rows,int cols,int index,string word){
+        if(index >= word.Length)
+            return true;
+
+        if(i< 0 || j <0 || i >= rows || j >= cols || visited[i,j] || board[i,j] != word[index]){
+            return false;
+        }
+        visited[i,j] = true;
+        var result =  Helper(board,visited,i+1,j,rows,cols,index+1,word)
+                    || Helper(board,visited,i,j+1,rows,cols,index+1,word)
+                    || Helper(board,visited,i-1,j,rows,cols,index+1,word)
+                    || Helper(board,visited,i,j-1,rows,cols,index+1,word);
+        visited[i,j] = false;
+
+        return result;
+    }
+}
