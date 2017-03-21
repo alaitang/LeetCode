@@ -1,0 +1,46 @@
+public class Solution {
+    public int FindMinArrowShots(int[,] points) {
+        int len = points.GetLength(0);
+        if(len == 0)
+            return 0;
+
+        Sort(points,0,len-1);
+
+        int m = points[0,1];
+        int result = 0;
+        for(int i = 1;i<len;i++){
+            //Console.WriteLine(points[i,0]+","+points[i,1]);
+            if(points[i,0] > m){
+                result++;
+                m = points[i,1];
+            }else if(m > points[i,1]){
+                m = points[i,1];
+            }
+        }
+
+        return result+1;
+    }
+
+    private void Sort(int[,] points,int low,int high){
+        if(low >= high)
+            return;
+        int index = low;
+        for(int i = low+1;i<=high;i++){
+            if(points[i,0] < points[low,0] || points[i,0] == points[low,0] && points[i,1] < points[low,1]){
+                Swap(points,++index,i);
+            }
+        }
+        Swap(points,index,low);
+        Sort(points,low,index-1);
+        Sort(points,index+1,high);
+    }
+
+    private void Swap(int[,] points,int i,int j){
+        int i0 = points[i,0];
+        int i1 = points[i,1];
+        points[i,0] = points[j,0];
+        points[i,1] = points[j,1];
+        points[j,0] = i0;
+        points[j,1] = i1;
+    }
+}

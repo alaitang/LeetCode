@@ -1,0 +1,23 @@
+public class Solution {
+    public int MinPatches(int[] nums, int n) {
+        int result = 0;
+
+        long max = 0;
+        int i = 0;
+        int len = nums.Length;
+
+        while(max < n){
+            long k = max+1;
+            if(i < len && nums[i] <= k){
+                k = nums[i];
+                i++;
+            }else{
+                result++;
+            }
+
+            max+=k;
+        }
+
+        return result;
+    }
+}

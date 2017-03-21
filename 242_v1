@@ -1,0 +1,13 @@
+public class Solution {
+    public bool IsAnagram(string s, string t) {
+        var mapping =new int[26];
+        foreach(var item in s){
+            mapping[item-'a']++;
+        }
+        foreach(var item in t){
+            mapping[item-'a']--;
+        }
+
+        return mapping.All(x=>x==0);
+    }
+}
