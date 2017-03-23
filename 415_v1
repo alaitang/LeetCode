@@ -1,0 +1,21 @@
+public class Solution {
+    public string AddStrings(string num1, string num2) {
+        string result = "";
+        int add = 0;
+        int i = num1.Length-1;
+        int j = num2.Length-1;
+        while(i >= 0 || j >= 0){
+            int n = (i >= 0 ? (num1[i]-'0') : 0) + (j >= 0 ? (num2[j]-'0') : 0);
+            add+=n;
+            result = add%10+result;
+            add/=10;
+            i--;
+            j--;
+        }
+
+        if(add != 0)
+            result = add + result;
+
+        return result;
+    }
+}

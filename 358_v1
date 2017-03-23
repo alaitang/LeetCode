@@ -1,0 +1,47 @@
+public class Solution {
+    public string RearrangeString(string s, int k) {
+        int len = s.Length;
+        if(k == 0)
+            return s;
+        int m = len/k;
+        int r = len%k;
+        var mapping = new Dictionary<char,int>();
+        foreach(var c in s){
+            if(!mapping.ContainsKey(c))
+                mapping.Add(c,0);
+            mapping[c]++;
+
+            if(mapping[c] > m+1 || mapping[c] == m+1 && (len%k == 0 || len%k != 0 &&  r-- <= 0 ) )
+                return "";
+        }
+
+        if(k >= s.Length)
+            return s;
+        r = len%k;
+        var allKeys = mapping.Select(x=>x.Key).OrderBy(x=>-mapping[x]).ToList();
+        var result = new char[len];
+        int index = 0;
+        int n = 0;
+        int keyLen = allKeys.Count();
+        for(int j = 0;j<keyLen;j++){
+            int beginIndex = index;
+            char key = allKeys[j];
+            for(int i = 0;i<mapping[key];i++){
+                if(beginIndex > index && beginIndex - index <k){
+                    allKeys[j] = allKeys[j+1];
+                    allKeys[j+1] = key;
+                    j--;
+                    index = beginIndex;
+                    n--;
+                    break;
+                }
+                result[index] = key;
+                index+=k;
+                if(index >= len){
+                    index = ++n;
+                }
+            }
+        }
+        return string.Join("",result);
+    }
+}

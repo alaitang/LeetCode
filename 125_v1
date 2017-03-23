@@ -1,0 +1,27 @@
+public class Solution {
+    public bool IsPalindrome(string s) {
+        int i = 0;
+        int j = s.Length-1;
+        s = s.ToLower();
+        while(i < j){
+            if(!(s[i] <= '9' && s[i] >= '0'
+            || s[i] <= 'z' && s[i] >= 'a')){
+                i++;
+                continue;
+            }
+            if(!(s[j] <= '9' && s[j] >= '0'
+            || s[j] <= 'z' && s[j] >= 'a')){
+                j--;
+                continue;
+            }
+
+            if(s[i] != s[j])
+                return false;
+
+            i++;
+            j--;
+        }
+
+        return true;
+    }
+}
