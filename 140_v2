@@ -1,0 +1,31 @@
+public class Solution {
+    public IList<string> WordBreak(string s, IList<string> wordDict) {
+
+        var mapping = new Dictionary<string,List<string>>();
+        return Helper(s,wordDict,mapping);
+    }
+
+    private IList<string> Helper(string s, IList<string> wordDict,Dictionary<string,List<string>> mapping){
+        IList<string> result = new List<string>();
+        if(s == "")
+        {
+            result.Add("");
+            return result;
+        }
+        if(!mapping.ContainsKey(s)){
+            mapping.Add(s,new List<string>());
+            foreach(var item in wordDict){
+                if(s.StartsWith(item)){
+                    var t = Helper(s.Substring(item.Length),wordDict,mapping);
+                    foreach(var k in t){
+                        mapping[s].Add(k == "" ? item : (item+" "+k));
+                    }
+                }
+            }
+        }
+
+        result = mapping[s];
+
+        return result;
+    }
+}

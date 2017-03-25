@@ -1,0 +1,72 @@
+public class Solution {
+
+    int[,] indexV = new int[9,2];
+
+    public int NumberOfPatterns(int m, int n) {
+        indexV[0,0] = -1;indexV[0,1] = 1;
+        indexV[1,0] = 0;indexV[1,1] = 1;
+        indexV[2,0] = 1;indexV[2,1] = 1;
+        indexV[3,0] = -1;indexV[3,1] = 0;
+        indexV[4,0] = 0;indexV[4,1] = 0;
+        indexV[5,0] = 1;indexV[5,1] = 0;
+        indexV[6,0] = -1;indexV[6,1] = -1;
+        indexV[7,0] = 0;indexV[7,1] = -1;
+        indexV[8,0] = 1;indexV[8,1] = -1;
+
+        var visited = new bool[9];
+        var dp = new int[10];
+        dp[1] = 1;
+        visited[0] = true;
+        int result = 0;
+        Helper(visited,0,1,n,dp);
+        int b = 0;
+        for(int ii = m;ii<=n;ii++){
+            b+=dp[ii];
+        }
+        result += b*4;
+        visited[0] = false; visited[1] = true;
+        dp = new int[10];
+        dp[1] = 1;
+        Helper(visited,1,1,n,dp);
+
+        b = 0;
+        for(int ii = m;ii<=n;ii++){
+            b+=dp[ii];
+        }
+        result += b*4;
+
+        visited[1] = false; visited[4] = true;
+        dp = new int[10];
+        dp[1] = 1;
+        Helper(visited,4,1,n,dp);
+        for(int ii = m;ii<=n;ii++){
+            result+=dp[ii];
+        }
+
+        return result;
+    }
+
+    private void Helper(bool[] visited,int index,int step,int max,int[] dp){
+        if(step >= max){
+            return;
+        }
+
+        for(int i = 0;i<=8;i++){
+            if(!visited[i]){
+                int dis = (indexV[i,0]-indexV[index,0])*(indexV[i,0]-indexV[index,0])+(indexV[i,1]-indexV[index,1])*(indexV[i,1]-indexV[index,1]);
+                int mid_x = (indexV[i,0]+indexV[index,0])/2;
+                int mid_y = (indexV[i,1]+indexV[index,1])/2;
+
+
+                if((dis == 4 || dis == 8) && !visited[(1-mid_y)*3+mid_x+1]){
+                    continue;
+                }
+                //Console.WriteLine(index+","+i);
+                visited[i] = true;
+                dp[step+1]++;
+                Helper(visited,i,step+1,max,dp);
+                visited[i] = false;
+            }
+        }
+    }
+}

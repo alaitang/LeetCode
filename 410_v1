@@ -1,0 +1,47 @@
+public class Solution {
+    public int SplitArray(int[] nums, int m) {
+        int len = nums.Length;
+        if(len == 0)
+            return 0;
+        long max = 0;
+        long min = (long)int.MinValue-1;
+        foreach(var item in nums){
+            max+=item;
+            min = Math.Max(min,item);
+        }
+
+        if(len <= m){
+            return (int)min;
+        }else if(m == 1){
+            return (int)max;
+        }
+
+        long result = max;
+
+        while(min <= max){
+            long mid = (max+min)/2;
+            long sum = 0;
+            int k=0;
+            foreach(var n in nums){
+                sum+=n;
+                if(sum > mid){
+                    sum = n;
+                    k++;
+                }
+                if(k > m){
+                    break;
+                }
+            }
+            k++;
+            //Console.WriteLine(mid+","+min+","+max);
+            if(k <= m){
+                result = Math.Min(result,mid);
+                max = mid-1;
+            }else{
+                min = mid+1;
+            }
+        }
+
+        return (int)result;
+    }
+}

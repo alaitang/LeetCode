@@ -1,0 +1,49 @@
+public class Solution {
+    int[,] mapping = new int[9,9];
+    int rr = 1;
+    public int NumberOfPatterns(int m, int n) {
+        mapping[0,2] = mapping[2,0] = 1;
+        mapping[2,8] = mapping[8,2] = 5;
+        mapping[8,6] = mapping[6,8] = 7;
+        mapping[0,6] = mapping[6,0] = 3;
+
+        mapping[0,8] = mapping[8,0] = mapping[2,6] = mapping[6,2] = mapping[1,7] = mapping[7,1] = mapping[3,5] = mapping[5,3] = 4;
+        int result = 0;
+
+        bool[] visited = new bool[9];
+
+        visited[0] = true;
+        Helper(n,m,0,1,visited);
+
+        visited[0] = false;
+        result += rr*4; rr = 1;
+
+        visited[1] = true;
+        Helper(n,m,1,1,visited);
+        visited[1] = false;
+        result += rr*4; rr = 1;
+
+        visited[4] = true;
+        Helper(n,m,4,1,visited);
+        visited[4] = false;
+        result += rr;
+
+        return result - (m > 1 ? 9 : 0);
+    }
+
+    public void Helper(int n,int m,int index, int step,bool[] visited){
+        if(step >= n)
+            return;
+
+        for(int i = 0;i<9;i++){
+            if(!visited[i] && (mapping[index,i] == 0 || visited[mapping[index,i]])){
+                //Console.WriteLine(index+","+i+","+mapping[index,i]+visited[mapping[index,i]]);
+                visited[i] = true;
+                if(step+1 >= m)
+                    rr++;
+                Helper(n,m,i,step+1,visited);
+                visited[i] = false;
+            }
+        }
+    }
+}

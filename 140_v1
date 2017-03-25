@@ -1,0 +1,25 @@
+public class Solution {
+    public IList<string> WordBreak(string s, IList<string> wordDict) {
+        var result = new List<string>();
+        Helper(s,result,wordDict,"",new int[s.Length+1]);
+        return result;
+    }
+
+    private void Helper(string s,IList<string> result, IList<string> wordDict, string r,int[] visited){
+        if(s == ""){
+            if(r.Length > 0)
+                result.Add(r.Substring(1));
+        }else if(visited[s.Length] != 2){
+            int rCount =result.Count();
+
+            foreach(var item in wordDict){
+                if(s.StartsWith(item)){
+                    Helper(s.Substring(item.Length),result,wordDict,r+" "+ item,visited);
+                }
+            }
+
+            if(rCount == result.Count())
+                visited[s.Length] = 2;
+        }
+    }
+}

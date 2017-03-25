@@ -1,0 +1,19 @@
+public class Solution {
+    public int[] FindPermutation(string s) {
+        var list = new List<int>();
+        int len = s.Length;
+        if(len == 0)
+            return list.ToArray();
+        int index = 0;
+        list.Add(1);
+        for(int i = 0;i<len;i++){
+            if(s[i] == 'I'){
+                index = i+1;
+                list.Add(i+2);
+            }else{
+                list.Insert(index,i+2);
+            }
+        }
+        return list.ToArray();
+    }
+}
