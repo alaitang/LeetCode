@@ -1,0 +1,22 @@
+public class NumArray {
+    int[] sums = null;
+    public NumArray(int[] nums) {
+        int len = nums.Length;
+        sums = new int[len];
+        int sum = 0;
+        for(int i = 0;i<len;i++){
+            sum+=nums[i];
+            sums[i] = sum;
+        }
+    }
+
+    public int SumRange(int i, int j) {
+        return sums[j]-(i==0 ? 0 : sums[i-1]);
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * int param_1 = obj.SumRange(i,j);
+ */

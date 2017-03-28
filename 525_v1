@@ -1,0 +1,27 @@
+public class Solution {
+    public int FindMaxLength(int[] nums) {
+        var mapping = new Dictionary<int,int>();
+        mapping.Add(0,-1);
+        int n = 0;
+        int m = 0;
+
+        int len = nums.Length;
+        int result = 0;
+
+        for(int i = 0;i<len;i++){
+            if(nums[i] == 0)
+                n++;
+            else
+                m++;
+
+            if(!mapping.ContainsKey(n-m)){
+                mapping.Add(n-m,i);
+            }else{
+                //Console.WriteLine(i);
+                result = Math.Max(i-mapping[n-m],result);
+            }
+        }
+
+        return result;
+    }
+}

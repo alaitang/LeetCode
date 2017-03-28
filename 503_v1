@@ -1,0 +1,43 @@
+public class Solution {
+    public int[] NextGreaterElements(int[] nums) {
+        var stack = new Stack<int>();
+        int len = nums.Length;
+        var result = new int[len];
+        if(len <= 0)
+            return result;
+        else if(len == 1){
+            result[0] =-1;
+            return result;
+        }
+        result[len-1] = -1;
+        for(int i = len-2;i>=0;i--){
+            Helper(nums,result,i+1,i);
+        }
+
+        for(int i = 0;i<len;i++){
+            if(result[i] == -1){
+                Helper(nums,result,0,i);
+            }
+        }
+
+        for(int i = 0;i<len;i++){
+            if(result[i] != -1)
+                result[i]=nums[result[i]];
+        }
+
+        return result;
+    }
+
+    private void Helper(int[] nums,int[] result,int start,int index){
+
+        while(start>=0){
+            if(nums[start] > nums[index]){
+                result[index] = start;
+                return;
+            }else{
+                start = result[start];
+            }
+        }
+        result[index] = -1;
+    }
+}

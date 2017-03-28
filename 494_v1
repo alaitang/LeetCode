@@ -1,0 +1,46 @@
+public class Solution {
+    public int FindTargetSumWays(int[] nums, int S) {
+        var result = Helper(nums,0,nums.Length-1);
+        if(result.ContainsKey(S))
+            return result[S];
+        else
+            return 0;
+    }
+
+    public Dictionary<int,int> Helper(int[] nums,int low,int high){
+        var result = new Dictionary<int,int>();
+        if(low == high){
+            result.Add(nums[low],1);
+
+            if(low == 0 && nums[low] == 0){
+                result[0]++;
+            }else if(low == 0){
+                result.Add(-nums[low],1);
+            }
+        }else if(low < high){
+            int mid = (low+high)/2;
+            var d1 = Helper(nums,low,mid);
+            var d2 = Helper(nums,mid+1,high);
+
+            foreach(var item1 in d1){
+                foreach(var item2 in d2){
+                    if(!result.ContainsKey(item1.Key+item2.Key)){
+                        result.Add(item1.Key+item2.Key,0);
+                    }
+                    result[item1.Key+item2.Key]+=item1.Value*item2.Value;
+
+                    if(!result.ContainsKey(item1.Key-item2.Key)){
+                        result.Add(item1.Key-item2.Key,0);
+                    }
+                    result[item1.Key-item2.Key]+=item1.Value*item2.Value;
+                }
+            }
+
+
+        }else{
+            result.Add(0,0);
+        }
+        //Console.WriteLine(low+","+high+" : "+string.Join(",",result.Select(x=>x.Key)));
+        return result;
+    }
+}

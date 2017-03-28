@@ -1,0 +1,24 @@
+public class Solution {
+    public int FindTargetSumWays(int[] nums, int S) {
+        int total = nums.Sum();
+
+
+        if( total < S || (total+S) % 2 == 1){
+            return 0;
+        }
+
+        S = (total+S)/2;
+        //Console.WriteLine(S);
+        int[] dp = new int[S+1];
+        dp[0] = 1;
+        foreach(var item in nums){
+            for(int i = S;i>=item;i--){
+                   dp[i] += dp[i-item];
+            }
+        }
+
+        return dp[S];
+    }
+
+
+} 

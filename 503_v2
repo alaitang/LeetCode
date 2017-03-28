@@ -1,0 +1,22 @@
+public class Solution {
+    public int[] NextGreaterElements(int[] nums) {
+        int len = nums.Length;
+        var stack = new Stack<int>();
+        var result = new int[len];
+        for(int i = 0;i<2*len;i++){
+            int n = nums[i%len];
+            while(stack.Any() && nums[stack.Peek()]<n){
+                result[stack.Pop()] = n;
+            }
+
+            if(i < len){
+                stack.Push(i);
+            }
+        }
+
+        while(stack.Any()){
+            result[stack.Pop()] = -1;
+        }
+        return result;
+    }
+}

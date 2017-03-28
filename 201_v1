@@ -1,0 +1,26 @@
+public class Solution {
+    public int RangeBitwiseAnd(int m, int n) {
+        int result = 0;
+        if(m == n)
+            return m;
+
+        int mh = FindHighestLevel(m);
+        int nh = FindHighestLevel(n);
+        while(mh == nh && mh != 0){
+            result += mh;
+            m ^= mh;
+            n ^= nh;
+            mh = FindHighestLevel(m);
+            nh = FindHighestLevel(n);
+        }
+
+        return result;
+    }
+
+    private int FindHighestLevel(int k){
+        while((k & (k-1)) != 0){
+            k &= (k-1);
+        }
+        return k;
+    }
+}
