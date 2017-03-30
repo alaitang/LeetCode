@@ -1,0 +1,19 @@
+public class Solution {
+    public int FindMin(int[] nums) {
+        int low = 0;
+        int high = nums.Length-1;
+
+        while(low < high-1){
+            int mid = (low+high)/2;
+            if(nums[low] < nums[high])
+                return nums[low];
+            else if(nums[mid] > nums[low]){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+
+        return Math.Min(nums[low],nums[high]);
+    }
+}

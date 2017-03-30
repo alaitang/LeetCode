@@ -1,0 +1,44 @@
+public class Solution {
+    public bool HasPath(int[,] maze, int[] start, int[] destination) {
+        int rows = maze.GetLength(0);
+        int cols = maze.GetLength(1);
+        var visited = new bool[rows,cols];
+        return Helper(visited,maze,start[0],start[1],destination[0],destination[1],rows,cols);
+    }
+
+    private bool Helper(bool[,] visited ,int[,] maze,int s_i,int s_j, int e_i,int e_j,int rows,int cols){
+        if(s_i == e_i && s_j == e_j)
+            return true;
+        if(s_i <0 || s_i >= rows || s_j <0 || s_j >= cols || visited[s_i,s_j])
+            return false;
+        visited[s_i,s_j] = true;
+
+        int i = s_i-1;
+        while(i >= 0 && maze[i,s_j] != 1){
+            i--;
+        }
+        if(Helper(visited,maze,i+1,s_j,e_i,e_j,rows,cols))
+            return true;
+        i = s_i+1;
+        while(i < rows && maze[i,s_j] != 1){
+            i++;
+        }
+        if(Helper(visited,maze,i-1,s_j,e_i,e_j,rows,cols))
+            return true;
+
+        i = s_j-1;
+        while(i >= 0 && maze[s_i,i] != 1){
+            i--;
+        }
+        if(Helper(visited,maze,s_i,i+1,e_i,e_j,rows,cols))
+            return true;
+        i = s_j+1;
+        while(i < cols && maze[s_i,i] != 1){
+            i++;
+        }
+        if(Helper(visited,maze,s_i,i-1,e_i,e_j,rows,cols))
+            return true;
+
+        return false;
+    }
+}

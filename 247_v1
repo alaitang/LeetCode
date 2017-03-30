@@ -1,0 +1,36 @@
+public class Solution {
+    public IList<string> FindStrobogrammatic(int n) {
+        var list = new List<string>();
+        if(n % 2 == 0){
+            list.Add("");
+        }else{
+            list.Add("8");
+            list.Add("0");
+            list.Add("1");
+            n--;
+            if(n == 0)
+                return list;
+        }
+        while(n > 2){
+            var temp = new List<string>();
+            foreach(var item in list){
+                temp.Add("6"+item+"9");
+                temp.Add("9"+item+"6");
+                temp.Add("1"+item+"1");
+                temp.Add("0"+item+"0");
+                temp.Add("8"+item+"8");
+            }
+            list = temp;
+            n-=2;
+        }
+        var result = new List<string>();
+        foreach(var item in list){
+                result.Add("6"+item+"9");
+                result.Add("9"+item+"6");
+                result.Add("1"+item+"1");
+                result.Add("8"+item+"8");
+            }
+
+        return result;
+    }
+}

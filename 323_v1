@@ -1,0 +1,33 @@
+public class Solution {
+    public int CountComponents(int n, int[,] edges) {
+        int[] heads = new int[n];
+
+        for(int i = 0;i<n;i++){
+            heads[i] = i;
+        }
+
+        int rows = edges.GetLength(0);
+
+        for(int i = 0;i<rows;i++){
+            int h1 = FindHead(edges[i,0],heads);
+            int h2 = FindHead(edges[i,1],heads);
+            if(h1 != h2){
+                heads[h1] = h2;
+            }
+        }
+
+        int result = 0;
+        for(int i = 0;i<n;i++){
+            if(heads[i] == i)
+                result++;
+        }
+        return result;
+    }
+
+    private int FindHead(int n,int[] heads){
+        if(heads[n] == n)
+            return n;
+
+        return FindHead(heads[n],heads);
+    }
+}

@@ -1,0 +1,28 @@
+public class Solution {
+    public IList<string> RestoreIpAddresses(string s) {
+        var result = new List<string>();
+        Helper(result,"",s,0,4);
+        return result;
+    }
+
+    private void Helper(IList<string> result, string r,string s, int index,int n){
+        if(index >= s.Length){
+            if(n == 0){
+            //Console.WriteLine(r);
+                result.Add(r.Substring(1,s.Length+3));
+            }
+        }else if(n != 0){
+            int k = 0;
+            for(int i = index;i<=index+2;i++){
+                if(i >= s.Length)
+                    break;
+                k = k * 10 + (s[i]-'0');
+                if(k>255)
+                    break;
+                Helper(result,r+"."+k,s,i+1,n-1);
+                if(k == 0)
+                    break;
+            }
+        }
+    }
+}

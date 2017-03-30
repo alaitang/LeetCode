@@ -1,0 +1,21 @@
+public class Solution {
+    public IList<string> FindRepeatedDnaSequences(string s) {
+        int len = s.Length;
+        var mapping = new Dictionary<string,int>();
+        var result = new List<string>();
+        if(len < 10)
+            return result;
+        string str = s.Substring(0,10);
+        mapping.Add(str,1);
+        for(int i = 10;i<len;i++){
+            str = str.Substring(1,9)+s[i];
+            if(!mapping.ContainsKey(str)){
+                mapping.Add(str,0);
+            }
+            mapping[str]++;
+            if(mapping[str] == 2)
+                result.Add(str);
+        }
+        return result;
+    }
+}

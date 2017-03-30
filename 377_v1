@@ -1,0 +1,26 @@
+public class Solution {
+    public int CombinationSum4(int[] nums, int target) {
+        Array.Sort(nums);
+        return Helper(nums,nums.Length,target,new Dictionary<int,int>());
+    }
+
+    private int Helper(int[] nums,int len,int target,Dictionary<int,int> mapping){
+        int result = 0;
+        if(target == 0)
+            return 1;
+
+        if(mapping.ContainsKey(target))
+            return mapping[target];
+
+        for(int i = 0;i<len;i++){
+            if(nums[i] <= target){
+                result += Helper(nums,len,target-nums[i],mapping);
+            }else{
+                break;
+            }
+        }
+        mapping.Add(target,result);
+        return result;
+
+    }
+}

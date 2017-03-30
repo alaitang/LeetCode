@@ -1,0 +1,106 @@
+public class Solution {
+    public int MinTransfers(int[,] transactions) {
+        var mapping = new Dictionary<int,int>();
+
+        int rows = transactions.GetLength(0);
+
+        for(int i = 0;i<rows;i++){
+            if(!mapping.ContainsKey(transactions[i,0]))
+                mapping.Add(transactions[i,0],0);
+            if(!mapping.ContainsKey(transactions[i,1]))
+                mapping.Add(transactions[i,1],0);
+
+            mapping[transactions[i,1]]+=transactions[i,2];
+            mapping[transactions[i,0]]-=transactions[i,2];
+        }
+
+        var list1 = mapping.Where(x=>x.Value >0 ).Select(x=>x.Value).OrderBy(x=>x).ToList();
+        var list2 = mapping.Where(x=>x.Value <0 ).Select(x=>-x.Value).OrderBy(x=>x).ToList();
+
+        int len1 = list1.Count();
+        int len2 = list2.Count();
+        int ii = 0;
+        int jj = 0;
+        int add = 0;
+        while(ii<list1.Count() && jj<list2.Count()){
+            if(list1[ii] == list2[jj]){
+                list1.RemoveAt(ii);
+                list2.RemoveAt(jj);
+                add++;
+            }else if(list1[ii] < list2[jj]){
+                ii++;
+            }else{
+                jj++;
+            }
+        }
+
+        var r1 = Helper(list1);
+        var r2 = Helper(list2);
+
+        int result = list1.Count() + list2.Count();
+
+        foreach(var item1 in r1){
+
+            foreach(var item2 in r2){
+                result = Math.Min(item1.Union(item2).Count(),result);
+            }
+        }
+
+        return result+add;
+    }
+
+    private List<List<int>> Helper(List<int> list){
+        var result = new List<List<int>>();
+        int len = list.Count();
+        var r1 = new List<int>();
+        int    sum = 0;
+            foreach(var item in list){
+                sum+=item;
+                r1.Add(sum);
+            }
+            result.Add(r1);
+        while(true){
+            int low = 0;
+            int i = len-1;
+
+            while(i > 0){
+                if(list[i-1] < list[i]){
+                    break;
+                }
+                i--;
+            }
+            if(i <= 0)
+                break;
+
+            int j = len-1;
+            while(j > i-1){
+                if(list[j] > list[i-1]){
+                    break;
+                }
+                j--;
+            }
+
+            int t = list[i-1];
+            list[i-1] = list[j];
+            list[j] = t;
+
+            j = len-1;
+            while(i < j){
+                int kt = list[i];
+                list[i] = list[j];
+                list[j] = kt;
+                i++;
+                j--;
+            }
+            var r = new List<int>();
+            sum = 0;
+            foreach(var item in list){
+                sum+=item;
+                r.Add(sum);
+            }
+            result.Add(r);
+        }
+        return result;
+    }
+
+}
