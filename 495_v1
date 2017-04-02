@@ -1,0 +1,15 @@
+public class Solution {
+    public int FindPoisonedDuration(int[] timeSeries, int duration) {
+        int result = 0;
+        if(timeSeries.Length == 0)
+            return 0;
+        int max = timeSeries[0];
+        foreach(var item in timeSeries){
+            if(item+duration > max){
+                result += item+duration-Math.Max(max,item);
+                max = item+duration;
+            }
+        }
+        return result;
+    }
+}

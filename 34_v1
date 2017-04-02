@@ -1,0 +1,34 @@
+public class Solution {
+    public int[] SearchRange(int[] nums, int target) {
+        int[] result = new int[2]{-1,-1};
+        int len = nums.Length;
+        int low = Helper(nums,(long)target,0,len-1);
+        if(low >=0 && low < len && nums[low] == target){
+            result[0] = low;
+            result[1] = Helper(nums,((long)target)+1,low,len-1)-1;
+        }
+        return result;
+    }
+
+    private int Helper(int[] nums,long n,int low,int high){
+        if(low > high)
+            return -1;
+        while(low < high-1){
+            int mid = (low+high)/2;
+            if(nums[mid] < n){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+        if(nums[low] == n){
+            return low;
+        }else if(nums[high] == n){
+            return high;
+        }else if(nums[high] < n){
+            return high+1;
+        }else{
+            return low+1;
+        }
+    }
+}
