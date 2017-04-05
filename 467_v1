@@ -1,0 +1,23 @@
+public class Solution {
+    public int FindSubstringInWraproundString(string p) {
+        int len = p.Length;
+        if(len == 0)
+            return 0;
+
+        var mapping = new int[26];
+        mapping[p[0]-'a']++;
+        int result = 1;
+        int begin = 0;
+        for(int i = 1;i<=len;i++){
+            if(i==len || !(p[i]-p[i-1]==1 || p[i]=='a'&&p[i-1] =='z')){
+                for(int j = begin;j<i;j++){
+                    result += Math.Max(0,i-j-mapping[p[j]-'a']);
+                    mapping[p[j]-'a'] = Math.Max(mapping[p[j]-'a'],i-j);
+                }
+                begin = i;
+            }
+        }
+
+        return result;
+    }
+}

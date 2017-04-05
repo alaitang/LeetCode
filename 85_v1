@@ -1,0 +1,36 @@
+public class Solution {
+    public int MaximalRectangle(char[,] matrix) {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        var dp = new int[rows,cols];
+        int result = 0;
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(matrix[i,j] == '0'){
+                    dp[i,j] = 0;
+                }else{
+                    if(j == 0){
+                        dp[i,j] = 1;
+                    }else{
+                        dp[i,j] = dp[i,j-1]+1;
+                    }
+                    result = Math.Max(Helper(dp,i,j),result);
+                }
+            }
+        }
+        return result;
+    }
+
+    private int Helper(int[,] dp,int i,int j){
+        int k = i;
+        int result = 0;
+        int min = int.MaxValue;
+        while(k >= 0){
+            min = Math.Min(dp[k,j],min);
+            result = Math.Max(result,min*(i-k+1));
+            k--;
+        }
+        return result;
+    }
+}

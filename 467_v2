@@ -1,0 +1,26 @@
+public class Solution {
+    public int FindSubstringInWraproundString(string p) {
+        int len = p.Length;
+        if(len == 0)
+            return 0;
+
+        var dp = new int[26];
+        int c = 1;
+        int result = 1;
+
+        dp[p[0]-'a'] = 1;
+        for(int i = 1;i<len;i++){
+            if(p[i]-p[i-1] == 1 || p[i] == 'a' && p[i-1] == 'z'){
+                c++;
+            }else{
+                c = 1;
+            }
+
+            result += Math.Max(0,c-dp[p[i]-'a']);
+            dp[p[i]-'a'] = Math.Max(dp[p[i]-'a'],c);
+        }
+
+        return result;
+
+    }
+}

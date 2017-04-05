@@ -1,0 +1,29 @@
+public class Solution {
+    public int[] FindDiagonalOrder(int[,] matrix) {
+        var list = new List<List<int>>();
+
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                int k = i+j;
+                if(list.Count() <= k){
+                    list.Add(new List<int>());
+                }
+
+                if(k % 2 == 1){
+                    list[k].Add(matrix[i,j]);
+                }else{
+                    list[k].Insert(0,matrix[i,j]);
+                }
+            }
+        }
+
+        var result = new List<int>();
+        foreach(var item in list){
+            result.AddRange(item);
+        }
+        return result.ToArray();
+    }
+}

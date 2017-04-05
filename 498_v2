@@ -1,0 +1,33 @@
+public class Solution {
+    public int[] FindDiagonalOrder(int[,] matrix) {
+
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        var result = new int[rows*cols];
+        int i = 0;
+        int j = 0;
+        int add_i = -1;
+        int add_j = 1;
+        for(int n = 0;n<rows*cols;n++){
+            //Console.WriteLine(i+","+j+","+n);
+            result[n] = matrix[i,j];
+            i+=add_i;
+            j+=add_j;
+            if(i >= rows){
+                i = rows-1;j+=2;add_i*=-1;add_j*=-1;
+            }
+            if(j >= cols){
+                i+=2;j=cols-1;add_i*=-1;add_j*=-1;
+            }
+            if(i < 0){
+                i = 0;add_i*=-1;add_j*=-1;
+            }
+            if(j < 0){
+                j=0;add_i*=-1;add_j*=-1;
+            }
+        }
+
+        return result;
+    }
+}
