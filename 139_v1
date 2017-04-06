@@ -1,0 +1,21 @@
+public class Solution {
+    public bool WordBreak(string s, IList<string> wordDict) {
+        return Helper(s,wordDict,new HashSet<string>());
+    }
+
+    private bool Helper(string s, IList<string> wordDict,HashSet<string> visited){
+        if(s == "")
+            return true;
+        else if(visited.Contains(s))
+            return false;
+
+        foreach(var item in wordDict){
+            if(s.StartsWith(item) && Helper(s.Substring(item.Length),wordDict,visited)){
+                return true;
+            }
+        }
+
+        visited.Add(s);
+        return false;
+    }
+}

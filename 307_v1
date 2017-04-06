@@ -1,0 +1,70 @@
+public class NumArray {
+TreeNode root = null;
+    public NumArray(int[] nums) {
+        root = Build(nums,0,nums.Length-1);
+    }
+    private TreeNode Build(int[] nums,int low,int high){
+        if(low > high)
+            return null;
+        else if(low == high)
+            return new TreeNode(){low=low,high=high,total = nums[low]};
+        else{
+            int mid = (low+high)/2;
+            var result = new TreeNode(){low=low,high=high};
+            result.left = Build(nums,low,mid);
+            result.right = Build(nums,mid+1,high);
+            result.total = (result.left != null ? result.left.total : 0)+(result.right != null ? result.right.total : 0);
+            return result;
+        }
+    }
+
+    public void Update(int i, int val) {
+        Update(i,val,root);
+    }
+
+    private void Update(int i,int val,TreeNode node){
+        if(node == null || node.low > i || node.high < i)
+            return;
+        if(node.low == i && node.high == i){
+            node.total = val;
+        }else if(i <= (node.low+node.high)/2){
+            int oldValue = node.left.total;
+            Update(i,val,node.left);
+            node.total = node.total-oldValue+node.left.total;
+        }else{
+            int oldValue = node.right.total;
+            Update(i,val,node.right);
+            node.total = node.total-oldValue+node.right.total;
+        }
+    }
+
+    public int SumRange(int i, int j) {
+        return SumRange(i,j,root);
+    }
+
+    private int SumRange(int i,int j,TreeNode node){
+        if(node == null || i > node.high || j < node.low)
+            return 0;
+
+        if(node.low >= i && node.high <= j){
+            return node.total;
+        }else{
+            return SumRange(i,j,node.left)+SumRange(i,j,node.right);
+        }
+    }
+}
+
+public class TreeNode{
+    public int low;
+    public int high;
+    public int total;
+    public TreeNode left;
+    public TreeNode right;
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * obj.Update(i,val);
+ * int param_2 = obj.SumRange(i,j);
+ */
