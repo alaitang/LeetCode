@@ -1,0 +1,30 @@
+public class Solution {
+    public bool CanCross(int[] stones) {
+        int len = stones.Length;
+        var mapping = new Dictionary<int,HashSet<int>>();
+        int max = stones.Last();
+
+        foreach(var item in stones){
+            mapping.Add(item,new HashSet<int>());
+        }
+        if(!mapping.ContainsKey(1))
+            return false;
+        mapping[1].Add(1);
+        for(int i = 1;i<len;i++){
+            foreach(var item in mapping[stones[i]]){
+                if(mapping.ContainsKey(stones[i]+item+1)){
+                    mapping[stones[i]+item+1].Add(item+1);
+                }
+                if(item != 0 && mapping.ContainsKey(stones[i]+item)){
+                    mapping[stones[i]+item].Add(item);
+                }
+                if(item-1 != 0 && mapping.ContainsKey(stones[i]+item-1)){
+                    mapping[stones[i]+item-1].Add(item-1);
+                }
+                if(mapping[max].Any())
+                    return true;
+            }
+        }
+        return false;
+    }
+}

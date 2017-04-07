@@ -1,0 +1,29 @@
+public class Solution {
+    int max = int.MinValue;
+    HashSet<string> visited = new HashSet<string>();
+    public bool CanCross(int[] stones) {
+        max = stones[stones.Length-1];
+        return Helper(new HashSet<int>(stones),1,1);
+    }
+
+    private bool Helper(HashSet<int> stones,int k, int n){
+        //Console.WriteLine(k+","+n);
+        if(n == max)
+            return true;
+        if(k <= 0 || !stones.Contains(n) || visited.Contains(k+","+n)){
+            return false;
+        }
+
+        if(Helper(stones,k+1,n+k+1))
+            return true;
+
+        if(k > 0 && Helper(stones,k,n+k))
+            return true;
+
+        if(k-1>0 && Helper(stones,k-1,n+k-1))
+            return true;
+
+        visited.Add(k+","+n);
+        return false;
+    }
+}

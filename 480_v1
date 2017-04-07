@@ -1,0 +1,49 @@
+public class Solution {
+    public double[] MedianSlidingWindow(int[] nums, int k) {
+        var result = new List<double>();
+        int len = nums.Length;
+        var list = new List<int>();
+        for(int i = 0;i<len;i++){
+            if(i >= k){
+                var rIndex = FindIndex(list,nums[i-k]);
+                //Console.WriteLine(string.Join(",",list));
+                //Console.WriteLine(i+","+rIndex+","+nums[i-k]);
+                list.RemoveAt(rIndex);
+            }
+            int index = FindIndex(list,nums[i]);
+            list.Insert(index,nums[i]);
+            if(i>=k-1){
+                result.Add(k % 2 == 0 ? ((double)list[k/2-1]+list[k/2])/2 : (double)list[k/2]);
+            }
+
+                //Console.WriteLine(string.Join(",",list));
+        }
+        return result.ToArray();
+    }
+
+    private int FindIndex(List<int> list,int n){
+        int low = 0;
+        int high = list.Count()-1;
+
+        while(low < high-1){
+            int mid = (low+high)/2;
+            if(list[mid] == n){
+                return mid;
+            }else if(list[mid] > n){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+        if(low > high || list[low] >= n){
+            return low;
+        }else if(list[high] >= n){
+
+        //Console.WriteLine("----"+list[high]+","+list[low]+","+n);
+            return high;
+        }else{
+            //Console.WriteLine("111");
+            return high+1;
+        }
+    }
+}

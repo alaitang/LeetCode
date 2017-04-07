@@ -1,0 +1,16 @@
+public class Solution {
+    public int LongestPalindrome(string s) {
+        var dp = new int[256];
+        int k = 0;
+        foreach(var c in s){
+            dp[(int)c]++;
+            if(dp[(int)c] % 2 == 0){
+                k--;
+            }else{
+                k++;
+            }
+        }
+
+        return s.Length-(k > 1 ? k-1 : 0);
+    }
+}

@@ -1,0 +1,34 @@
+public class Solution {
+    public string MinWindow(string s, string t) {
+        var tmaps = new int[256];
+        foreach(var c in t){
+            tmaps[(int)c]++;
+        }
+        var smaps = new int[256];
+        string result = "";
+        int tLen = t.Length;
+        int low = 0;
+        int len = s.Length;
+        int m = 0;
+        for(int i = 0;i<len;i++){
+            if(++smaps[(int)s[i]] <= tmaps[(int)s[i]]){
+                m++;
+            }
+
+            if(m ==tLen){
+                while(m == tLen){
+                    if(--smaps[(int)s[low]] < tmaps[(int)s[low]]){
+                        m--;
+                    }
+                    low++;
+                }
+
+                if(result == "" || result.Length > i-low+2){
+                    result = s.Substring(low-1,i-low+2);
+                }
+            }
+        }
+
+        return result;
+    }
+}

@@ -1,0 +1,35 @@
+public class Solution {
+    public bool Makesquare(int[] nums) {
+        if(nums.Length < 4)
+            return false;
+        int sum = nums.Sum();
+        if(sum % 4 != 0 || nums.Max() > sum/4)
+            return false;
+        return Helper(nums,0,nums.Length,sum/4,sum/4);
+    }
+    private bool Helper(int[] nums,int index,int len,int n,int M){
+        if(M == 0){
+            if(index >= len)
+                return true;
+            else
+                return Helper(nums,index,len,n,n);
+        }else if(index >= len || nums[index]>M){
+            return false;
+        }else{
+            for(int i = index;i<len;i++){
+                if(nums[i] <= M){
+                    if(Helper(nums,index+1,len,n,M-nums[index]))
+                        return true;
+                    Swap(nums,index,i);
+                }
+            }
+            return false;
+        }
+    }
+
+    private void Swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}
