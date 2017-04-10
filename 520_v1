@@ -1,0 +1,17 @@
+public class Solution {
+    public bool DetectCapitalUse(string word) {
+        var len = word.Length;
+        for(int i = 0;i<len;i++){
+            if(word[i] >= 'A' && word[i] <= 'Z'){
+                if(i>0 && (word[i-1] < 'A' || word[i-1] > 'Z'))
+                    return false;
+            }else if(word[i] >= 'a' && word[i] <= 'z'){
+                if(i>1 && (word[i-1] < 'a' || word[i-1] > 'z'))
+                    return false;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}

@@ -1,0 +1,37 @@
+public class Solution {
+    public bool IsScramble(string s1, string s2) {
+        if(s1 == s2)
+            return true;
+        else if(s1.Length != s2.Length)
+            return false;
+
+        var mapping = new int[256];
+        foreach(var c in s1){
+            mapping[(int)c]++;
+        }
+        foreach(var c in s2){
+            if(--mapping[(int)c] < 0)
+                return false;
+        }
+
+        var len = s1.Length;
+
+        for(int i = 0;i<len-1;i++){
+            var s11 = s1.Substring(0,i+1);
+            var s12 = s1.Substring(i+1);
+            var s211 = s2.Substring(0,i+1);
+            var s212 = s2.Substring(i+1);
+
+            if(IsScramble(s11,s211) && IsScramble(s212,s12))
+                return true;
+
+            var s221 = s2.Substring(0,len-i-1);
+            var s222 = s2.Substring(len-i-1);
+
+            if(IsScramble(s11,s222) && IsScramble(s221,s12))
+                return true;
+
+        }
+        return false;
+    }
+}

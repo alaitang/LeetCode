@@ -1,0 +1,65 @@
+public class Solution {
+    public IList<int> NumIslands2(int m, int n, int[,] positions) {
+        var heads = new int[m*n];
+        var visited = new bool[m*n];
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                heads[i*n+j] = i*n+j;
+            }
+        }
+        var islands = 0;
+        var result = new List<int>();
+
+        int len = positions.GetLength(0);
+        for(int k = 0;k<len;k++){
+            int i = positions[k,0];
+            int j = positions[k,1];
+
+            islands++;
+
+            if(i > 0 && visited[(i-1)*n+j]){
+                var h = FindHead(heads,(i-1)*n+j);
+                if(h != heads[i*n+j]){
+                    islands--;
+                    heads[h] = i*n+j;
+                }
+            }
+
+            if(i< m-1 && visited[(i+1)*n+j]){
+                var h = FindHead(heads,(i+1)*n+j);
+                if(h != heads[i*n+j]){
+                    islands--;
+                    heads[h] = i*n+j;
+                }
+            }
+
+            if(j > 0 && visited[i*n+j-1]){
+                var h = FindHead(heads,i*n+j-1);
+                if(h != heads[i*n+j]){
+                    islands--;
+                    heads[h] = i*n+j;
+                }
+            }
+
+            if(j < n-1 && visited[i*n+j+1]){
+                var h = FindHead(heads,i*n+j+1);
+                if(h != heads[i*n+j]){
+                    islands--;
+                    heads[h] = i*n+j;
+                }
+            }
+            visited[i*n+j] = true;
+            result.Add(islands);
+        }
+
+
+        return result;
+    }
+
+    private int FindHead(int[] heads,int index){
+        if(heads[index] == index)
+            return index;
+
+        return FindHead(heads,heads[index]);
+    }
+}
