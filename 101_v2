@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public bool IsSymmetric(TreeNode root) {
+        if(root == null)
+            return true;
+
+        var list = new List<TreeNode>(){root};
+
+        while(list.Any()){
+            if(list.Count != 1 && list.Count % 2 == 1)
+                return false;
+
+            int i = 0;
+            int j = list.Count-1;
+            var temp = new List<TreeNode>();
+            //Console.WriteLine(string.Join(",",list.Select(x=>x.val)));
+            while(i<=j){
+                if(list[i].val != list[j].val
+                || list[i].left == null && list[j].right != null
+                || list[i].right == null && list[j].left != null ){
+                    return false;
+                }
+
+                if(list[i].left != null && list[j].right != null){
+                    temp.Insert(0,list[i].left);
+                    temp.Add(list[j].right);
+                }
+
+
+                if(list[i].right != null && list[j].left != null){
+                    temp.Insert(0,list[i].right);
+                    temp.Add(list[j].left);
+                }
+                i++;
+                j--;
+            }
+            list = temp;
+        }
+            return true;
+    }
+}
