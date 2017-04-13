@@ -1,0 +1,25 @@
+public class Solution {
+    public IList<int> LexicalOrder(int n) {
+        var result = new List<int>();
+        int m = 1;
+
+        while(result.Count < n){
+            result.Add(m);
+            if(m  <= n/10){
+                m*=10;
+            }else if(m % 10 != 9 && m<=n-1){
+                m++;
+            }else{
+                m/=10;
+                while(m%10 == 9){
+                    m/=10;
+                }
+                m++;
+            }
+        }
+
+
+
+        return result;
+    }
+}

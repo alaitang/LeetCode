@@ -1,0 +1,26 @@
+public class Solution {
+    public void ReverseWords(char[] s) {
+        int p = -1;
+        int len = s.Length;
+        for(int i = 0;i<len;i++){
+            if(s[i] == ' '){
+                swap(s,p+1,i-1);
+                p = i;
+            }
+        }
+
+            swap(s,p+1,len-1);
+
+        swap(s,0,len-1);
+    }
+
+    private void swap(char[] s,int i ,int j){
+        while(i<j){
+            char c = s[i];
+            s[i] = s[j];
+            s[j] = c;
+            i++;
+            j--;
+        }
+    }
+}

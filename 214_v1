@@ -1,0 +1,40 @@
+public class Solution {
+    public string ShortestPalindrome(string s) {
+
+        int len = s.Length;
+        if(len == 0)
+            return "";
+        else if(len == 1)
+            return s;
+        int index = 0;
+        int m = 1;
+        var mapping = new int[256];
+        mapping[(int)s[0]]++;
+
+        for(int i = 1;i<len;i++){
+            if(++mapping[(int)s[i]] % 2 == 0){
+                m--;
+            }else{
+                m++;
+            }
+
+            if(m<=1){
+                int ii = 0;
+                int jj = i;
+                while(ii < jj && s[ii] == s[jj]){
+                    ii++;
+                    jj--;
+                }
+                if(ii>=jj){
+                    index = i;
+                }
+            }
+        }
+        var result = new StringBuilder();
+        result.Append(s);
+        for(int i = index+1;i<len;i++){
+            result.Insert(0,s[i]);
+        }
+        return result.ToString();
+    }
+}
