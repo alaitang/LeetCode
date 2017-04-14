@@ -1,0 +1,21 @@
+public class Solution {
+    public int NthUglyNumber(int n) {
+        var dp = new int[n];
+        int index2 = 0;
+        int index3 = 0;
+        int index5 = 0;
+        dp[0] = 1;
+
+        for(int i = 1;i<n;i++){
+            dp[i] = Math.Min(Math.Min(dp[index2]*2,dp[index3]*3),dp[index5]*5);
+            if(dp[index2]*2 == dp[i])
+                index2++;
+            if(dp[index3]*3 == dp[i])
+                index3++;
+            if(dp[index5]*5 == dp[i])
+                index5++;
+        }
+        return dp[n-1];
+
+    }
+}

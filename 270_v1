@@ -1,0 +1,31 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    double result = double.MinValue;
+    public int ClosestValue(TreeNode root, double target) {
+        Helper(root,target);
+        return (int)result;
+    }
+
+    private void Helper(TreeNode root,double target){
+        if(root == null)
+            return;
+        if(Math.Abs(root.val-target) < Math.Abs(result-target))
+            result = root.val;
+
+        if(root.val == target)
+            return;
+        else if(root.val > target){
+            Helper(root.left,target);
+        }else{
+            Helper(root.right,target);
+        }
+    }
+}

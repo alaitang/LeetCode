@@ -1,0 +1,25 @@
+public class Solution {
+    int result = 0;
+    public int StrobogrammaticInRange(string low, string high) {
+        result = 0;
+
+        Helper("",low,high);
+        Helper("1",low,high);
+        Helper("0",low,high);
+        Helper("8",low,high);
+
+        return result;
+    }
+
+    private void Helper(string s,string low,string high){
+        if(s.Length < high.Length || s.Length==high.Length && s.CompareTo(high) <=0){
+            if((s.Length > 0 && s[0] != '0' || s=="0") && (s.Length > low.Length || s.Length == low.Length && s.CompareTo(low) >= 0))
+                result++;
+            Helper("0"+s+"0",low,high);
+            Helper("1"+s+"1",low,high);
+            Helper("8"+s+"8",low,high);
+            Helper("6"+s+"9",low,high);
+            Helper("9"+s+"6",low,high);
+        }
+    }
+}

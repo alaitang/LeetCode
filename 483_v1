@@ -1,0 +1,30 @@
+public class Solution {
+    public string SmallestGoodBase(string n) {
+        var N = BigInteger.Parse(n);
+        long result = long.MaxValue;
+        //Console.WriteLine(result);
+        for(int i = 2;i<=66;i++){
+            long low = 2;
+            long high = long.MaxValue-5;
+
+            while(low <= high){
+                long mid = low + (high-low)/2;
+                BigInteger b = new BigInteger(mid);
+                var n1 = BigInteger.Subtract(BigInteger.Pow(b,i),BigInteger.One);
+                var n2 = BigInteger.Multiply(N,BigInteger.Subtract(b,BigInteger.One));
+
+                var c = n1.CompareTo(n2);
+                if(c == 0){
+                    result = Math.Min(result,mid);
+                    break;
+                }else if(c < 0){
+                    low = mid+1;
+                }else{
+                    high = mid-1;
+                }
+            }
+        }
+
+        return ""+result;
+    }
+}
