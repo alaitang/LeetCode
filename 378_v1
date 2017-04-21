@@ -1,0 +1,65 @@
+public class Solution {
+    public int KthSmallest(int[,] matrix, int k) {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        if(k==1){
+            return matrix[0,0];
+        }
+        var list = new List<int>();
+        list.Add(0);
+        int result = 0;
+        int max = rows*cols;
+        var visited = new bool[rows,cols];
+        while(k > 0){
+            result = list[0];
+            Insert(list,cols,max,visited,matrix);
+            k--;
+            //Console.WriteLine(string.Join(",",list));
+        }
+
+        return matrix[result/cols,result%cols];
+    }
+
+    private void Insert(List<int> list,int cols,int max,bool[,] visited,int[,] matrix){
+        var top = list[0];
+
+        list.RemoveAt(0);
+
+        if((top+1)/cols == top/cols && !visited[(top+1)/cols,(top+1)%cols]){
+            Insert(list,cols,top+1,matrix);
+            visited[(top+1)/cols,(top+1)%cols] = true;
+        }
+
+        if(top+cols < max && !visited[(top+cols)/cols,(top+cols)%cols]){
+            Insert(list,cols,top+cols,matrix);
+            visited[(top+cols)/cols,(top+cols)%cols] = true;
+        }
+    }
+
+    private void Insert(List<int> list,int cols,int index,int[,] matrix){
+        int low = 0;
+        int high = list.Count-1;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(matrix[list[mid]/cols,list[mid]%cols] == matrix[index/cols,index%cols]){
+                list.Insert(mid,index);
+                return;
+            }else if(matrix[list[mid]/cols,list[mid]%cols] < matrix[index/cols,index%cols]){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+
+        if(high < 0 || matrix[list[low]/cols,list[low]%cols] >= matrix[index/cols,index%cols]){
+            list.Insert(low,index);
+        }else if(matrix[list[high]/cols,list[high]%cols] >= matrix[index/cols,index%cols]){
+            list.Insert(high,index);
+        }else{
+            list.Insert(high+1,index);
+        }
+    }
+}

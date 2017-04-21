@@ -1,0 +1,35 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     public int start;
+ *     public int end;
+ *     public Interval() { start = 0; end = 0; }
+ *     public Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int[] FindRightInterval(Interval[] intervals) {
+        int len = intervals.Length;
+        var list = new List<int>();
+        var result = new int[len];
+        for(int k = 0;k<len;k++){
+            list.Add(k);
+            result[k] = -1;
+        }
+
+        var startList = list.OrderBy(x=>intervals[x].start).ToList();
+        var endList = list.OrderBy(x=>intervals[x].end).ToList();
+        int i = 0;
+        int j = 0;
+        while(i < len){
+
+             while(intervals[endList[j]].end <= intervals[startList[i]].start){
+                    result[endList[j]] = startList[i];
+                    j++;
+                }
+            i++;
+        }
+
+        return result;
+    }
+}

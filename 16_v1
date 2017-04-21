@@ -1,0 +1,31 @@
+public class Solution {
+    public int ThreeSumClosest(int[] nums, int target) {
+        Array.Sort(nums);
+        long result = target+(long)int.MaxValue;
+        int len = nums.Length;
+        for(int i = 0;i<len;i++){
+            if(i > 0 && nums[i] == nums[i-1])
+                continue;
+            for(int j = i+1;j<len;j++){
+                if(j > i+1 && nums[j] == nums[j-1])
+                    continue;
+
+                for(int t = j+1;t<len;t++){
+
+                    if(t > j+1 && nums[t] == nums[t-1])
+                        continue;
+
+                    long sum = (long)nums[i]+nums[j]+nums[t];
+
+                    if(Math.Abs(result-target) > Math.Abs(sum-target)){
+                        result = sum;
+                    }
+                    if(sum > target)
+                        break;
+                }
+            }
+        }
+
+        return (int)result;
+    }
+}

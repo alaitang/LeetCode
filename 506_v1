@@ -1,0 +1,45 @@
+public class Solution {
+    public string[] FindRelativeRanks(int[] nums) {
+        int len = nums.Length;
+        var indexes = new int[len];
+        for(int i = 0;i<len;i++){
+            indexes[i] = i;
+        }
+
+        QuickSort(indexes,nums,0,len-1);
+        var result = new string[len];
+        for(int i = 0;i<len;i++){
+            if(i == 0){
+                result[indexes[i]] = "Gold Medal";
+            }else if(i == 1){
+                result[indexes[i]] = "Silver Medal";
+            }else if(i == 2){
+                result[indexes[i]] = "Bronze Medal";
+            }else{
+                result[indexes[i]] = ""+(i+1);
+            }
+        }
+
+        return result;
+    }
+
+    private void QuickSort(int[] indexes,int[] nums,int low,int high){
+        if(low >= high)
+            return;
+        int index = low;
+        for(int i = low+1;i<=high;i++){
+            if(nums[indexes[i]] > nums[indexes[low]]){
+                swap(indexes,++index,i);
+            }
+        }
+        swap(indexes,index,low);
+        QuickSort(indexes,nums,low,index-1);
+        QuickSort(indexes,nums,index+1,high);
+    }
+
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

@@ -1,0 +1,29 @@
+public class Solution {
+    public bool IsValidSerialization(string preorder) {
+        if(preorder == "#")
+            return true;
+        else if(preorder == ""){
+            return false;
+        }
+
+        var arr = preorder.Split(new char[]{','});
+
+        int len = arr.Length;
+
+        if(arr[0] == "#")
+            return false;
+
+        int n = 2;
+
+        for(int i = 1;i<len;i++){
+            n--;
+            if(n < 0)
+                return false;
+            if(arr[i] != "#"){
+                n+=2;
+            }
+        }
+
+        return n == 0;
+    }
+}

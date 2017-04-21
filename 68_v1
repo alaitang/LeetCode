@@ -1,0 +1,46 @@
+public class Solution {
+    public IList<string> FullJustify(string[] words, int maxWidth) {
+        var result = new List<List<string>>();
+        var r = new List<string>();
+        int len = 0;
+        foreach(var item in words){
+            if(len + item.Length+1 <= maxWidth+1){
+                r.Add(item);
+                len += item.Length+1;
+            }else{
+                result.Add(new List<string>(r));
+                r.Clear();
+                len = item.Length+1;
+                r.Add(item);
+            }
+        }
+
+        result.Add(new List<string>(){string.Join(" ",r).PadRight(maxWidth,' ')});
+
+        return result.Select(x=>{
+            if(x.Count == 1){
+                return x[0].PadRight(maxWidth,' ');
+            }else{
+                int totalLen = x.Select(k=>k.Length).Sum();
+                int remindLen = maxWidth-totalLen;
+                if(remindLen % (x.Count-1) == 0){
+                    return string.Join("".PadLeft(remindLen/(x.Count-1),' '),x).Trim();
+                }else{
+                    string s1 = "".PadLeft(remindLen/(x.Count-1)+1,' ');
+                    string s2 = "".PadLeft(remindLen/(x.Count-1),' ');
+                    int index = remindLen % (x.Count-1);
+                    string rr = "";
+                    for(int i = 0;i<x.Count-1;i++){
+                        if(i < index){
+                            rr += x[i] + s1;
+                        }else{
+                            rr += x[i] + s2;
+                        }
+                    }
+                    rr += x.Last();
+                    return rr;
+                }
+            }
+        }).ToList();
+    }
+}

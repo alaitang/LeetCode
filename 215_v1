@@ -1,0 +1,33 @@
+public class Solution {
+    public int FindKthLargest(int[] nums, int k) {
+        Helper(nums,0,nums.Length-1,k-1);
+        return nums[k-1];
+    }
+
+    private void Helper(int[] nums,int low,int high,int k){
+        int index = low;
+
+        for(int i = low+1;i<=high;i++){
+            if(nums[i] >= nums[low]){
+                swap(nums,++index,i);
+            }
+        }
+
+        swap(nums,index,low);
+
+        if(index == k){
+            return;
+        }else if(index < k){
+            Helper(nums,index+1,high,k);
+        }else{
+            Helper(nums,low,index-1,k);
+        }
+
+    }
+
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j]= t;
+    }
+}

@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int CountNodes(TreeNode root) {
+        if(root == null)
+            return 0;
+
+        int ll = CountLeft(root);
+        int rr = CountRight(root);
+
+        if(ll == rr){
+            return (int)Math.Pow(2,ll)-1;
+        }else{
+            ll--;
+            rr--;
+            int lr = CountRight(root.left);
+            int result = 1;
+            if(ll == lr){
+                result += (int)Math.Pow(2,ll)-1 + CountNodes(root.right);
+            }else{
+                result += CountNodes(root.left)+(int)Math.Pow(2,rr)-1;
+            }
+            return result;
+        }
+
+    }
+
+    private int CountLeft(TreeNode root){
+        if(root == null)
+            return 0;
+
+        return CountLeft(root.left)+1;
+    }
+
+    private int CountRight(TreeNode root){
+        if(root == null)
+            return 0;
+
+        return CountRight(root.right)+1;
+    }
+}

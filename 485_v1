@@ -1,0 +1,15 @@
+public class Solution {
+    public int FindMaxConsecutiveOnes(int[] nums) {
+        int n = 0;
+        int result = 0;
+
+        foreach(var item in nums){
+            if(item == 0){
+                n = 0;
+            }else{
+                result = Math.Max(result,++n);
+            }
+        }
+        return result;
+    }
+}

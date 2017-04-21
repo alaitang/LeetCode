@@ -1,0 +1,56 @@
+public class Solution {
+    public int MaxEnvelopes(int[,] envelopes) {
+        var list = new List<int[]>();
+        int rows = envelopes.GetLength(0);
+
+        for(int i = 0;i<rows;i++){
+            Insert(list,new int[]{envelopes[i,0],envelopes[i,1]});
+        }
+
+        var dp = new int[rows];
+        int result = 0;
+        //Console.WriteLine(string.Join(",",list.Select(x=>"["+x[0]+","+x[1]+"]")));
+        for(int i = 0;i<rows;i++){
+            dp[i] = 1;
+            for(int j = i-1;j>=0;j--){
+                if(list[i][0] > list[j][0] && list[i][1] > list[j][1]){
+                    dp[i] = Math.Max(dp[i],dp[j]+1);
+                }
+            }
+            result = Math.Max(result,dp[i]);
+        }
+        return result;
+    }
+
+    private void Insert(List<int[]> list,int[] item){
+        int low = 0;
+        int high = list.Count-1;
+
+        if(high < 0){
+            list.Add(item);
+            return;
+        }
+
+        while(low < high-1){
+            int mid = (low+high)/2;
+
+            if(list[mid][0] < item[0] && list[mid][1] < item[1]){
+                low = mid;
+            }else if(list[mid][0] > item[0] && list[mid][1] > item[1]){
+                high = mid;
+            }else if(list[mid][0] < item[0] || list[mid][0] == item[0] && list[mid][1] <= item[1]){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+
+        if(list[high][0] < item[0] || list[high][0] == item[0] && list[high][1] <= item[1]){
+            list.Insert(high+1,item);
+        }else if(list[low][0] < item[0] || list[low][0] == item[0] && list[low][1] <= item[1]){
+            list.Insert(low+1,item);
+        }else{
+            list.Insert(low,item);
+        }
+    }
+}
