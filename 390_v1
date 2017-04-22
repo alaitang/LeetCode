@@ -1,0 +1,24 @@
+public class Solution {
+    public int LastRemaining(int n) {
+        var list = new List<bool>();
+        int k = 0;
+        while(n > 1){
+            if(k % 2 == 0 || n % 2 == 1){
+                list.Insert(0,true);
+            }else{
+                list.Insert(0,false);
+            }
+            k++;
+            n/=2;
+        }
+
+        foreach(var item in list){
+            if(item){
+                n *=2;
+            }else{
+                n = n * 2 -1;
+            }
+        }
+        return n;
+    }
+}

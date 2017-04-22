@@ -1,0 +1,36 @@
+public class Solution {
+    public IList<string> AddOperators(string num, int target) {
+        var result = new List<string>();
+
+        Helper(result,num.Length,0,"",num,0,0,(long)target);
+
+        return result;
+    }
+
+    private void Helper(IList<string> result,int len,int index,string r,string s,long p,long k,long target){
+        if(index >= len){
+            if(k == target){
+                result.Add(r);
+            }
+        }else{
+            long n = 0;
+            for(int i = index;i<len;i++){
+                n = n * 10 + (s[i]-'0');
+
+                if(index == 0){
+                    Helper(result,len,i+1,n+"",s,n,n,target);
+                }else{
+                    Helper(result,len,i+1,r+"+"+n,s,n,k+n,target);
+
+                    Helper(result,len,i+1,r+"-"+n,s,-n,k-n,target);
+
+                    Helper(result,len,i+1,r+"*"+n,s,p*n,k-p+p*n,target);
+                }
+
+
+                if(s[index] == '0')
+                    break;
+            }
+        }
+    }
+}

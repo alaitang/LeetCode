@@ -1,0 +1,19 @@
+public class Solution {
+    public bool VerifyPreorder(int[] preorder) {
+
+        int i = -1;
+        int n = int.MinValue;
+
+        foreach(var item in preorder){
+            if(item < n)
+                return false;
+
+            while(i >=0 && preorder[i] < item){
+                n = preorder[i--];
+            }
+
+            preorder[++i] = item;
+        }
+        return true;
+    }
+}

@@ -1,0 +1,17 @@
+public class Solution {
+    public bool VerifyPreorder(int[] preorder) {
+        var stack = new Stack<int>();
+
+        int n = int.MinValue;
+        foreach(var item in preorder){
+            if(item < n)
+                return false;
+
+            while(stack.Any() && item > stack.Peek())
+                n = stack.Pop();
+
+            stack.Push(item);
+        }
+        return true;
+    }
+}

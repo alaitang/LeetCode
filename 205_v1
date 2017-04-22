@@ -1,0 +1,21 @@
+public class Solution {
+    public bool IsIsomorphic(string s, string t) {
+
+        var len = s.Length;
+        var m1 = new Dictionary<char,char>();
+        var m2 = new Dictionary<char,char>();
+        for(int i = 0;i<len;i++){
+            if(!m1.ContainsKey(s[i]) && !m2.ContainsKey(t[i])){
+                m1.Add(s[i],t[i]);
+                m2.Add(t[i],s[i]);
+            }else if(m1.ContainsKey(s[i]) && m2.ContainsKey(t[i])){
+                if(m1[s[i]] != t[i] || m2[t[i]] != s[i])
+                    return false;
+            }else{
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

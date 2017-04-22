@@ -1,0 +1,13 @@
+public class Solution {
+    public int MinMoves(int[] nums) {
+        Array.Sort(nums);
+        int result = 0;
+        int len = nums.Length;
+        int n = 0;
+        for(int i = 1;i<len;i++){
+            n+= nums[i]-nums[i-1];
+            result+=n;
+        }
+        return result;
+    }
+}

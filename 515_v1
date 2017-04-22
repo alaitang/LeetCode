@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<int> LargestValues(TreeNode root) {
+        var result = new List<int>();
+
+        Helper(result,root,0);
+
+        return result;
+    }
+
+    private void Helper(List<int> result,TreeNode root,int depth){
+        if(root == null)
+            return;
+
+        if(depth == result.Count)
+            result.Add(int.MinValue);
+
+        result[depth] = Math.Max(root.val,result[depth]);
+
+        Helper(result,root.left,depth+1);
+        Helper(result,root.right,depth+1);
+
+    }
+}

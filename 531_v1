@@ -1,0 +1,28 @@
+public class Solution {
+    public int FindLonelyPixel(char[,] picture) {
+        int result = 0;
+        int rows = picture.GetLength(0);
+        int cols = picture.GetLength(1);
+
+        int[] dp2 = new int[cols];
+        int[] dp1 = new int[rows];
+
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(picture[i,j] == 'B'){
+                        dp1[i]++;
+                        dp2[j]++;
+                }
+            }
+        }
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(picture[i,j] == 'B' && dp2[j] == 1 && dp1[i] == 1){
+                        result++;
+                }
+            }
+        }
+
+        return result;
+    }
+}

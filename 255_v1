@@ -1,0 +1,26 @@
+public class Solution {
+    public bool VerifyPreorder(int[] preorder) {
+        return Helper(preorder,0,preorder.Length-1,(long)int.MinValue-1,(long)int.MaxValue+1);
+    }
+
+    private bool Helper(int[] nums,int i,int j,long low,long high){
+        //Console.WriteLine(i+","+j);
+        if(i >= j)
+            return true;
+        int k = i+1;
+        while(k<=j && nums[k]< nums[i]){
+            if(nums[k] <= low)
+                return false;
+            k++;
+        }
+
+        if(k > j){
+            return Helper(nums,i+1,j,low,(long)nums[i]);
+        }
+
+        if(!Helper(nums,i+1,k-1,low,(long)nums[i]))
+            return false;
+
+        return Helper(nums,k,j,(long)nums[i],high);
+    }
+}
