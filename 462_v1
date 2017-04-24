@@ -1,0 +1,15 @@
+public class Solution {
+    public int MinMoves2(int[] nums) {
+        int result = 0;
+        Array.Sort(nums);
+        int low = 0;
+        int high = nums.Length-1;
+
+        while(low < high){
+            result += nums[high]-nums[low];
+            low++;
+            high--;
+        }
+        return result;
+    }
+}

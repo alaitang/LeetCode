@@ -1,0 +1,25 @@
+public class Solution {
+    public IList<IList<string>> GroupStrings(string[] strings) {
+        var mapping = new Dictionary<string,List<string>>();
+        var result = new List<IList<string>>();
+        foreach(var item in strings){
+            int len = item.Length;
+            var list = new List<int>();
+            for(int i = 1;i<len;i++){
+                if(item[i] < item[i-1]){
+                    list.Add(item[i]-item[i-1]+26);
+                }else{
+                    list.Add(item[i]-item[i-1]);
+                }
+            }
+            var key = string.Join("",list);
+            if(!mapping.ContainsKey(key)){
+                mapping.Add(key,new List<string>());
+                result.Add(mapping[key]);
+            }
+
+            mapping[key].Add(item);
+        }
+        return result;
+    }
+}

@@ -1,0 +1,46 @@
+public class Solution {
+    public int Calculate(string s) {
+        s = s.Replace(" ","");
+        char po = '+';
+        int n = 0;
+        int result = 0;
+        int pn = 0;
+        foreach(var c in s){
+            if(c >='0' && c <='9'){
+                n = n * 10 + (c-'0');
+            }else{
+                if(po == '+'){
+                    result+=n;
+                    pn = n;
+                }else if(po=='-'){
+                    result-=n;
+                    pn = -n;
+                }else if(po=='*'){
+                    result = result-pn;
+                    result = result+pn*n;
+                    pn = pn*n;
+                }else if(po == '/'){
+                    result = result-pn;
+                    result = result+pn/n;
+                    pn = pn/n;
+                }
+                po = c;
+                n = 0;
+            }
+        }
+
+        if(po == '+'){
+            result+=n;
+        }else if(po=='-'){
+            result-=n;
+        }else if(po=='*'){
+            result = result-pn;
+            result = result+pn*n;
+        }else if(po == '/'){
+            result = result-pn;
+            result = result+pn/n;
+        }
+
+        return result;
+    }
+}
