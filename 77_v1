@@ -1,0 +1,19 @@
+public class Solution {
+    public IList<IList<int>> Combine(int n, int k) {
+        var result = new List<IList<int>>();
+        Helper(result,new List<int>(),1,n,k);
+        return result;
+    }
+
+    private void Helper(IList<IList<int>> result, List<int> r,int n,int len,int k){
+        if(r.Count == k){
+            result.Add(new List<int>(r));
+        }else{
+            for(int i = n;i<=len;i++){
+                r.Add(i);
+                Helper(result,r,i+1,len,k);
+                r.RemoveAt(r.Count-1);
+            }
+        }
+    }
+}

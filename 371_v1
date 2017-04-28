@@ -1,0 +1,17 @@
+public class Solution {
+    public int GetSum(int a, int b) {
+
+        while(a != 0 && b != 0){
+            var k = a ^ b;
+            var c = ( a & b ) << 1;
+            a = k;
+            b = c;
+        }
+
+        if(a == 0)
+            return b;
+        else
+            return a;
+
+    }
+}

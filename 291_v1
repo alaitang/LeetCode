@@ -1,0 +1,35 @@
+public class Solution {
+    public bool WordPatternMatch(string pattern, string str) {
+        return Helper(pattern,0,pattern.Length,str,new Dictionary<char,string>(),new HashSet<string>());
+    }
+
+    private bool Helper(string pattern,int index,int len, string s,
+    Dictionary<char,string> m1,HashSet<string> m2){
+        if(index >= len)
+            return s == "";
+
+        if(m1.ContainsKey(pattern[index])){
+            if(s.StartsWith(m1[pattern[index]])){
+                return Helper(pattern,index+1,len,s.Substring(m1[pattern[index]].Length),m1,m2);
+            }else{
+                return false;
+            }
+        }else{
+            string nextS = "";
+            m1.Add(pattern[index],nextS);
+            foreach(var c in s){
+                nextS+=c;
+                if(m2.Contains(nextS))
+                    continue;
+                m1[pattern[index]] = nextS;
+                m2.Add(nextS);
+                var r = Helper(pattern,index+1,len,s.Substring(m1[pattern[index]].Length),m1,m2);
+                if(r)
+                    return true;
+                m2.Remove(nextS);
+            }
+            m1.Remove(pattern[index]);
+            return false;
+        }
+    }
+}

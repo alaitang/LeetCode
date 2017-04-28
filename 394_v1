@@ -1,0 +1,30 @@
+public class Solution {
+    public string DecodeString(string s) {
+
+        var stack1 = new Stack<int>();
+        var stack2 = new Stack<string>();
+
+        stack2.Push("");
+
+        int n = 0;
+        foreach(var c in s){
+            if(c >= '0' && c <='9'){
+                n = n *10 + (c-'0');
+            }else if(c=='['){
+                stack1.Push(n);
+                stack2.Push("");
+                n=0;
+            }else if(c == ']'){
+                var str = stack2.Pop();
+                var p = "0".PadRight(stack1.Pop(),'0');
+                stack2.Push(stack2.Pop()+p.Replace("0",str));
+                n=0;
+            }else{
+                n=0;
+                stack2.Push(stack2.Pop()+c);
+            }
+        }
+
+        return stack2.Pop();
+    }
+}

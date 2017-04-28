@@ -1,0 +1,25 @@
+public class Solution {
+    public bool WordPattern(string pattern, string str) {
+        var arr = str.Split(new char[]{' '});
+
+        if(pattern.Length != arr.Length)
+            return false;
+
+        var len = arr.Length;
+        var m1 = new Dictionary<char,string>();
+        var m2 = new Dictionary<string,char>();
+        for(int i = 0;i<len;i++){
+            if(m1.ContainsKey(pattern[i]) || m2.ContainsKey(arr[i])){
+                if(!m1.ContainsKey(pattern[i])
+                || !m2.ContainsKey(arr[i])
+                || m1[pattern[i]] != arr[i]
+                || m2[arr[i]] != pattern[i])
+                    return false;
+            }else{
+                m1.Add(pattern[i],arr[i]);
+                m2.Add(arr[i],pattern[i]);
+            }
+        }
+        return true;
+    }
+}

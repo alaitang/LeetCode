@@ -1,0 +1,48 @@
+public class Solution {
+    public int ShortestDistance(int[,] maze, int[] start, int[] destination) {
+        var rows = maze.GetLength(0);
+        var cols = maze.GetLength(1);
+        var dp = new int[rows,cols];
+        if(start[0] == destination[0] && start[1] == destination[1])
+            return 0;
+
+        Helper(maze,dp,destination,rows,cols,start[0],start[1],0,1,0);
+        Helper(maze,dp,destination,rows,cols,start[0],start[1],0,-1,0);
+        Helper(maze,dp,destination,rows,cols,start[0],start[1],0,0,1);
+        Helper(maze,dp,destination,rows,cols,start[0],start[1],0,0,-1);
+
+        return dp[destination[0],destination[1]] == 0 ? -1 : dp[destination[0],destination[1]];
+    }
+
+    private void Helper(int[,] maze,int[,] dp,int[] end,
+        int rows,int cols,int i,int j,int step,int add_i,int add_j){
+        //Console.WriteLine(i+","+j+" ------ "+add_i+","+add_j+","+step);
+        if(dp[i,j] != 0 && dp[i,j] < step)
+            return;
+
+
+        int nexti = i + add_i;
+        int nextj = j + add_j;
+
+        if(nexti < 0 || nexti >= rows || nextj <0 || nextj >= cols || maze[nexti,nextj] == 1){
+            dp[i,j] = step;
+            if(i == end[0] && j == end[1]){
+                return;
+            }
+
+            nexti = i + add_j;
+            nextj = j + add_i;
+            if(nexti >= 0 && nexti < rows && nextj >=0 && nextj < cols && maze[nexti,nextj] ==0){
+                Helper(maze,dp,end,rows,cols,nexti,nextj,step+1,add_j,add_i);
+            }
+            nexti = i - add_j;
+            nextj = j - add_i;
+            if(nexti >= 0 && nexti < rows && nextj >=0 && nextj < cols && maze[nexti,nextj] ==0){
+                Helper(maze,dp,end,rows,cols,nexti,nextj,step+1,-add_j,-add_i);
+            }
+        }else{
+            Helper(maze,dp,end,rows,cols,nexti,nextj,step+1,add_i,add_j);
+        }
+
+    }
+}

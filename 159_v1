@@ -1,0 +1,24 @@
+public class Solution {
+    public int LengthOfLongestSubstringTwoDistinct(string s) {
+        int low = 0;
+        int len = s.Length;
+        var mapping = new int[256];
+        int k = 0;
+        int result = 0;
+        for(int i = 0;i<len;i++){
+            //Console.WriteLine("---"+mapping[(int)s[i]]);
+            if(++mapping[(int)s[i]] == 1){
+                k++;
+            }
+
+            if(k >= 3){
+                while(--mapping[s[low++]] > 0){}
+
+                k--;
+            }
+            //Console.WriteLine(low);
+            result = Math.Max(i-low+1,result);
+        }
+        return result;
+    }
+}
