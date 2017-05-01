@@ -1,0 +1,53 @@
+public class Solution {
+    public int ShortestDistance(int[,] grid) {
+
+        int rows = grid.GetLength(0);
+        int cols = grid.GetLength(1);
+
+        int[,] visited = new int[rows,cols];
+        int[,] dp = new int[rows,cols];
+        int totalBuildings = 0;
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(grid[i,j] == 1){
+                    totalBuildings++;
+                    var dp1 = new int[rows,cols];
+                    Helper(dp,dp1,visited,i+1,j,rows,cols,grid,1);
+                    Helper(dp,dp1,visited,i,j+1,rows,cols,grid,1);
+                    Helper(dp,dp1,visited,i-1,j,rows,cols,grid,1);
+                    Helper(dp,dp1,visited,i,j-1,rows,cols,grid,1);
+                }
+            }
+        }
+        int result = -1;
+
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(grid[i,j] == 0){
+                    if(visited[i,j] == totalBuildings){
+                        result = result == -1 ? dp[i,j] : Math.Min(dp[i,j],result);
+                    }
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+    private void Helper(int[,] dp,int[,] dp1,int[,] visited,int i,int j,int rows,int cols,int[,] grid,int step){
+        if(i < 0 || j < 0 || i >= rows || j >= cols || grid[i,j] != 0 || dp1[i,j] != 0 && dp1[i,j] <= step)
+            return;
+
+        if(dp1[i,j] == 0)
+            visited[i,j]++;
+        dp[i,j] -= dp1[i,j];
+        dp1[i,j] = step;
+        dp[i,j] += dp1[i,j];
+
+        Helper(dp,dp1,visited,i+1,j,rows,cols,grid,step+1);
+        Helper(dp,dp1,visited,i,j+1,rows,cols,grid,step+1);
+        Helper(dp,dp1,visited,i-1,j,rows,cols,grid,step+1);
+        Helper(dp,dp1,visited,i,j-1,rows,cols,grid,step+1);
+    }
+}

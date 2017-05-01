@@ -1,0 +1,24 @@
+public class Solution {
+    public bool ContainsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if(t < 0)
+            return false;
+
+        var mapping = new Dictionary<long,int>();
+        int len = nums.Length;
+        for(int i=0;i<len;i++){
+            long key = ((long)nums[i]-int.MinValue)/(t+1);
+
+            if(mapping.ContainsKey(key)
+            || mapping.ContainsKey(key-1) && Math.Abs((long)nums[i] -mapping[key-1]) <= t
+            || mapping.ContainsKey(key+1) && Math.Abs((long)nums[i] -mapping[key+1]) <= t)
+                return true;
+
+            mapping.Add(key,nums[i]);
+
+            if(i >= k){
+                mapping.Remove(((long)nums[i-k]-int.MinValue)/(t+1));
+            }
+        }
+        return false;
+    }
+}

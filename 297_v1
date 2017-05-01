@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public string serialize(TreeNode root) {
+        if(root == null)
+            return "";
+
+        var queue = new Queue<TreeNode>();
+        var result = new List<string>(){root.val+""};
+        queue.Enqueue(root);
+        int k = 0;
+        while(queue.Any()){
+           var top = queue.Dequeue();
+           //Console.WriteLine(top.val);
+           if(top.left == null){
+               result.Add("null");
+           }else{
+               queue.Enqueue(top.left);
+               result.Add(top.left.val+"");
+           }
+           if(top.right == null){
+               result.Add("null");
+           }else{
+               queue.Enqueue(top.right);
+               result.Add(top.right.val+"");
+           }
+        }
+        //Console.WriteLine(string.Join(",",result));
+        while(result.Last() == "null"){
+            result.RemoveAt(result.Count-1);
+        }
+        //Console.WriteLine(string.Join(",",result));
+        return string.Join(",",result);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(string data) {
+        if(data == "")
+            return null;
+        var arr = data.Split(new char[]{','});
+
+        var result = new TreeNode(int.Parse(arr[0]));
+        int len = arr.Length;
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(result);
+        for(int i = 1;i<len;i++){
+            if(arr[i] != "null"){
+                queue.Peek().left = new TreeNode(int.Parse(arr[i]));
+                queue.Enqueue(queue.Peek().left);
+            }
+            i++;
+            if(i < len){
+                if(arr[i] != "null"){
+                    queue.Peek().right = new TreeNode(int.Parse(arr[i]));
+                    queue.Enqueue(queue.Peek().right);
+                }
+            }
+            queue.Dequeue();
+        }
+        return result;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));

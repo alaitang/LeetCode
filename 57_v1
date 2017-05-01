@@ -1,0 +1,32 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     public int start;
+ *     public int end;
+ *     public Interval() { start = 0; end = 0; }
+ *     public Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public IList<Interval> Insert(IList<Interval> intervals, Interval newInterval) {
+
+        var result = new List<Interval>(intervals);
+
+        for(int i = 0;i<result.Count();i++){
+            if(result[i].start > newInterval.end){
+                result.Insert(i,newInterval);
+                return result;
+            }else if(newInterval.start >= result[i].start && newInterval.start <= result[i].end
+            || newInterval.end >= result[i].start && newInterval.end <= result[i].end
+            || newInterval.end >= result[i].end && newInterval.start <= result[i].start){
+                newInterval.start = Math.Min(newInterval.start,result[i].start);
+                newInterval.end = Math.Max(newInterval.end,result[i].end);
+
+                result.RemoveAt(i);
+                i--;
+            }
+        }
+        result.Add(newInterval);
+        return result;
+    }
+}

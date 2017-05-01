@@ -1,0 +1,31 @@
+public class Solution {
+    public int FindDuplicate(int[] nums) {
+        int min = 0;
+        int max = nums.Length+1;
+        int len = nums.Length;
+        for(int i = 0;i<len;i++){
+            //Console.WriteLine(min+","+max);
+            if(nums[i] >= max || nums[i] <= min)
+                continue;
+            int n1 = 0;
+            int n2 = 0;
+            for(int j = 0;j<len;j++){
+                if(nums[i] == nums[j] && i != j)
+                    return nums[i];
+                else if(nums[i] < nums[j] && nums[j] < max)
+                    n2++;
+                else if(nums[i] > nums[j] && nums[j] > min)
+                    n1++;
+            }
+
+            if(n1 > nums[i]-min-1){
+                max = nums[i];
+            }else if(n2 > max - nums[i] - 1){
+                min = nums[i];
+            }
+            //Console.WriteLine("---"+n1+","+n2);
+            //Console.WriteLine(min+","+max);
+        }
+        return min;
+    }
+}
