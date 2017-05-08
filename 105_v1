@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode BuildTree(int[] preorder, int[] inorder) {
+        var mapping = new Dictionary<int,int>();
+        for(int i = 0;i<inorder.Length;i++){
+            mapping.Add(inorder[i],i);
+        }
+        return Helper(preorder,inorder,0,preorder.Length-1,0,inorder.Length-1,mapping);
+    }
+
+    private TreeNode Helper(int[] preorder, int[] inorder,int i,int j,int ii,int jj,Dictionary<int,int> mapping){
+        if(i > j || ii > jj){
+            return null;
+        }
+
+        var result = new TreeNode(preorder[i]);
+
+        int index = mapping[preorder[i]];
+
+        int leftLen = index - ii;
+
+        result.left = Helper(preorder,inorder,i+1,i+leftLen,ii,index-1,mapping);
+        result.right = Helper(preorder,inorder,i+leftLen+1,j,index+1,jj,mapping);
+
+        return result;
+    }
+}

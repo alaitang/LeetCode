@@ -1,0 +1,27 @@
+public class Solution {
+    public bool CanPartition(int[] nums) {
+        int sum = nums.Sum();
+
+        if(sum % 2 == 1)
+            return false;
+
+        var half = sum /2;
+
+        var hash = new HashSet<int>();
+        hash.Add(0);
+
+        foreach(var item in nums){
+            if(hash.Contains(half-item))
+                return true;
+            var newHash = new HashSet<int>();
+            foreach(var s in hash){
+                int k = item+s;
+                if(!hash.Contains(k) && k < half){
+                    newHash.Add(k);
+                }
+            }
+            hash.UnionWith(newHash);
+        }
+        return false;
+    }
+}

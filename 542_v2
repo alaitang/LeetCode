@@ -1,0 +1,48 @@
+public class Solution {
+    public int[,] UpdateMatrix(int[,] matrix) {
+        var rows = matrix.GetLength(0);
+        var cols = matrix.GetLength(1);
+
+        var result = new int[rows,cols];
+        var queue = new Queue<int>();
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(matrix[i,j] == 0){
+                    queue.Enqueue(i*cols+j);
+                }else{
+                    result[i,j] = int.MaxValue;
+                }
+            }
+        }
+
+        while(queue.Any()){
+            var top = queue.Dequeue();
+            var k = top +1;
+            if(k / cols == top / cols && matrix[k/cols,k%cols] == 1){
+                result[k/cols,k%cols] = result[top/cols,top%cols]+1;
+                matrix[k/cols,k%cols] = 0;
+                queue.Enqueue(k);
+            }
+            k = top - 1;
+            if(k >= 0 && k / cols == top / cols && matrix[k/cols,k%cols] == 1){
+                result[k/cols,k%cols] = result[top/cols,top%cols]+1;
+                matrix[k/cols,k%cols] = 0;
+                queue.Enqueue(k);
+            }
+            k = top + cols;
+            if(k < rows * cols && matrix[k/cols,k%cols] == 1){
+                result[k/cols,k%cols] = result[top/cols,top%cols]+1;
+                matrix[k/cols,k%cols] = 0;
+                queue.Enqueue(k);
+            }
+            k = top - cols;
+            if(k>=0 && matrix[k/cols,k%cols] == 1){
+                result[k/cols,k%cols] = result[top/cols,top%cols]+1;
+                matrix[k/cols,k%cols] = 0;
+                queue.Enqueue(k);
+            }
+        }
+
+        return result;
+    }
+}
