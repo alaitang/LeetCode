@@ -1,0 +1,16 @@
+public class Solution {
+    public IList<int> GrayCode(int n) {
+        int max = 1 << n;
+        int t = 0;
+        int b = 1;
+        var result = new List<int>(){0};
+        while(result.Count < max){
+            result.Add(result[t--]+b);
+            if(t < 0){
+                t = result.Count-1;
+                b = b << 1;
+            }
+        }
+        return result;
+    }
+}

@@ -1,0 +1,20 @@
+public class Solution {
+    public int MySqrt(int x) {
+        if(x == 0)
+            return 0;
+        else if(x < 4)
+            return 1;
+        else if(x == 4)
+            return 2;
+        else{
+            int k = MySqrt(x/4);
+
+            k = k * 2;
+
+            if(x / (k+1) >= (k+1))
+                return k+1;
+            else
+                return k;
+        }
+    }
+}

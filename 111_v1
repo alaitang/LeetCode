@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int MinDepth(TreeNode root) {
+        if(root == null)
+            return 0;
+
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+        int nextTotal = 0;
+        int currentTotal = 1;
+        int result = 0;
+        while(queue.Any() && (queue.Peek().left != null || queue.Peek().right != null)){
+            var top = queue.Dequeue();
+            if(top.left != null){
+                queue.Enqueue(top.left);
+                nextTotal++;
+            }
+            if(top.right != null){
+                queue.Enqueue(top.right);
+                nextTotal++;
+            }
+            if(--currentTotal == 0){
+                result++;
+                currentTotal = nextTotal;
+                nextTotal=0;
+            }
+
+        }
+
+        return ++result;
+
+    }
+}
