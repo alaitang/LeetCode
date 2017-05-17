@@ -1,0 +1,48 @@
+public class Solution {
+    public IList<int> TopKFrequent(int[] nums, int k) {
+        var mapping = new Dictionary<int,int>();
+        var list = new List<int>();
+        foreach(var item in nums){
+            if(!mapping.ContainsKey(item)){
+                list.Add(item);
+                mapping.Add(item,0);
+            }
+            mapping[item]++;
+        }
+
+
+        Helper(list,mapping,list.Count-k,0,list.Count-1);
+
+        return list.Skip(list.Count-k).ToList();
+
+    }
+
+    private void Helper(List<int> list,Dictionary<int,int> mapping,int k,int low,int high){
+        if(low >= high)
+            return;
+
+        int index = low;
+
+        for(int i = low+1;i<=high;i++){
+            if(mapping[list[i]] < mapping[list[low]]){
+                swap(list,i,++index);
+            }
+        }
+        swap(list,low,index);
+
+        if(index == k || index == k-1){
+            return;
+        }else if(index > k){
+            Helper(list,mapping,k,low,index-1);
+        }else{
+            Helper(list,mapping,k,index+1,high);
+        }
+    }
+
+    private void swap(List<int> list,int i,int j){
+        int k = list[i];
+        list[i] = list[j];
+        list[j] = k;
+    }
+
+}

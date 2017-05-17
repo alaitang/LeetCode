@@ -1,0 +1,31 @@
+public class Solution {
+    public IList<int> TopKFrequent(int[] nums, int k) {
+        var mapping = new Dictionary<int,int>();
+        foreach(var item in nums){
+            if(!mapping.ContainsKey(item)){
+                mapping.Add(item,0);
+            }
+            mapping[item]++;
+        }
+
+        var buckets = new List<int>[nums.Length+1];
+
+        foreach(var item in mapping){
+            if(buckets[item.Value] == null){
+                buckets[item.Value] = new List<int>();
+            }
+
+            buckets[item.Value].Add(item.Key);
+        }
+
+        var result = new List<int>();
+
+        for(int i = nums.Length;i>=0 && result.Count < k;i--){
+            if(buckets[i] == null)
+                continue;
+            result.AddRange(buckets[i]);
+        }
+
+        return result;
+    }
+}

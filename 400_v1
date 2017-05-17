@@ -1,0 +1,13 @@
+public class Solution {
+    public int FindNthDigit(int n) {
+        int k = 0;
+        while(n > Math.Pow(10,k)*(k+1) * 9){
+            n-=(int)Math.Pow(10,k)*(k+1) * 9;
+            k++;
+        }
+
+        n--;
+        //Console.WriteLine(n);
+        return (""+((int)Math.Pow(10,k)+n/(k+1)))[n%(k+1)]-'0';
+    }
+}
