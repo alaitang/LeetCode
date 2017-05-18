@@ -1,0 +1,48 @@
+public class MyStack {
+    Queue<int> q = new Queue<int>();
+    /** Initialize your data structure here. */
+    public MyStack() {
+
+    }
+
+    /** Push element x onto stack. */
+    public void Push(int x) {
+        q.Enqueue(x);
+    }
+
+    /** Removes the element on top of the stack and returns that element. */
+    public int Pop() {
+        int len = q.Count();
+        while(len > 1){
+            q.Enqueue(q.Dequeue());
+            len--;
+        }
+        return q.Dequeue();
+    }
+
+    /** Get the top element. */
+    public int Top() {
+        int len = q.Count();
+        while(len > 1){
+            q.Enqueue(q.Dequeue());
+            len--;
+        }
+        var r = q.Dequeue();
+        q.Enqueue(r);
+        return r;
+    }
+
+    /** Returns whether the stack is empty. */
+    public bool Empty() {
+        return !q.Any();
+    }
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.Push(x);
+ * int param_2 = obj.Pop();
+ * int param_3 = obj.Top();
+ * bool param_4 = obj.Empty();
+ */

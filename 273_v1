@@ -1,0 +1,51 @@
+public class Solution {
+    string[] m1 = {"","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    string[] m2 = {"","","Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    public string NumberToWords(int num) {
+        string result = "";
+        if(num == 0)
+            return "Zero";
+
+        int k = num / 1000000000;
+        if(k > 0){
+            result += Helper1(k) +" Billion";
+        }
+        num %= 1000000000;
+        k = num / 1000000;
+        if(k > 0){
+            result += Helper1(k)+" Million";
+        }
+        num %= 1000000;
+        k = num;
+        if(k > 0){
+            result += Helper1(k);
+        }
+
+        return result.Trim();
+    }
+
+    private string Helper1(int k){
+        string result = "";
+        if(k >= 1000){
+            result += Helper(k/1000) +" Thousand";
+        }
+
+        result += Helper(k%1000);
+        return result;
+    }
+
+    private string Helper(int n){
+        string result = "";
+        if(n >= 100){
+            result =" "+ m1[n/100] + " Hundred";
+        }
+        n %= 100;
+        if(n >= 20){
+            result += " "+ m2[n/10] +" "+ m1[n%10];
+        }else{
+            result +=" "+ m1[n];
+        }
+
+        return result.TrimEnd();
+    }
+}
