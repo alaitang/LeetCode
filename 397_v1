@@ -1,0 +1,16 @@
+public class Solution {
+    public int IntegerReplacement(int n) {
+        if(n == 1)
+            return 0;
+        int result = 0;
+        if(n == int.MaxValue){
+            result = Math.Min(IntegerReplacement((n-1)/2),IntegerReplacement(n/2+1))+2;
+        }else if(n % 2 == 0){
+            result = IntegerReplacement(n/2)+1;
+        }else{
+            result = Math.Min(IntegerReplacement((n-1)/2),IntegerReplacement((n+1)/2))+2;
+        }
+
+        return result;
+    }
+}
