@@ -1,0 +1,32 @@
+public class Solution {
+    public void NextPermutation(int[] nums) {
+        int i = nums.Length-1;
+        while(i > 0){
+            if(nums[i] > nums[i-1]){
+                break;
+            }
+            i--;
+        }
+
+        int j = nums.Length-1;
+        if(i != 0){
+            while(true){
+                if(nums[j] > nums[i-1]){
+                    break;
+                }
+                j--;
+            }
+
+            swap(nums,i-1,j);
+            j = nums.Length-1;
+        }
+        while(i<j){
+            swap(nums,i++,j--);
+        }
+    }
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

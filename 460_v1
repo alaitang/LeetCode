@@ -1,0 +1,105 @@
+public class LFUCache {
+    private Dictionary<int,ListNode> headMapping = new Dictionary<int,ListNode>();
+    private Dictionary<int,ListNode> tailMapping = new Dictionary<int,ListNode>();
+    private Dictionary<int,ListNode> mapping = new Dictionary<int,ListNode>();
+
+    private int minKey = 0;
+    private int _cap = 0;
+    private int _allKeys = 0;
+
+    public LFUCache(int capacity) {
+        _cap = capacity;
+    }
+
+    public int Get(int key) {
+        if(_cap == 0)
+            return -1;
+        if(mapping.ContainsKey(key)){
+            if(headMapping[mapping[key].count]==mapping[key]){
+                if(mapping[key].next != null && mapping[key].next.count == mapping[key].count){
+                    headMapping[mapping[key].count] = mapping[key].next;
+                }else{
+                    headMapping.Remove(mapping[key].count);
+                }
+            }
+            if(tailMapping[mapping[key].count]==mapping[key]){
+                if(mapping[key].prev != null && mapping[key].prev.count == mapping[key].count){
+                    tailMapping[mapping[key].count] = mapping[key].prev;
+                }else{
+                    tailMapping.Remove(mapping[key].count);
+                }
+            }
+            if(mapping[key].prev != null)
+                mapping[key].prev.next = mapping[key].next;
+            if(mapping[key].next != null)
+                mapping[key].next.prev = mapping[key].prev;
+
+            mapping[key].count++;
+            mapping[key].next = null;
+            mapping[key].prev = null;
+
+            if(!headMapping.ContainsKey(mapping[key].count)){
+                headMapping.Add(mapping[key].count,mapping[key]);
+                tailMapping.Add(mapping[key].count,mapping[key]);
+            }else{
+                headMapping[mapping[key].count].prev = mapping[key];
+                mapping[key].next = headMapping[mapping[key].count];
+                headMapping[mapping[key].count] = mapping[key];
+            }
+
+            return mapping[key].val;
+        }
+        else
+            return -1;
+    }
+
+    public void Put(int key, int value) {
+        //Console.WriteLine(key+","+value);
+        if(_cap == 0)
+            return;
+        if(mapping.ContainsKey(key)){
+            mapping[key].val = value;
+            Get(key);
+        }else{
+           if(mapping.Keys.Count == _cap){
+               var item = tailMapping[tailMapping.Keys.Min()];
+               if(item.prev == null){
+                   tailMapping.Remove(item.count);
+               }else{
+                   item.prev.next = null;
+                   tailMapping[item.count] = item.prev;
+               }
+
+               if(headMapping[item.count] == item){
+                   headMapping.Remove(item.count);
+               }
+               mapping.Remove(item.key);
+           }
+
+           mapping.Add(key,new ListNode(){val = value,key=key});
+           if(headMapping.ContainsKey(1)){
+               headMapping[1].prev = mapping[key];
+               mapping[key].next = headMapping[1];
+               headMapping[1] = mapping[key];
+           }else{
+               headMapping.Add(1,mapping[key]);
+               tailMapping.Add(1,mapping[key]);
+           }
+        }
+    }
+}
+
+public class ListNode{
+    public ListNode next;
+    public ListNode prev;
+    public int val;
+    public int key;
+    public int count = 1;
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.Get(key);
+ * obj.Put(key,value);
+ */

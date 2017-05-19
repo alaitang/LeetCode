@@ -1,0 +1,25 @@
+public class Solution {
+    public int FindRadius(int[] houses, int[] heaters) {
+        int i = 0;
+        int j = 1;
+        int len = heaters.Length;
+
+        int result =0;
+        Array.Sort(houses);
+        Array.Sort(heaters);
+
+        foreach(var item in houses){
+            while(j < len && item >= heaters[j]){
+                i = j;
+                j++;
+            }
+            if(j >= len){
+                result = Math.Max(Math.Abs(heaters[i]-item),result);
+            }else{
+                result = Math.Max(Math.Min(Math.Abs(heaters[i]-item),Math.Abs(heaters[j]-item)),result);
+            }
+
+        }
+        return result;
+    }
+}
