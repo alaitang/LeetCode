@@ -1,0 +1,35 @@
+public class Solution {
+    public IList<IList<string>> SolveNQueens(int n) {
+        var result = new List<IList<string>>();
+        Helper(result,new List<string>(),0,0,0,0,n);
+        return result;
+    }
+
+    private void Helper(IList<IList<string>> result,List<string> r,int rows,int cols,int k1,int k2,int n){
+        if(r.Count == n){
+            result.Add(new List<string>(r));
+        }else{
+            int i = r.Count;
+            string s = "";
+            for(int j = 0;j<n;j++){
+                if((rows & (1 << i)) == 0 && (cols & (1 << j)) == 0 && (k1 & (1 << (i+j))) == 0 && (k2 & (1 << (i+n-1-j))) == 0){
+                    rows += (1 << i);
+                    cols += (1 << j);
+                    k1 += (1 << (i+j));
+                    k2 += (1 << (i+n-1-j));
+
+                    r.Add((s+"Q").PadRight(n,'.'));
+
+                    Helper(result,r,rows,cols,k1,k2,n);
+
+                    rows -= (1 << i);
+                    cols -= (1 << j);
+                    k1 -= (1 << (i+j));
+                    k2 -= (1 << (i+n-1-j));
+                    r.RemoveAt(r.Count()-1);
+                }
+                s+=".";
+            }
+        }
+    }
+}

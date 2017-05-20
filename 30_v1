@@ -1,0 +1,66 @@
+public class Solution {
+    public IList<int> FindSubstring(string s, string[] words) {
+        var result = new List<int>();
+        var m = new int[256];
+        int k = 0;
+        if(words.Length == 0)
+            return result;
+
+        int b_len = words[0].Length;
+        int w_len = 0;
+        var mapping = new Dictionary<string,int>();
+        foreach(var word in words){
+            if(!mapping.ContainsKey(word))
+                mapping.Add(word,0);
+            mapping[word]++;
+            foreach(var c in word){
+                if(m[(int)c]++ == 0)
+                    k++;
+                w_len++;
+            }
+        }
+        int len = s.Length;
+        var m1 = new int[256];
+        int k1 = 0;
+        for(int i = 0;i< len;i++){
+            char c = s[i];
+            if(++m1[(int)c] == m[(int)c]){
+                k1++;
+            }else if(m1[(int)c]-1 == m[(int)c]){
+                k1--;
+            }
+
+            if(i >= w_len){
+                c = s[i-w_len];
+                if(--m1[(int)c] == m[(int)c]){
+                    k1++;
+                }else if(m1[(int)c]+1 == m[(int)c]){
+                    k1--;
+                }
+            }
+            //Console.WriteLine(k1);
+            if(k1 == k && Helper(s,words,i-w_len+1,i,b_len,mapping)){
+                result.Add(i-w_len+1);
+            }
+        }
+        return result;
+
+    }
+
+    private bool Helper(string s,string[] words,int low,int high,int w_len,Dictionary<string,int> mapping){
+
+        var m = new Dictionary<string,int>();
+
+        for(int i = low;i<=high;i+=w_len){
+            var str = s.Substring(i,w_len);
+            if(!m.ContainsKey(str))
+                m.Add(str,0);
+            if(!mapping.ContainsKey(str) || ++m[str] > mapping[str])
+                return false;
+        }
+
+        return true;
+
+    }
+
+}

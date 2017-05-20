@@ -1,0 +1,27 @@
+public class Solution {
+    public int LongestValidParentheses(string s) {
+        var stack = new Stack<int>();
+
+        stack.Push(-1);
+        int len = s.Length;
+
+        for(int i = 0;i<len;i++){
+            if(s[i] == '('){
+                stack.Push(i);
+            }else if(stack.Any() && stack.Peek() >=0 && s[stack.Peek()] == '('){
+                stack.Pop();
+            }else{
+                stack.Push(i);
+            }
+        }
+
+        int result = 0;
+        int b = len;
+        while(stack.Any()){
+            int top = stack.Pop();
+            result = Math.Max(b-top-1,result);
+            b = top;
+        }
+        return result;
+    }
+}

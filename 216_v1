@@ -1,0 +1,22 @@
+public class Solution {
+    public IList<IList<int>> CombinationSum3(int k, int n) {
+        var result = new List<IList<int>>();
+        Helper(result,new List<int>(),k,n,1);
+        return result;
+    }
+
+    private void Helper(IList<IList<int>> result,List<int> r,int k,int n,int start){
+        if(r.Count == k){
+            if(n == 0)
+                result.Add(new List<int>(r));
+        }
+        for(int i = start;i<=9;i++){
+            if(i > n)
+                break;
+
+            r.Add(i);
+            Helper(result,r,k,n-i,i+1);
+            r.RemoveAt(r.Count-1);
+        }
+    }
+}
