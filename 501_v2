@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    List<int> result = new List<int>();
+    Dictionary<int,int> mapping = new Dictionary<int,int>();
+    int max = 0;
+    public int[] FindMode(TreeNode root) {
+        Helper(root);
+        return result.ToArray();
+    }
+
+    private void Helper(TreeNode root){
+        if(root == null)
+            return;
+
+        if(!mapping.ContainsKey(root.val))
+            mapping.Add(root.val,0);
+        mapping[root.val]++;
+
+        if(mapping[root.val] == max){
+            result.Add(root.val);
+        }else if(mapping[root.val] > max){
+            max++;
+            result.Clear();
+            result.Add(root.val);
+        }
+
+        Helper(root.left);
+        Helper(root.right);
+    }
+}

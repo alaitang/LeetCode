@@ -1,0 +1,63 @@
+public class Solution {
+    public int FindMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
+
+        int len = Profits.Length;
+        var list = new List<int>();
+        var list2 = new List<int>();
+        for(int i = 0;i<len;i++){
+            list.Add(i);
+        }
+        var stack = new Stack<int>(list.OrderBy(x=>-Capital[x]).ToList());
+
+        int result = W;
+        for(int i = 0;i<k;i++){
+            //Console.WriteLine(string.Join(",",stack));
+            while(stack.Any() && Capital[stack.Peek()] <= result){
+                var top = stack.Pop();
+                //Console.WriteLine(top);
+                Insert(list2,top,Profits);
+            }
+            //Console.WriteLine(string.Join(",",list2));
+            if(list2.Any()){
+                //Console.WriteLine(list2.Last());
+                result += Profits[list2.Last()];
+                list2.RemoveAt(list2.Count-1);
+            }else{
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private void Insert(List<int> list, int i, int[] p){
+        if(list.Count == 0)
+        {
+            list.Add(i);
+            return;
+        }
+        int low = 0;
+        int high = list.Count-1;
+        int n = p[i];
+        while(low < high-1){
+            int mid = (low+high)/2;
+            int mid_v = p[list[mid]];
+            if(mid_v == n){
+                list.Insert(mid,i);
+                return;
+            }else if(mid_v > n){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+
+        if(p[list[low]] >= n){
+            list.Insert(low,i);
+        }else if(p[list[high]] >= n){
+            list.Insert(high,i);
+        }else{
+            list.Insert(high+1,i);
+        }
+    }
+}
