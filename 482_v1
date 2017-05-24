@@ -1,0 +1,18 @@
+public class Solution {
+    public string LicenseKeyFormatting(string S, int K) {
+        S = S.ToUpper();
+        int len = S.Length;
+        var sb = new StringBuilder();
+        for(int i = len-1,j = 0;i>=0;i--,j++){
+            if(S[i] == '-'){
+                j--;
+                continue;
+            }
+            if(j % K == 0 && j != 0)
+                sb.Insert(0,'-');
+            sb.Insert(0,S[i]);
+        }
+
+        return sb.ToString();
+    }
+}

@@ -1,0 +1,84 @@
+public class LRUCache {
+
+    private int _capacity = 0;
+    private Dictionary<int,DoubleLinkListNode> mapping = new Dictionary<int,DoubleLinkListNode>();
+    private DoubleLinkListNode head = null;
+    public LRUCache(int capacity) {
+        _capacity = capacity;
+
+    }
+
+    public int Get(int key) {
+        if(mapping.ContainsKey(key)){
+            if(head != null && head.key != key){
+                var nextNode = mapping[key].next;
+                var prevNode = mapping[key].prev;
+
+                prevNode.next = nextNode;
+                nextNode.prev = prevNode;
+
+                prevNode = head.prev;
+
+                mapping[key].next = head;
+                mapping[key].prev = prevNode;
+                prevNode.next = mapping[key];
+                head.prev = mapping[key];
+                head = mapping[key];
+            }
+
+            return mapping[key].val;
+        }else{
+            return -1;
+        }
+    }
+
+    public void Put(int key, int value) {
+
+        if(!mapping.ContainsKey(key)){
+            mapping.Add(key,new DoubleLinkListNode(){val=value,key = key});
+            var prevNode = new DoubleLinkListNode();
+
+            if(_capacity == 0){
+                mapping.Remove(head.prev.key);
+                if(head != null && head.next == head){
+                    head = null;
+                }else{
+                    prevNode = head.prev.prev;
+                    prevNode.next = head;
+                    head.prev = prevNode;
+                }
+
+            }else{
+                _capacity--;
+            }
+            if(head == null){
+                mapping[key].next = mapping[key];
+                mapping[key].prev = mapping[key];
+            }else{
+                prevNode = head.prev;
+                prevNode.next = mapping[key];
+                mapping[key].prev = prevNode;
+                head.prev = mapping[key];
+                mapping[key].next = head;
+            }
+            head = mapping[key];
+        }else{
+            mapping[key].val = value;
+            Get(key);
+        }
+    }
+}
+
+public class DoubleLinkListNode{
+    public DoubleLinkListNode prev = null;
+    public DoubleLinkListNode next = null;
+    public int val = 0;
+    public int key = 0;
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.Get(key);
+ * obj.Put(key,value);
+ */

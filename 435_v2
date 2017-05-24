@@ -1,0 +1,29 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     public int start;
+ *     public int end;
+ *     public Interval() { start = 0; end = 0; }
+ *     public Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int EraseOverlapIntervals(Interval[] intervals) {
+        intervals = intervals.OrderBy(x=>x.end).ToArray();
+        int len = intervals.Length;
+        if(len <= 1)
+            return 0;
+        var dp = new int[len];
+
+        int result = 1;
+        int end = intervals[0].end;
+        for(int i = 1;i<len;i++){
+            if(intervals[i].start >= end){
+                end = intervals[i].end;
+                result++;
+            }
+        }
+
+        return len-result;
+    }
+}

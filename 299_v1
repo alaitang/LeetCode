@@ -1,0 +1,23 @@
+public class Solution {
+    public string GetHint(string secret, string guess) {
+        var m1 = new int[10];
+        var m2 = new int[10];
+
+        int len = secret.Length;
+        int bull = 0;
+        for(int i = 0;i<len;i++){
+            if(secret[i] == guess[i]){
+                bull++;
+            }else{
+                m1[secret[i]-'0']++;
+                m2[guess[i]-'0']++;
+            }
+        }
+
+        int cow = 0;
+        for(int i = 0;i<10;i++){
+            cow += Math.Min(m1[i],m2[i]);
+        }
+        return bull+"A"+cow+"B";
+    }
+}

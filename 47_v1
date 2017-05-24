@@ -1,0 +1,41 @@
+public class Solution {
+    public IList<IList<int>> PermuteUnique(int[] nums) {
+        var result = new List<IList<int>>();
+
+        Array.Sort(nums);
+        int len = nums.Length;
+            result.Add(new List<int>(nums));
+        while(true){
+            int i = len-1;
+            while(i > 0){
+                if(nums[i] > nums[i-1]){
+                    break;
+                }
+                i--;
+            }
+            if(i == 0)
+                break;
+            int j = len-1;
+            while(j > i-1){
+                if(nums[j] > nums[i-1])
+                    break;
+                j--;
+            }
+            swap(nums,i-1,j);
+            j = len-1;
+            while(i < j){
+                swap(nums,i++,j--);
+            }
+            result.Add(new List<int>(nums));
+        }
+
+
+        return result;
+    }
+
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

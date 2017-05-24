@@ -1,0 +1,90 @@
+public class Twitter {
+
+    private Dictionary<int,HashSet<int>> followed = new Dictionary<int,HashSet<int>>();
+    private Dictionary<int,List<PostEntity>> post = new Dictionary<int,List<PostEntity>>();
+    private int postOrder = 0;
+    /** Initialize your data structure here. */
+    public Twitter() {
+
+    }
+
+    /** Compose a new tweet. */
+    public void PostTweet(int userId, int tweetId) {
+        if(!post.ContainsKey(userId)){
+            post.Add(userId,new List<PostEntity>());
+        }
+
+        post[userId].Insert(0,new PostEntity(){postId = tweetId,order=postOrder++});
+    }
+
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    public IList<int> GetNewsFeed(int userId) {
+        var result = new List<int>();
+
+        var source = new List<List<PostEntity>>();
+        if(post.ContainsKey(userId)){
+            source.Add(post[userId]);
+        }
+        if(followed.ContainsKey(userId)){
+            foreach(var item in followed[userId]){
+                if(post.ContainsKey(item)){
+                    source.Add(post[item]);
+                }
+            }
+        }
+        int len = source.Count;
+        var indexes = new int[source.Count];
+
+        for(int i = 0;i<10;i++){
+            int nextIndex = -1;
+            for(int j = 0;j<len;j++){
+                if(indexes[j] < source[j].Count){
+                    if(nextIndex == -1 || source[j][indexes[j]].order > source[nextIndex][indexes[nextIndex]].order){
+                        nextIndex = j;
+                    }
+                }
+            }
+            if(nextIndex == -1)
+                break;
+            else{
+                result.Add(source[nextIndex][indexes[nextIndex]].postId);
+                indexes[nextIndex]++;
+            }
+        }
+
+        return result;
+    }
+
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    public void Follow(int followerId, int followeeId) {
+        if(followerId == followeeId)
+            return;
+        if(!followed.ContainsKey(followerId)){
+            followed.Add(followerId,new HashSet<int>());
+        }
+
+        followed[followerId].Add(followeeId);
+    }
+
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    public void Unfollow(int followerId, int followeeId) {
+
+        if(followed.ContainsKey(followerId)){
+            followed[followerId].Remove(followeeId);
+        }
+    }
+}
+
+public class PostEntity{
+    public int postId;
+    public int order;
+}
+
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter obj = new Twitter();
+ * obj.PostTweet(userId,tweetId);
+ * IList<int> param_2 = obj.GetNewsFeed(userId);
+ * obj.Follow(followerId,followeeId);
+ * obj.Unfollow(followerId,followeeId);
+ */
