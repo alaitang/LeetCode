@@ -1,0 +1,21 @@
+public class Solution {
+    public bool PredictTheWinner(int[] nums) {
+        var r = Helper(nums,0,nums.Length-1);
+        return r[0] >= r[1];
+    }
+
+    private int[] Helper(int[] nums,int i,int j){
+        if(i == j){
+            return new int[]{nums[i],0};
+        }else{
+            var r1 = Helper(nums,i+1,j);
+            var r2 = Helper(nums,i,j-1);
+
+            if(r1[1]+nums[i] > r2[1]+nums[j]){
+                return new int[]{r1[1]+nums[i],r1[0]};
+            }else{
+                return new int[]{r2[1]+nums[j],r2[0]};
+            }
+        }
+    }
+}
