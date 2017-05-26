@@ -1,0 +1,38 @@
+public class Solution {
+    public string ValidIPAddress(string IP) {
+        string result = "Neither";
+        if(IP.IndexOf('.') != -1){
+            var arr = IP.Split(new char[]{'.'});
+            if(arr.Length == 4){
+                foreach(var item in arr){
+                    int n = -1;
+                    if(!int.TryParse(item,out n) || item[0] == '-' || n < 0 || n > 255 || item[0] == '0' && item != "0"){
+                        return result;
+                    }
+                }
+                result = "IPv4";
+            }
+        }else if(IP.IndexOf(':') != -1){
+            var arr = IP.Split(new char[]{':'});
+            if(arr.Length == 8){
+                int k = 0;
+                foreach(var item in arr){
+                    if(item.Length == 0 || item.Length > 4  || k % 2 == 0 && item.StartsWith("00")){
+                                Console.WriteLine(item);
+                        return result;
+                    }else{
+                        foreach(var c in item){
+                            if(! (c >= '0' && c <= '9' || c >='a' && c <= 'f' || c >='A' && c <= 'F')){
+                                return result;
+                            }
+                        }
+                    }
+                    k++;
+                }
+                result = "IPv6";
+            }
+        }
+
+        return result;
+    }
+}

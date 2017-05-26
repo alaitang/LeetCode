@@ -1,0 +1,36 @@
+public class Solution {
+    public int LongestIncreasingPath(int[,] matrix) {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        var dp = new int[rows,cols];
+        int result = 0;
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(dp[i,j] == 0){
+                    Helper(matrix,i,j,rows,cols,matrix[i,j]+1,dp);
+                }
+                result =Math.Max(dp[i,j],result);
+            }
+        }
+
+
+        return result;
+    }
+
+    private int Helper(int[,] matrix,int i,int j,int rows,int cols,int pv,int[,] dp){
+        if(i >= rows || j >= cols || i < 0 || j < 0 || matrix[i,j] >= pv){
+            return 0;
+        }
+
+        if(dp[i,j] == 0){
+            dp[i,j] = Math.Max(Helper(matrix,i+1,j,rows,cols,matrix[i,j],dp),dp[i,j]);
+            dp[i,j] = Math.Max(Helper(matrix,i,j+1,rows,cols,matrix[i,j],dp),dp[i,j]);
+            dp[i,j] = Math.Max(Helper(matrix,i-1,j,rows,cols,matrix[i,j],dp),dp[i,j]);
+            dp[i,j] = Math.Max(Helper(matrix,i,j-1,rows,cols,matrix[i,j],dp),dp[i,j]);
+            dp[i,j]++;
+        }
+
+        return dp[i,j];
+    }
+}

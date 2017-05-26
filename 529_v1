@@ -1,0 +1,45 @@
+public class Solution {
+    public char[,] UpdateBoard(char[,] board, int[] click) {
+        int i = click[0];
+        int j = click[1];
+
+        if(board[i,j] == 'M'){
+            board[i,j] = 'X';
+        }else{
+            Helper(board,i,j,board.GetLength(0),board.GetLength(1));
+        }
+        return board;
+    }
+
+    private void Helper(char[,] board,int i,int j ,int rows,int cols){
+        if(i < 0 || i >= rows || j <0 || j >= cols || board[i,j] != 'E'){
+            return;
+        }
+        int k = 0;
+
+        for(int ii = i-1;ii<=i+1;ii++){
+            for(int jj = j-1;jj<=j+1;jj++){
+                if(!(ii == i && jj == j) && ii >= 0 && ii < rows && jj>=0 && jj < cols && board[ii,jj] == 'M'){
+                    k++;
+                }
+            }
+        }
+
+        if(k == 0){
+            board[i,j] = 'B';
+        }else{
+            board[i,j] = (char)('0'+k);
+            return;
+        }
+
+        Helper(board,i+1,j,rows,cols);
+        Helper(board,i-1,j,rows,cols);
+        Helper(board,i,j+1,rows,cols);
+        Helper(board,i,j-1,rows,cols);
+
+        Helper(board,i+1,j+1,rows,cols);
+        Helper(board,i-1,j-1,rows,cols);
+        Helper(board,i-1,j+1,rows,cols);
+        Helper(board,i+1,j-1,rows,cols);
+    }
+}
