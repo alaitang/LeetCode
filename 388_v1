@@ -1,0 +1,27 @@
+public class Solution {
+    public int LengthLongestPath(string input) {
+        var dict = new List<string>();
+        var arr = input.Split(new char[]{'\n'});
+        int len = arr.Length;
+        int result = 0;
+        foreach(var item in arr){
+            string s = item.Replace("\t","");
+            int k = item.Length - s.Length;
+            if(dict.Count == k){
+                dict.Add(s);
+            }else{
+                dict[k] = s;
+            }
+            if(s.IndexOf('.') != -1){
+                //Console.WriteLine(string.Join(" ",dict));
+                //Console.WriteLine(s+","+k);
+                result = Math.Max(result,string.Join("/",dict.Take(k+1)).Length);
+            }
+        }
+
+        if(dict.Count == 0){
+            result = input.Length;
+        }
+        return result;
+    }
+}
