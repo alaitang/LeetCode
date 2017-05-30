@@ -1,0 +1,21 @@
+public class Solution {
+    public int ArrayNesting(int[] nums) {
+        int result = 0;
+        int len = nums.Length;
+        for(int i = 0;i<len;i++){
+            int n = 0;
+            int k = i;
+            while(k>=0 && nums[k] >=0){
+                int nextK = nums[k];
+                nums[k] = -1;
+                k = nextK;
+                n++;
+            }
+            result = Math.Max(result,n);
+
+        }
+
+
+        return result;
+    }
+}

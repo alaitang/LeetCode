@@ -1,0 +1,27 @@
+/**
+ * Definition for undirected graph.
+ * public class UndirectedGraphNode {
+ *     public int label;
+ *     public IList<UndirectedGraphNode> neighbors;
+ *     public UndirectedGraphNode(int x) { label = x; neighbors = new List<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    public UndirectedGraphNode CloneGraph(UndirectedGraphNode node) {
+        return Helper(node,new Dictionary<UndirectedGraphNode,UndirectedGraphNode>());
+    }
+
+    private UndirectedGraphNode Helper(UndirectedGraphNode node, Dictionary<UndirectedGraphNode,UndirectedGraphNode> mapping){
+        if(node == null)
+            return null;
+        if(!mapping.ContainsKey(node)){
+            mapping.Add(node,new UndirectedGraphNode(node.label));
+
+            foreach(var item in node.neighbors){
+                mapping[node].neighbors.Add(Helper(item,mapping));
+            }
+        }
+
+        return mapping[node];
+    }
+}

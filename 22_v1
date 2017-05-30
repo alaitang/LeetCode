@@ -1,0 +1,22 @@
+public class Solution {
+    public IList<string> GenerateParenthesis(int n) {
+        var result = new List<string>();
+
+        Helper(n,n,"",result);
+
+        return result;
+    }
+
+    private void Helper(int left,int right,string s,List<string> result){
+        if(right == 0){
+            result.Add(s);
+            return;
+        }
+
+        if(left != 0)
+            Helper(left-1,right,s+"(",result);
+
+        if(right > left)
+            Helper(left,right-1,s+")",result);
+    }
+}

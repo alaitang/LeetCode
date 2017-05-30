@@ -1,0 +1,27 @@
+public class Solution {
+    public string[] FindRestaurant(string[] list1, string[] list2) {
+        var mapping = new Dictionary<string,int>();
+
+        int maxIndex = int.MinValue;
+
+        int len = list1.Length;
+        var result = new List<string>();
+        for(int i = 0;i<len;i++){
+            mapping.Add(list1[i],i);
+        }
+
+        len = list2.Length;
+
+        for(int i = 0;i<len;i++){
+            if(mapping.ContainsKey(list2[i]) && maxIndex <= -mapping[list2[i]]-i){
+                if(maxIndex < -mapping[list2[i]]-i){
+                    maxIndex = -mapping[list2[i]]-i;
+                    result.Clear();
+                }
+                result.Add(list2[i]);
+            }
+        }
+
+        return result.ToArray();
+    }
+}
