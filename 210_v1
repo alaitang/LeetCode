@@ -1,0 +1,46 @@
+public class Solution {
+    public int[] FindOrder(int numCourses, int[,] p) {
+        var depends = new int[numCourses];
+
+        int rows = p.GetLength(0);
+        var mapping = new Dictionary<int,List<int>>();
+        for(int i = 0;i<rows;i++){
+            if(!mapping.ContainsKey(p[i,1])){
+                mapping.Add(p[i,1],new List<int>());
+            }
+            mapping[p[i,1]].Add(p[i,0]);
+
+            depends[p[i,0]]++;
+        }
+
+        var result = new List<int>();
+
+        while(result.Count < numCourses){
+            int next = -1;
+            for(int i = 0;i<numCourses;i++){
+                if(depends[i] == 0){
+                    next = i;
+                    break;
+                }
+            }
+            if(next == -1)
+            {
+                break;
+            }
+
+            result.Add(next);
+            depends[next] = -1;
+
+            if(mapping.ContainsKey(next)){
+                foreach(var item in mapping[next]){
+                    depends[item]--;
+                }
+            }
+
+        }
+        if(result.Count < numCourses){
+            result.Clear();
+        }
+        return result.ToArray();
+    }
+}

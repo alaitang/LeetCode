@@ -1,0 +1,15 @@
+public class Solution {
+    public string FrequencySort(string s) {
+        var mapping = new List<HashSet<char>>();
+        var m1 = new Dictionary<char,int>();
+
+        foreach(var c in s){
+            if(!m1.ContainsKey(c)){
+                m1.Add(c,0);
+            }
+            m1[c]++;
+        }
+
+        return string.Join("",s.ToArray().OrderBy(x=>-m1[x]*256-(int)x));
+    }
+}

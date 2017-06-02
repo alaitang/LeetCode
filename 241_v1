@@ -1,0 +1,36 @@
+public class Solution {
+    public IList<int> DiffWaysToCompute(string input) {
+        var mapping = new Dictionary<string,List<int>>();
+        return Helper(input,0,input.Length-1,mapping);
+    }
+
+    private List<int> Helper(string input,int low,int high,Dictionary<string,List<int>> mapping){
+        if(!mapping.ContainsKey(low+","+high)){
+            mapping.Add(low+","+high,new List<int>());
+            for(int i = low;i<=high;i++){
+                if(input[i] == '+' || input[i] == '-' || input[i] == '*'){
+                    var leftR = Helper(input,low,i-1,mapping);
+                    var rightR = Helper(input,i+1,high,mapping);
+
+                    foreach(var n1 in leftR){
+                        foreach(var n2 in rightR){
+                            if(input[i] == '+'){
+                                mapping[low+","+high].Add(n1+n2);
+                            }else if(input[i] == '-'){
+                                mapping[low+","+high].Add(n1-n2);
+                            }if(input[i] == '*'){
+                                mapping[low+","+high].Add(n1*n2);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(mapping[low+","+high].Count == 0){
+                mapping[low+","+high].Add(int.Parse(input.Substring(low,high-low+1)));
+            }
+        }
+
+        return mapping[low+","+high];
+    }
+}

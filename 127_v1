@@ -1,0 +1,47 @@
+public class Solution {
+    public int LadderLength(string beginWord, string endWord, IList<string> wordList) {
+        var mapping= new HashSet<string>(wordList);
+        var excludelist = new HashSet<string>();
+
+
+        int result = 1;
+        int len = beginWord.Length;
+        var currentList = new HashSet<string>();
+        currentList.Add(beginWord);
+        if(mapping.Contains(beginWord))
+            mapping.Remove(beginWord);
+
+        while(currentList.Any() && mapping.Any()){
+            var nextList = new HashSet<string>();
+            result++;
+            foreach(var word in currentList){
+                var arr = word.ToCharArray();
+
+                for(int i = 0;i<len;i++){
+                    for(char c = 'a';c<='z';c++){
+                        if(c == word[i])
+                            continue;
+                        arr[i] = c;
+
+                        string newS = new string(arr);
+
+                        if(newS == endWord){
+                            return result;
+                        }
+
+                        if(mapping.Contains(newS)){
+                            nextList.Add(newS);
+                            mapping.Remove(newS);
+                        }
+                    }
+                    arr[i] = word[i];
+                }
+            }
+
+            currentList = nextList;
+        }
+
+
+        return 0;
+    }
+}

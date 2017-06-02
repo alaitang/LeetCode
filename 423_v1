@@ -1,0 +1,39 @@
+public class Solution {
+    public string OriginalDigits(string s) {
+        var r = new int[10];
+        var mapping = new int[26];
+
+        foreach(var c in s){
+            mapping[c-'a']++;
+        }
+
+        Helper(r,mapping,"zero",'z',0);
+        Helper(r,mapping,"six",'x',6);
+        Helper(r,mapping,"two",'w',2);
+        Helper(r,mapping,"seven",'s',7);
+        Helper(r,mapping,"four",'u',4);
+        Helper(r,mapping,"five",'f',5);
+        Helper(r,mapping,"one",'o',1);
+        Helper(r,mapping,"eight",'g',8);
+        Helper(r,mapping,"nine",'i',9);
+        Helper(r,mapping,"three",'r',3);
+
+        var sb = new StringBuilder();
+        for(int i = 0;i<=9;i++){
+            if(r[i] != 0){
+
+                sb.Append((i+"").PadRight(r[i],(char)('0'+i)));
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    private void Helper(int[] r,int[] mapping,string word,char k,int v){
+        r[v]+=mapping[k-'a'];
+
+        foreach(var c in word){
+            mapping[c-'a']-=r[v];
+        }
+    }
+}

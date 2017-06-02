@@ -1,0 +1,84 @@
+public class MedianFinder {
+
+    List<int> list1 = new List<int>();
+    List<int> list2 = new List<int>();
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+
+    }
+
+    public void AddNum(int num) {
+        if(!list1.Any()){
+            list1.Add(num);
+        }else if(list1.Count == list2.Count){
+            if(list1.Last() <= num && list2.First() < num){
+                Insert(list1,list2.First());
+                list2.RemoveAt(0);
+                Insert(list2,num);
+            }else{
+                Insert(list1,num);
+            }
+        }else{
+            if(list1.Last() <= num){
+                Insert(list2,num);
+            }else{
+                Insert(list2,list1.Last());
+                list1.RemoveAt(list1.Count-1);
+                Insert(list1,num);
+            }
+        }
+
+        //Console.WriteLine(string.Join(",",list1));
+        //Console.WriteLine(string.Join(",",list2));
+        //Console.WriteLine("********"+num+"********************");
+    }
+
+    public double FindMedian() {
+        if((list1.Count+list2.Count) % 2 == 0){
+            return ((double)list1.Last()+list2.First())/2;
+        }else if(list1.Count > list2.Count){
+            return list1.Last();
+        }else{
+            return list2.First();
+        }
+    }
+
+    private void Insert(List<int> list,int n){
+        int low = 0;
+        int high = list.Count - 1;
+
+        if(high < 0)
+        {
+            list.Add(n);
+        }else{
+            while(low < high-1){
+                int mid = low + (high-low)/2;
+
+                if(list[mid] == n){
+                    list.Insert(mid,n);
+                    return;
+                }else if(list[mid] < n){
+                    low = mid;
+                }else{
+                    high = mid;
+                }
+            }
+
+            if(list[low] >= n){
+                list.Insert(low,n);
+            }else if(list[high] >= n){
+                list.Insert(high,n);
+            }else{
+                list.Insert(high+1,n);
+            }
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.AddNum(num);
+ * double param_2 = obj.FindMedian();
+ */
