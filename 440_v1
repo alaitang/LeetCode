@@ -1,0 +1,30 @@
+public class Solution {
+    public int FindKthNumber(int n, int k) {
+        long result = 1;
+        k--;
+        long longN = (long)n;
+        while(k > 0){
+            int b = Helper(longN,result,result+1);
+            if(b <= k){
+                k -= b;
+                result++;
+            }else{
+                k--;
+                result*=10;
+            }
+        }
+        return (int)result;
+    }
+
+    private int Helper(long n,long low,long high){
+        long result = 0;
+        while(low <= n){
+
+            result += Math.Min(high,n+1)-low;
+            low*=10;
+            high*=10;
+        }
+
+        return (int)result;
+    }
+}

@@ -1,0 +1,24 @@
+public class Solution {
+    public IList<IList<string>> Partition(string s) {
+        var result = new List<IList<string>>();
+
+        Helper(result,new List<string>(),s,new bool[s.Length,s.Length],0,s.Length);
+        return result;
+    }
+
+    private void Helper(IList<IList<string>> result,IList<string> r,string s,bool[,] dp,int index,int len){
+        if(index >= len){
+            result.Add(new List<string>(r));
+            return;
+        }
+
+        for(int i = index;i<len;i++){
+            if(s[i] == s[index] && (i-index<= 1 || dp[index+1,i-1])){
+                r.Add(s.Substring(index,i-index+1));
+                dp[index,i] = true;
+                Helper(result,r,s,dp,i+1,len);
+                r.RemoveAt(r.Count-1);
+            }
+        }
+    }
+}

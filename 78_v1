@@ -1,0 +1,18 @@
+public class Solution {
+    public IList<IList<int>> Subsets(int[] nums) {
+        var result = new List<IList<int>>();
+        Helper(nums,result,new List<int>(),0,nums.Length);
+        return result;
+    }
+
+    private void Helper(int[] nums, IList<IList<int>> result, IList<int> r,int index,int len){
+        result.Add(new List<int>(r));
+
+        for(int i = index;i<len;i++){
+            r.Add(nums[i]);
+
+            Helper(nums,result,r,i+1,len);
+            r.RemoveAt(r.Count-1);
+        }
+    }
+}

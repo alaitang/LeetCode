@@ -1,0 +1,87 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public string serialize(TreeNode root) {
+        if(root == null)
+            return "#";
+
+        var list = new List<TreeNode>(){root};
+
+        var sb = new StringBuilder();
+        sb.Append(root.val);
+
+            int emptyNodeCount = 0;
+        while(list.Any()){
+            var nextList = new List<TreeNode>();
+            var b = false;
+            foreach(var item in list){
+
+                if(item.left == null){
+                    emptyNodeCount++;
+                }else{
+                    while(emptyNodeCount > 0){
+                        sb.Append(",#");
+                        emptyNodeCount--;
+                    }
+                    sb.Append(","+item.left.val);
+                    nextList.Add(item.left);
+                }
+                if(item.right == null){
+                    emptyNodeCount++;
+                }else{
+                    while(emptyNodeCount > 0){
+                        sb.Append(",#");
+                        emptyNodeCount--;
+                    }
+                    sb.Append(","+item.right.val);
+                    nextList.Add(item.right);
+                }
+            }
+
+            list = nextList;
+        }
+        return sb.ToString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(string data) {
+        if(data == "#")
+            return null;
+        //Console.WriteLine(data);
+        var arr = data.Split(new char[]{','});
+
+        int len = arr.Length;
+        var result = new TreeNode(int.Parse(arr[0]));
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(result);
+        for(int i = 1;i<len;i++){
+            if(arr[i] != "#"){
+                var newNode = new TreeNode(int.Parse(arr[i]));
+                queue.Enqueue(newNode);
+                queue.Peek().left = newNode;
+            }
+            i++;
+            if(i<len && arr[i] != "#"){
+                var newNode = new TreeNode(int.Parse(arr[i]));
+                queue.Enqueue(newNode);
+                queue.Peek().right = newNode;
+            }
+            queue.Dequeue();
+        }
+
+        return result;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));

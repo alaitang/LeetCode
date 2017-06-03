@@ -1,0 +1,17 @@
+public class Solution {
+    public int TitleToNumber(string s) {
+        int i = s.Length-1;
+
+        int k = 1;
+
+        int result = 0;
+
+        while(i >= 0){
+            result += (s[i]-'A'+1)*k;
+            k*=26;
+            i--;
+        }
+
+        return result;
+    }
+}
