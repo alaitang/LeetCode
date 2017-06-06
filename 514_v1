@@ -1,0 +1,55 @@
+public class Solution {
+    public int FindRotateSteps(string ring, string key) {
+        var m1 = new int[ring.Length,26];
+        var m2 = new int[ring.Length,26];
+
+        BuildMapping(ring,m1,m2);
+
+        return Helper(m1,m2,0,key,0,ring.Length,key.Length,new int[ring.Length,key.Length]);
+    }
+
+    private int Helper(int[,] m1,int[,] m2,int index,string key,int k_index,int r_len,int k_len,int[,] dp){
+        if(k_index >= k_len)
+            return 0;
+
+        if(dp[index,k_index] == 0){
+            var m1Move = m1[index,key[k_index]-'a'];
+            var m2Move = m2[index,key[k_index]-'a'];
+
+            var m1NextIndex = (index+m1Move) % r_len;
+            var m2NextIndex = (index+r_len-m2Move) % r_len;
+
+            if(m1NextIndex == m2NextIndex){
+                if(m1Move <= m2Move){
+                    dp[index,k_index] = m1Move+1+ Helper(m1,m2,m1NextIndex,key,k_index+1,r_len,k_len,dp);
+                }else{
+                    dp[index,k_index] = m2Move+1+ Helper(m1,m2,m2NextIndex,key,k_index+1,r_len,k_len,dp);
+                }
+            }else{
+                dp[index,k_index] = Math.Min(
+                    m1Move+ Helper(m1,m2,m1NextIndex,key,k_index+1,r_len,k_len,dp),
+                    m2Move+ Helper(m1,m2,m2NextIndex,key,k_index+1,r_len,k_len,dp))+1;
+            }
+        }
+
+        return dp[index,k_index];
+    }
+
+    private void BuildMapping(string ring,int[,] m1,int[,] m2){
+        int len = ring.Length;
+
+        for(int i = 0;i<len;i++){
+            for(int j = 0;j<len;j++){
+                if(ring[(i+j)%len] != ring[i] && m1[i,ring[(i+j)%len]-'a'] == 0){
+                    m1[i,ring[(i+j)%len]-'a'] = j;
+                }
+            }
+
+            for(int j = 0;j<len;j++){
+                if(ring[i] != ring[(i+len-j)%len] && m2[i,ring[(i+len-j)%len]-'a'] == 0){
+                    m2[i,ring[(i+len-j)%len]-'a'] = j;
+                }
+            }
+        }
+    }
+}

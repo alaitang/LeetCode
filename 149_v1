@@ -1,0 +1,39 @@
+/**
+ * Definition for a point.
+ * public class Point {
+ *     public int x;
+ *     public int y;
+ *     public Point() { x = 0; y = 0; }
+ *     public Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int MaxPoints(Point[] points) {
+        int len = points.Length;
+        int result = 0;
+        for(int i = 0;i<len;i++){
+            var mapping = new Dictionary<double,int>();
+            int same = 1;
+            int bb = 0;
+            for(int j = i+1;j<len;j++){
+                if(points[i].x == points[j].x && points[i].y == points[j].y){
+                    same++;
+                }else if(points[i].y == points[j].y){
+                    bb++;
+                }else{
+                    double k = ((double)points[i].x-points[j].x)/((double)points[i].y-points[j].y);
+
+                    if(!mapping.ContainsKey(k))
+                        mapping.Add(k,0);
+
+                    mapping[k]++;
+                }
+            }
+            if(mapping.Any())
+                result = Math.Max(result,mapping.Select(x=>x.Value).Max()+same);
+            result = Math.Max(result,bb+same);
+        }
+
+        return result;
+    }
+}

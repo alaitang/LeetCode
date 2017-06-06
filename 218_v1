@@ -1,0 +1,79 @@
+public class Solution {
+    public IList<int[]> GetSkyline(int[,] buildings) {
+        int rows = buildings.GetLength(0);
+        var mapping = new Dictionary<int,List<int>>();
+        for(int i = 0;i<rows;i++){
+            if(!mapping.ContainsKey(buildings[i,0])){
+                mapping.Add(buildings[i,0],new List<int>());
+            }
+            mapping[buildings[i,0]].Add(buildings[i,2]);
+
+            if(!mapping.ContainsKey(buildings[i,1])){
+                mapping.Add(buildings[i,1],new List<int>());
+            }
+            mapping[buildings[i,1]].Add(-buildings[i,2]);
+        }
+
+        //Console.WriteLine(string.Join(" | ",mapping.Select(x=>x.Key+" -> "+ string.Join(",",x.Value))));
+
+        var mappingKeys = mapping.Keys.OrderBy(x=>x);
+        var result = new List<int[]>();
+        var h1 = 0;
+        var list = new List<int>();
+        foreach(var k in mappingKeys){
+            //Console.WriteLine(k);
+            //Console.WriteLine("-- "+string.Join(",",mapping[k]));
+            foreach(var h in mapping[k]){
+                if(h >= 0){
+                    list.Insert(FindIndex(list,h),h);
+                }else{
+                    list.RemoveAt(FindIndex(list,-h));
+                }
+            }
+
+            //Console.WriteLine("---- "+string.Join(",",list));
+
+            if(!list.Any()){
+                if(h1 != 0){
+                    result.Add(new int[]{k,0});
+                    h1 = 0;
+                }
+            }else if(list.Last() != h1){
+                h1 = list.Last();
+                result.Add(new int[]{k,h1});
+            }
+        }
+
+        return result;
+    }
+
+    private int FindIndex(List<int> list,int h){
+        if(!list.Any())
+        {
+            return 0;
+        }else{
+            int low = 0;
+            int high = list.Count-1;
+
+            while(low < high-1){
+                int mid = low + (high-low)/2;
+                if(list[mid] == h)
+                {
+                    return mid;
+                }else if(list[mid] < h){
+                    low = mid;
+                }else{
+                    high = mid;
+                }
+            }
+
+            if(list[low] >= h){
+                return low;
+            }else if(list[high] >= h){
+                return high;
+            }else{
+                return high+1;
+            }
+        }
+    }
+}

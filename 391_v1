@@ -1,0 +1,47 @@
+public class Solution {
+    public bool IsRectangleCover(int[,] rectangles) {
+        int rows = rectangles.GetLength(0);
+        int min_x = int.MaxValue;
+        int max_x = int.MinValue;
+        int min_y = int.MaxValue;
+        int max_y = int.MinValue;
+
+        var m1 = new HashSet<string>();
+        var m2 = new HashSet<string>();
+
+        for(int i = 0;i<rows;i++){
+            min_x = Math.Min(rectangles[i,0],min_x);
+            max_x = Math.Max(rectangles[i,2],max_x);
+            min_y = Math.Min(rectangles[i,1],min_y);
+            max_y = Math.Max(rectangles[i,3],max_y);
+
+            if(!m1.Add(rectangles[i,0]+","+rectangles[i,1]) || !m2.Add(rectangles[i,2]+","+rectangles[i,3]))
+                return false;
+        }
+
+        var dp1 = new int[max_x-min_x+1];
+        var dp2 = new int[max_y-min_y+1];
+
+        for(int i = 0;i<rows;i++){
+            dp1[rectangles[i,0]-min_x]+=rectangles[i,3]-rectangles[i,1];
+            dp1[rectangles[i,2]-min_x]-=rectangles[i,3]-rectangles[i,1];
+
+            dp2[rectangles[i,1]-min_y]+=rectangles[i,2]-rectangles[i,0];
+            dp2[rectangles[i,3]-min_y]-=rectangles[i,2]-rectangles[i,0];
+        }
+
+        int k = 0;
+        for(int i = 0;i<max_x-min_x;i++){
+            k+=dp1[i];
+            if(k != max_y-min_y)
+                return false;
+        }
+        k = 0;
+        for(int i = 0;i<max_y-min_y;i++){
+            k+=dp2[i];
+            if(k != max_x-min_x)
+                return false;
+        }
+        return true;
+    }
+}

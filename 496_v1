@@ -1,0 +1,33 @@
+public class Solution {
+    public int[] NextGreaterElement(int[] findNums, int[] nums) {
+        var mapping = new Dictionary<int,int>();
+
+        int len = nums.Length;
+
+        for(int i = len-1;i>=0;i--){
+            if(i == len-1){
+                mapping.Add(nums[i],-1);
+                continue;
+            }
+            int j = nums[i+1];
+            while(j != -1){
+                if(j > nums[i]){
+                    mapping.Add(nums[i],j);
+                    break;
+                }else{
+                    j = mapping[j];
+                }
+            }
+            if(j == -1)
+                mapping.Add(nums[i],-1);
+
+        }
+        len = findNums.Length;
+        var result = new int[len];
+        for(int i = 0;i<len;i++){
+            result[i] = mapping[findNums[i]];
+        }
+
+        return result;
+    }
+}

@@ -1,0 +1,14 @@
+public class Solution {
+    public int Rob(int[] nums) {
+        var n1 = 0;
+        var n2 = 0;
+
+        foreach(var n in nums){
+            var next_n2 = Math.Max(n1,n2);
+            n1 = n+n2;
+            n2 = next_n2;
+        }
+
+        return Math.Max(n1,n2);
+    }
+}
