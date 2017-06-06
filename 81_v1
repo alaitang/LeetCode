@@ -1,0 +1,35 @@
+public class Solution {
+    public bool Search(int[] nums, int target) {
+        int low = 0;
+        int high = nums.Length-1;
+        if(high < 0 )
+            return false;
+
+        if(nums[low] == target || nums[high] == target)
+            return true;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+            if(nums[mid] == target || nums[low] == target || nums[high] == target)
+                return true;
+            else if(nums[mid] > nums[low]){
+                if(nums[mid] >= target && nums[low] <= target){
+                    high = mid;
+                }else{
+                    low = mid;
+                }
+            }else if(nums[mid] < nums[high]){
+                if(nums[high] >= target && target >= nums[mid]){
+                    low = mid;
+                }else{
+                    high = mid;
+                }
+            }else{
+                high--;
+            }
+        }
+
+        return nums[low] == target || nums[high] == target;
+
+    }
+}
