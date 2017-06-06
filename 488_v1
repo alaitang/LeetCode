@@ -1,0 +1,61 @@
+public class Solution {
+    public int FindMinStep(string board,string hand){
+        //Console.WriteLine(board+" , "+hand);
+
+        if(board=="")
+            return 0;
+        else if(hand == "")
+            return -1;
+
+
+        int result = -1;
+        var list = board.ToCharArray().ToList();
+        for(int i = 0;i<board.Length;i++){
+            for(int j = 0;j<hand.Length;j++){
+                if(j > 0 && hand[j] == hand[j-1])
+                    continue;
+
+                if(board.Length > 2 && board[i] != hand[j]){
+                    continue;
+                }
+
+                list.Insert(i,hand[j]);
+                var next = Build(new string(list.ToArray()),i);
+                var r = FindMinStep(next, hand.Substring(0,j)+hand.Substring(j+1));
+                if(r != -1 && (result == -1 || r+1 < result)){
+                    result = r+1;
+                }
+                list.RemoveAt(i);
+            }
+        }
+
+        return result;
+    }
+
+    private string Build(string board,int index){
+        var list = board.ToCharArray().ToList();
+        while(index >= 0){
+            int low = index;
+            int high = index;
+            while(low >=0 && list[low] == list[index]){
+                low--;
+            }
+
+            while(high < list.Count  && list[high] == list[index]){
+                high++;
+            }
+
+            if(high-low > 3){
+                high--;
+                while(low < high){
+                    list.RemoveAt(high--);
+                }
+                index = high;
+            }else{
+                break;
+            }
+        }
+
+        return new string(list.ToArray());
+    }
+}

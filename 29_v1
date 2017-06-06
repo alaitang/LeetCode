@@ -1,0 +1,34 @@
+public class Solution {
+    public int Divide(int dividend, int divisor) {
+        if(dividend == 0)
+            return 0;
+        else if(dividend == divisor)
+            return 1;
+
+        long n1 = Math.Abs((long)dividend);
+        long n2 = Math.Abs((long)divisor);
+
+        long result = 0;
+
+        while(n2 <= n1){
+
+            long b = n2;
+            long k = 1;
+            while(b+b <= n1){
+                b+=b;
+                k+=k;
+            }
+
+            result+=k;
+            n1-=b;
+        }
+
+        if(dividend > 0 && divisor < 0 || dividend < 0 && divisor > 0)
+            result = -result;
+
+        if(result > int.MaxValue || result < int.MinValue)
+            result = int.MaxValue;
+
+        return (int)result;
+    }
+}
