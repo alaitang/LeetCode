@@ -1,0 +1,54 @@
+public class Solution {
+    public string FractionAddition(string expression) {
+        expression+="+";
+        int len = expression.Length;
+        if(len == 0)
+            return "";
+
+        string result = "0/1";
+        string n2 = "0/1";
+        if(expression[0] != '-'){
+            expression = "+"+expression;
+            len++;
+        }
+
+        for(int i = 0;i<len;i++){
+            if(expression[i] == '+' || expression[i] == '-'){
+                result = Helper(result,n2);
+                if(expression[i] == '-')
+                    n2 = "-";
+                else
+                    n2 = "";
+            }else{
+                n2 += expression[i];
+            }
+        }
+        return result;
+    }
+
+    private string Helper(string s1,string s2){
+        //Console.WriteLine(s1+","+s2);
+        var arr1 = s1.Split(new char[]{'/'});
+        var arr2 = s2.Split(new char[]{'/'});
+
+        long n11 = long.Parse(arr1[1]);
+        long n21 = long.Parse(arr2[1]);
+
+        long n10 = long.Parse(arr1[0]);
+        long n20 = long.Parse(arr2[0]);
+
+        long n0 = n10*n21+n20*n11;
+        long n1 = n11*n21;
+        //Console.WriteLine(n10+" * "+n21+" + "+n20+" * "+n11+" = "+n0);
+        long gcd = gcdFun(Math.Abs(n0),Math.Abs(n1));
+
+        return (n0/gcd)+"/" + (n1/gcd);
+    }
+
+    private long gcdFun(long i,long j){
+        if(i%j == 0)
+            return j;
+
+        return gcdFun(j,i%j);
+    }
+}

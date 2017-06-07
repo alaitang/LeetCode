@@ -1,0 +1,66 @@
+public class Solution {
+    public int FindMaximumXOR(int[] nums) {
+        var len = nums.Length;
+        if(len <= 1)
+            return 0;
+        var root = new TireNode();
+
+        int result = 0;
+
+        for(int i = 0;i<len;i++){
+            var item = nums[i];
+
+        var s = Convert.ToString(item,2).PadLeft(32,'0');
+            if(i > 0){
+                var v = Search(root,s);
+                result = Math.Max(result,(item ^ v));
+            }
+            var current = root;
+
+            foreach(var c in s){
+                if(c == '0'){
+                    if(current.right == null){
+                        current.right = new TireNode();
+                    }
+                    current = current.right;
+                }else{
+                    if(current.left == null){
+                        current.left = new TireNode();
+                    }
+                    current = current.left;
+                }
+            }
+            current.val = item;;
+        }
+
+        return result;
+    }
+
+    private int Search(TireNode root,string s){
+
+            var current = root;
+            foreach(var c in s){
+                if(c == '0'){
+                    if(current.left != null)
+                        current = current.left;
+                    else
+                        current = current.right;
+                }else{
+                    if(current.right != null)
+                        current = current.right;
+                    else
+                        current = current.left;
+                }
+            }
+
+        return current.val;
+    }
+}
+
+public class TireNode{
+    public TireNode left;
+
+    public TireNode right;
+
+    public int val;
+}
