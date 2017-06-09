@@ -1,0 +1,30 @@
+public class Solution {
+    public string FractionToDecimal(int numerator, int denominator) {
+        long n1 = Math.Abs((long)numerator);
+        long n2 = Math.Abs((long)denominator);
+
+        string result = n1/n2+"";
+
+        if(numerator > 0 && denominator < 0 || numerator < 0 && denominator > 0 )
+            result = "-"+result;
+
+        if(n1 % n2 == 0)
+            return result;
+
+        n1 = (n1%n2)*10;
+        var mapping = new Dictionary<long,int>();
+        result += ".";
+        while(n1 != 0){
+            if(mapping.ContainsKey(n1)){
+                result = result.Substring(0,mapping[n1])+"("+result.Substring(mapping[n1])+")";
+                break;
+            }
+
+            result += n1/n2;
+            mapping.Add(n1,result.Length-1);
+            n1 = (n1%n2) *10 ;
+        }
+
+        return result;
+    }
+}

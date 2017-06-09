@@ -1,0 +1,28 @@
+public class Solution {
+    public int[] NextGreaterElement(int[] findNums, int[] nums) {
+        var mapping = new Dictionary<int,int>();
+
+        var stack = new Stack<int>();
+        int len = nums.Length;
+        for(int i = len-1;i>=0;i--){
+            var item  = nums[i];
+            while(stack.Any() && stack.Peek() <= item){
+                stack.Pop();
+            }
+
+            if(stack.Any()){
+                mapping.Add(item,stack.Peek());
+            }else{
+                mapping.Add(item,-1);
+            }
+            stack.Push(item);
+        }
+        len = findNums.Length;
+        var result = new int[len];
+        for(int i = 0;i<len;i++){
+            result[i] = mapping[findNums[i]];
+        }
+
+        return result;
+    }
+}

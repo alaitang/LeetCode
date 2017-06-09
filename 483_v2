@@ -1,0 +1,34 @@
+public class Solution {
+    public string SmallestGoodBase(string n) {
+        long num = long.Parse(n);
+
+        if(Convert.ToString(num,2).Replace("1","").Length == 0)
+            return "2";
+
+        for(int i = 64;i>=1;i--){
+
+            long low = 2;
+            long high = (long)(Math.Pow(num, 1.0/i) + 1);
+            //Console.WriteLine(high);
+            while(low < high){
+                long mid = low + (high-low)/2;
+                long total = 0;
+                long currentV = 1;
+                for(int j = 0;j<=i;j++){
+                    total+=currentV;
+                    currentV*=mid;
+                }
+
+                if(total == num)
+                    return mid+"";
+                else if(total < num){
+                    low = mid+1;
+                }else{
+                    high = mid;
+                }
+            }
+        }
+
+        return (num-1)+"";
+    }
+}

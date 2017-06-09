@@ -1,0 +1,54 @@
+public class Solution {
+    public int CountRangeSum(int[] nums, int lower, int upper) {
+
+        long sum = 0;
+        int result = 0;
+        var list = new List<long>(){0};
+        foreach(var item in nums){
+            sum+=item;
+
+            int c1 = FindIndex(list,sum-upper);
+            int c2 = FindIndex(list,sum-lower+1);
+            //Console.WriteLine(string.Join(",",list));
+            //Console.WriteLine(c2+" - "+c1+" - "+sum);
+            //Console.WriteLine("\n");
+            result += c2-c1;
+
+            list.Insert(FindIndex(list,sum),sum);
+        }
+
+        return result;
+    }
+
+
+    private int FindIndex(List<long> list,long n){
+        int low = 0;
+        int high = list.Count-1;
+
+        if(high < 0)
+            return 0;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(list[mid] >= n)
+                high = mid;
+            else
+                low = mid;
+        }
+
+        if(list[low] >= n)
+            return low;
+        else if(list[high] >= n)
+            return high;
+        else
+            return high+1;
+    }
+}
+
+public class TreeNode{
+    public int count;
+    public long val;
+    public TreeNode left;
+    public TreeNode right;
+}

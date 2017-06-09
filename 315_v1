@@ -1,0 +1,40 @@
+public class Solution {
+    public IList<int> CountSmaller(int[] nums) {
+        var list = new List<int>();
+        var len = nums.Length;
+        var result = new int[len];
+
+        for(int i = len-1;i>=0;i--){
+            int index = FindIndex(list,nums[i]);
+            result[i] = index;
+            list.Insert(index,nums[i]);
+        }
+
+
+        return result;
+    }
+
+    private int FindIndex(List<int> list,int n){
+        int low = 0;
+        int high = list.Count-1;
+
+        if(high < 0 )
+            return 0;
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(list[mid] >= n){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+
+        if(list[low] >= n)
+            return low;
+        else if(list[high] >= n)
+            return high;
+        else
+            return high+1;
+    }
+}

@@ -1,0 +1,45 @@
+public class Solution {
+    public int Calculate(string s) {
+
+        var stack = new Stack<string>();
+        stack.Push("0");
+        var pc ='+';
+        string n = "";
+        foreach(var c in s){
+
+            if(c == '+' || c =='-'){
+                //Console.WriteLine(stack.Peek()+" ***** "+ n);
+                stack.Push((int.Parse(stack.Pop()) + int.Parse(n))+"");
+
+                pc = c;
+                if(c == '-'){
+                    n = "-";
+                }else{
+                    n = "";
+                }
+            }else if(c == '('){
+                stack.Push(pc+"");
+                stack.Push(c+"");
+                stack.Push("0");
+                pc='+';
+                n="";
+            }else if(c == ')'){
+                var top = int.Parse(stack.Pop()) + int.Parse(n);
+                stack.Pop();
+                var op = stack.Pop();
+                if(op == "-")
+                    top = -top;
+
+                n=top+"";
+            }else{
+                n+=c;
+            }
+        }
+
+        if(n != ""){
+            stack.Push((int.Parse(stack.Pop()) + int.Parse(n))+"");
+        }
+
+        return int.Parse(stack.Pop());
+    }
+}

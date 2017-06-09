@@ -1,0 +1,26 @@
+public class Solution {
+    public int[] SingleNumber(int[] nums) {
+        int diff = 0;
+
+        foreach(var item in nums){
+            diff ^= item;
+        }
+
+        while((diff & (diff-1)) != 0){
+            diff &= (diff-1);
+        }
+
+        int n1 = 0;
+        int n2 = 0;
+
+        foreach(var item in nums){
+            if((item & diff) == 0){
+                n1 ^= item;
+            }else{
+                n2 ^= item;
+            }
+        }
+
+        return new int[]{n1,n2};
+    }
+}

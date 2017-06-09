@@ -1,0 +1,33 @@
+public class Solution {
+    public int Calculate(string s) {
+        s = s + "+";
+        var stack = new Stack<int>();
+        stack.Push(1);
+
+        int n = 0;
+        int result = 0;
+        int sign = 1;
+        foreach(var c in s){
+            if(c == '+'){
+                result += sign*stack.Peek()*n;
+                n = 0;
+                sign = 1;
+            }else if(c == '-'){
+                result += sign*stack.Peek()*n;
+                n = 0;
+                sign = -1;
+            }else if(c == '('){
+                stack.Push(sign*stack.Peek());
+                sign = 1;
+            }else if(c == ')'){
+                result += sign*stack.Peek()*n;
+                n = 0;
+                stack.Pop();
+            }else if(c != ' '){
+                n = n*10 + (c-'0');
+            }
+        }
+
+        return result;
+    }
+}

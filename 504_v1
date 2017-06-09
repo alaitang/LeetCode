@@ -1,0 +1,19 @@
+public class Solution {
+    public string ConvertToBase7(int num) {
+        if(num == 0)
+            return "0";
+        long n = Math.Abs((long)num);
+
+        string result = "";
+
+        while(n > 0){
+            result = n%7 + result;
+            n/=7;
+        }
+
+        if(num < 0)
+            result = "-"+result;
+
+        return result;
+    }
+}

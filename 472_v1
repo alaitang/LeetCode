@@ -1,0 +1,47 @@
+public class Solution {
+    public IList<string> FindAllConcatenatedWordsInADict(string[] words) {
+        TireNode root = new TireNode();
+
+        foreach(var item in words){
+            var current = root;
+            foreach(var c in item){
+                if(current.children[c-'a'] == null)
+                    current.children[c-'a'] = new TireNode();
+
+                current = current.children[c-'a'];
+            }
+            current.word = item;
+        }
+        var result = new List<string>();
+
+        foreach(var item in words){
+            if(Helper(root,root,item,0,item.Length)){
+                result.Add(item);
+            }
+        }
+
+        return result;
+
+    }
+
+    private bool Helper(TireNode root,TireNode rootNode, string s,int index,int len){
+        var current =root;
+        for(int i = index;i<len;i++){
+            if(current.children[s[i]-'a'] == null)
+                return false;
+            current = current.children[s[i]-'a'];
+
+            if(current.word != "" && Helper(rootNode,rootNode,s,i+1,len)){
+                return true;
+            }
+        }
+
+        return current != null && current.word != "" && current.word != s;
+    }
+}
+
+public class TireNode{
+    public TireNode[] children = new TireNode[26];
+
+    public string word = "";
+}

@@ -1,0 +1,25 @@
+public class Solution {
+    public int FindPeakElement(int[] nums) {
+        int len = nums.Length;
+
+        int low = 0;
+        int high = len-1;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if((mid == 0 || nums[mid] > nums[mid-1]) && (mid == len-1 || nums[mid] > nums[mid+1]))
+                return mid;
+            else if(mid-1 >= 0 && nums[mid-1] > nums[mid]){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+        Console.WriteLine();
+        if((low == 0 || nums[low] > nums[low-1]) && (low == len-1 || nums[low] > nums[low+1]))
+            return low;
+        else
+            return high;
+    }
+}

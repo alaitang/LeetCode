@@ -1,0 +1,41 @@
+public class Solution {
+    public int ReversePairs(int[] nums) {
+        var list = new List<int>();
+        int len = nums.Length;
+        int result = 0;
+        foreach(var item in nums){
+            result+=list.Count-FindIndex(list,((long)item)*2);
+            //Console.WriteLine(string.Join(",",list));
+            //Console.WriteLine(FindIndex(list,((long)item)*2));
+            list.Insert(FindIndex(list,(long)item),item);
+        }
+
+        return result;
+    }
+
+    private int FindIndex(List<int> list,long n){
+        int low = 0;
+        int high = list.Count-1;
+
+        if(high < 0)
+            return 0;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(list[mid] > n){
+                high = mid;
+            }else{
+                low = mid;
+            }
+        }
+
+        if(list[low] > n){
+            return low;
+        }else if(list[high] > n){
+            return high;
+        }else{
+            return high+1;
+        }
+    }
+}

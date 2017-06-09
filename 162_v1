@@ -1,0 +1,12 @@
+public class Solution {
+    public int FindPeakElement(int[] nums) {
+        int len = nums.Length;
+
+        for(int i = 1;i<len;i++){
+            if(nums[i] < nums[i-1])
+                return i-1;
+        }
+
+        return len-1;
+    }
+}
