@@ -1,0 +1,50 @@
+public class Solution {
+    public int MaximumGap(int[] nums) {
+        int len = nums.Length;
+
+        if(len < 2)
+            return 0;
+        int n1 = int.MaxValue;
+        int n2 = int.MaxValue;
+        int max = int.MinValue;
+        foreach(var n in nums){
+            if(n < n1)
+            {
+                n2 = n1;
+                n1 = n;
+            }else if(n != n1 && n < n2){
+                n2 = n;
+            }
+
+            max = Math.Max(n,max);
+        }
+        //Console.WriteLine(n2);
+        if(n2 == int.MaxValue)
+            return 0;
+
+        var mapping = new Dictionary<int,int[]>();
+        int w = n2-n1;
+        int result = n2 - n1;
+        foreach(var n in nums){
+            int k = (n-n1)/w;
+            if(!mapping.ContainsKey(k)){
+                mapping.Add(k,new int[]{n,n});
+            }else{
+                mapping[k][0] = Math.Min(mapping[k][0],n);
+                mapping[k][1] = Math.Max(mapping[k][1],n);
+            }
+        }
+        //Console.WriteLine(w);
+        //Console.WriteLine(string.Join(" | ",mapping.Select(x=>x.Key+" : "+string.Join(",",x.Value))));
+
+        var p = n1;
+        for(int i = 0;i<=max/w;i++){
+            if(mapping.ContainsKey(i)){
+                //Console.WriteLine(mapping[i][0]);
+                result = Math.Max(mapping[i][0]-p,result);
+                p = mapping[i][1];
+            }
+        }
+        return result;
+    }
+}
