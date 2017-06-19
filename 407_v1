@@ -1,0 +1,100 @@
+public class Solution {
+    public int TrapRainWater(int[,] heightMap) {
+
+
+        int rows = heightMap.GetLength(0);
+        int cols = heightMap.GetLength(1);
+
+        var visited = new bool[rows,cols];
+        var list = new List<int>();
+        int result = 0;
+
+        for(int i = 0;i<rows;i++){
+            visited[i,0] = true;
+            visited[i,cols-1] = true;
+            Insert(list,heightMap,i*cols,cols);
+
+            Insert(list,heightMap,i*cols+cols-1,cols);
+        }
+
+        for(int i = 0;i<cols;i++){
+            visited[0,i] = true;
+            visited[rows-1,i] = true;
+            Insert(list,heightMap,i,cols);
+            Insert(list,heightMap,(rows-1)*cols+i,cols);
+        }
+
+        while(list.Any()){
+            result += Insert(heightMap,list,visited,rows,cols);
+        }
+
+        return result;
+
+    }
+
+    private int Insert(int[,] heightMap,List<int> list,bool[,] visited,int rows,int cols){
+        int top = list[0];
+        list.RemoveAt(0);
+
+        int i = top / cols;
+        int j = top % cols;
+        int h = heightMap[i,j];
+        int result = 0;
+        if(i - 1 >= 0 && !visited[i-1,j]){
+            visited[i-1,j] = true;
+            result += Math.Max(0,h-heightMap[i-1,j]);
+            heightMap[i-1,j] = Math.Max(heightMap[i-1,j],h);
+            Insert(list,heightMap,top-cols,cols);
+        }
+        if(i + 1 < rows && !visited[i+1,j]){
+            visited[i+1,j] = true;
+            result += Math.Max(0,h-heightMap[i+1,j]);
+            heightMap[i+1,j] = Math.Max(heightMap[i+1,j],h);
+            Insert(list,heightMap,top+cols,cols);
+        }
+
+        if(j - 1 >= 0 && !visited[i,j-1]){
+            visited[i,j-1] = true;
+            result += Math.Max(0,h-heightMap[i,j-1]);
+            heightMap[i,j-1] = Math.Max(heightMap[i,j-1],h);
+            Insert(list,heightMap,top-1,cols);
+        }
+        if(j + 1 < cols && !visited[i,j+1]){
+            visited[i,j+1] = true;
+            result += Math.Max(0,h-heightMap[i,j+1]);
+            heightMap[i,j+1] = Math.Max(heightMap[i,j+1],h);
+            Insert(list,heightMap,top+1,cols);
+        }
+        return result;
+    }
+
+    private void Insert(List<int> list,int[,] heightMap,int index,int cols){
+        if(list.Count == 0){
+            list.Add(index);
+            return;
+        }
+
+        int low = 0;
+        int high = list.Count-1;
+
+        int h = heightMap[index/cols,index%cols];
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(heightMap[list[mid]/cols,list[mid]%cols] <= h){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+
+        if(heightMap[list[low]/cols,list[low]%cols] >= h){
+            list.Insert(low,index);
+        }else if(heightMap[list[high]/cols,list[high]%cols] >= h){
+            list.Insert(high,index);
+        }else{
+            list.Insert(high+1,index);
+        }
+    }
+}

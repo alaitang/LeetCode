@@ -1,0 +1,62 @@
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * interface NestedInteger {
+ *
+ *     // Constructor initializes an empty nested list.
+ *     public NestedInteger();
+ *
+ *     // Constructor initializes a single integer.
+ *     public NestedInteger(int value);
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     bool IsInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     int GetInteger();
+ *
+ *     // Set this NestedInteger to hold a single integer.
+ *     public void SetInteger(int value);
+ *
+ *     // Set this NestedInteger to hold a nested list and adds a nested integer to it.
+ *     public void Add(NestedInteger ni);
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     IList<NestedInteger> GetList();
+ * }
+ */
+public class Solution {
+    int depth = 0;
+    int result = 0;
+    public int DepthSumInverse(IList<NestedInteger> nestedList) {
+        foreach(var item in nestedList){
+            findDepth(item,0);
+        }
+        foreach(var item in nestedList){
+            cal(item,0);
+        }
+        return result;
+    }
+
+    private void findDepth(NestedInteger nestedInt,int d){
+        if(!nestedInt.IsInteger()){
+            foreach(var item in nestedInt.GetList()){
+                findDepth(item,d+1);
+            }
+        }else{
+            depth = Math.Max(d,depth);
+        }
+    }
+
+    private void cal(NestedInteger nestedInt,int d){
+        if(!nestedInt.IsInteger()){
+            foreach(var item in nestedInt.GetList()){
+                cal(item,d+1);
+            }
+        }else{
+            result += nestedInt.GetInteger() * (depth-d+1);
+        }
+    }
+}
