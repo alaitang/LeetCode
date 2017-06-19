@@ -1,0 +1,40 @@
+public class Solution {
+    public IList<IList<int>> Permute(int[] nums) {
+        IList<IList<int>> result = new List<IList<int>>();
+        Array.Sort(nums);
+        result.Add(new List<int>(nums));
+        int len = nums.Length;
+        while(true){
+            int i = len-1;
+            while(i > 0 ){
+                if(nums[i-1] < nums[i])
+                    break;
+                i--;
+            }
+            if(i == 0)
+                break;
+
+            int j = len-1;
+            while(nums[i-1] >= nums[j])
+            {
+                j--;
+            }
+
+            swap(nums,i-1,j);
+
+            j = len-1;
+            while(i<j){
+                swap(nums,i++,j--);
+            }
+            result.Add(new List<int>(nums));
+        }
+
+        return result;
+    }
+
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

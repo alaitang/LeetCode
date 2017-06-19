@@ -1,0 +1,27 @@
+public class Solution {
+    public int TotalNQueens(int n) {
+        bool[] cols = new bool[n];
+        bool[] left = new bool[n+n];
+        bool[] right = new bool[n+n];
+
+        return Helper(n,cols,left,right,0);
+    }
+
+    private int Helper(int n,bool[] cols,bool[] left,bool[] right,int r){
+        if(r >= n)
+            return 1;
+        int result = 0;
+        for(int i = 0;i<n;i++){
+            if(!cols[i]  && !left[i+r] && !right[n-1-i+r]){
+                cols[i] = true;
+                left[i+r] = true;
+                right[n-1-i+r] = true;
+                result += Helper(n,cols,left,right,r+1);
+                cols[i] = false;
+                left[i+r] = false;
+                right[n-1-i+r] = false;
+            }
+        }
+        return result;
+    }
+}

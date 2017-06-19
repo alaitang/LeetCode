@@ -1,0 +1,21 @@
+public class Solution {
+    public int[,] GenerateMatrix(int n) {
+        int[,] result = new int[n,n];
+
+        for(int i =0;i<n;i++){
+            for(int j = 0;j<n;j++){
+                int min = Math.Min(Math.Min(i,j),Math.Min(n-1-i,n-1-j));
+
+                int start = n*n-(n-min*2)*(n-min*2)+1;
+
+                if(i == min || n-1-j == min){
+                    result[i,j] = start+(i-min)+(j-min);
+                }else{
+                    result[i,j] = start+(n-min-1-min)+(n-min-1-min) + (n-min-1-i)+(n-min-1-j);
+                }
+            }
+        }
+
+        return result;
+    }
+}

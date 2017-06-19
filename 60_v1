@@ -1,0 +1,25 @@
+public class Solution {
+    public string GetPermutation(int n, int k) {
+        k--;
+        string result = "";
+        var list = new List<int>();
+        long total = 1;
+        for(int i = 1;i<=n;i++){
+            list.Add(i);
+            total *= i;
+        }
+
+        while(list.Any()){
+            int b = (int)(total / list.Count);
+
+            result += list[(int)(k/b)];
+            list.RemoveAt((int)(k/b));
+
+            total = b;
+            k -= k/b*b;
+
+        }
+
+        return result;
+    }
+}
