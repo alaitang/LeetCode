@@ -1,0 +1,28 @@
+public class Solution {
+    public bool CanIWin(int maxChoosableInteger, int desiredTotal) {
+        if((1+maxChoosableInteger)*maxChoosableInteger/2 < desiredTotal)
+            return false;
+        return CanIWin(new Dictionary<int,bool>(),desiredTotal,0,maxChoosableInteger,0);
+    }
+
+    private bool CanIWin(Dictionary<int,bool> mapping,int total,int current,int max,int sum){
+        if(sum >= total)
+            return true;
+
+        if(!mapping.ContainsKey(current)){
+
+            for(int i = 1;i<=max;i++){
+                int n = 1 << i;
+
+                if((current & n)  == 0 && (sum+i >= total ||  !CanIWin(mapping,total,(current | n),max,sum+i))){
+                    mapping.Add(current,true);
+                    return true;
+                }
+            }
+            mapping.Add(current,false);
+            return false;
+        }else{
+            return mapping[current];
+        }
+    }
+}

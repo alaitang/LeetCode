@@ -1,0 +1,21 @@
+public class Solution {
+    public bool Find132pattern(int[] nums) {
+        int len = nums.Length;
+
+        int min = int.MinValue;
+        var stack = new Stack<int>();
+
+        for(int i = len-1;i>=0;i--){
+            if(nums[i] < min)
+                return true;
+            else{
+                while(stack.Any() && stack.Peek() < nums[i]){
+                    min = stack.Pop();
+                }
+            }
+
+            stack.Push(nums[i]);
+        }
+        return false;
+    }
+}

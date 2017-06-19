@@ -1,0 +1,26 @@
+public class Solution {
+    public bool PredictTheWinner(int[] nums) {
+        int len = nums.Length;
+
+        int sum = nums.Sum();
+
+        int v = Helper(new int[len,len],nums,0,len-1,sum);
+
+        return v >= sum-v;
+
+    }
+
+    private int Helper(int[,] dp,int[] nums,int low,int high,int sum){
+        if(low > high)
+            return 0;
+
+        if(dp[low,high] == 0){
+            var v1 = sum-Helper(dp,nums,low,high-1,sum-nums[high]);
+            var v2 = sum-Helper(dp,nums,low+1,high,sum-nums[low]);
+
+            dp[low,high] = Math.Max(v1,v2);
+        }
+
+        return dp[low,high];
+    }
+}

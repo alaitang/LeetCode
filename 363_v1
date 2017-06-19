@@ -1,0 +1,58 @@
+public class Solution {
+    public int MaxSumSubmatrix(int[,] matrix, int k) {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+        int result = int.MinValue;
+        for(int c1 = 0;c1<cols;c1++){
+            var dp = new int[rows];
+            for(int c2 = c1;c2<cols;c2++){
+                for(int r = 0;r<rows;r++){
+                    dp[r]+=matrix[r,c2];
+                }
+
+                var list = new List<int>();
+                list.Add(0);
+                int sum = 0;
+                foreach(var s in dp){
+                    sum+=s;
+                    int index = FindIndex(list,sum-k);
+                    if(index >= list.Count){
+                        index--;
+                    }
+
+                    if(sum-list[index] <= k){
+                        if(sum-list[index] == k)
+                            return k;
+                        result = Math.Max(result,sum-list[index]);
+                    }
+
+                    list.Insert(FindIndex(list,sum),sum);
+                }
+            }
+        }
+        return result;
+    }
+
+    private int FindIndex(List<int> list,int v){
+        int low = 0;
+        int high = list.Count-1;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+
+            if(list[mid] == v)
+                return mid;
+            else if(list[mid] < v)
+                low = mid;
+            else
+                high = mid;
+        }
+
+        if(list[low] >= v)
+            return low;
+        else if(list[high] >= v)
+            return high;
+        else
+            return high+1;
+    }
+}

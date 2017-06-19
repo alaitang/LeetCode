@@ -1,0 +1,29 @@
+public class Solution {
+    public int CountDigitOne(int n) {
+
+        if(n <=0)
+            return 0;
+        long m = (long)n;
+
+        int result = 0;
+
+        long b = 10;
+
+        while(m * 10 >= b){
+
+            long k = n%b/(b/10);
+
+            if(k > 1){
+                result +=(int) ((m/b+1) * (b/10));
+            }else if(k == 1){
+                result += (int)((m/b)*(b/10) + m%(b/10))+1;
+            }else{
+                result += (int)((m/b) * (b/10));
+            }
+
+            b*=10;
+        }
+
+        return result;
+    }
+}

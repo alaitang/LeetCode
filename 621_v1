@@ -1,0 +1,30 @@
+public class Solution {
+    public int LeastInterval(char[] tasks, int n) {
+        var mapping = new int[26];
+
+        int result = 0;
+        foreach(char c in tasks){
+            mapping[c-'A']++;
+        }
+
+        Array.Sort(mapping);
+
+        while(mapping[25] > 0){
+            int index = 0;
+            while(index <= n){
+                if(index < 26 && mapping[25-index] > 0){
+                    mapping[25-index]--;
+                }else if(mapping[25] == 0){
+                    return result;
+                }
+
+                result++;
+                index++;
+            }
+            Array.Sort(mapping);
+        }
+
+        return result;
+
+    }
+}

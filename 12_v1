@@ -1,0 +1,40 @@
+public class Solution {
+    public string IntToRoman(int num) {
+        var result = "".PadRight(num/1000,'M');
+
+        num = num % 1000;
+
+        int n = num / 100;
+
+        result = Helper(n,'C','D','M',result);
+
+        num %= 100;
+
+        n = num / 10;
+
+        result = Helper(n,'X','L','C',result);
+
+        num %= 10;
+
+        n = num;
+
+        result = Helper(n,'I','V','X',result);
+        return result;
+    }
+
+    private string Helper(int n,char c1,char c2,char c3,string result){
+        if(n >= 1 && n <= 3){
+            result += "".PadRight(n,c1);
+        }else if(n == 4){
+            result += c1+""+c2;
+        }else if(n == 5){
+            result += c2;
+        }else if(n >= 6 && n <= 8){
+            result += c2;
+            result += "".PadRight(n-5,c1);
+        }else if(n == 9){
+            result += c1+""+c3;
+        }
+        return result;
+    }
+}

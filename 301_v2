@@ -1,0 +1,52 @@
+public class Solution {
+    public IList<string> RemoveInvalidParentheses(string s) {
+        HashSet<string> result = new HashSet<string>();
+        Helper(result,s,0);
+        return result.ToList();
+    }
+
+    private void Helper(HashSet<string> result,string s,int index){
+        int n = 0;
+
+        for(int i = 0;i < s.Length;i++){
+            if(s[i] == ')')
+                n--;
+            else if(s[i] == '(')
+                n++;
+
+            if(n < 0){
+                for(int j = index;j<=i;j++){
+                    if(s[j] == ')' && (j == index || s[j-1] != ')')){
+                        Helper(result,s.Substring(0,j)+s.Substring(j+1),j);
+                    }
+                }
+
+                return;
+            }
+        }
+
+        HandleOpen(result,s,index);
+    }
+
+    private void HandleOpen(HashSet<string> result,string s,int index){
+        int n = 0;
+        for(int i = s.Length-1;i>=index;i--){
+            if(s[i] == '('){
+                n++;
+            }else if(s[i] == ')'){
+                n--;
+            }
+
+            if(n > 0){
+                for(int j = i;j<s.Length;j++){
+                    if(s[j] == '(' && (j == i || s[j-1] != '('))
+                        HandleOpen(result,s.Substring(0,j)+s.Substring(j+1),index);
+                }
+                return;
+            }
+        }
+
+        result.Add(s);
+
+    }
+}

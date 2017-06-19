@@ -1,0 +1,23 @@
+public class Solution {
+    public bool IsValidSudoku(char[,] board) {
+        int[] rows = new int[9];
+        int[] cols = new int[9];
+        int[] grids = new int[9];
+
+        for(int i = 0;i<9;i++){
+            for(int j = 0;j<9;j++){
+                if(board[i,j] == '.')
+                    continue;
+                int n = (1 << (board[i,j]-'0'));
+
+                if((rows[i] & n) != 0 || (cols[j] & n) != 0 || (grids[i/3*3+j/3] & n) != 0)
+                    return false;
+
+                rows[i] |= n;
+                cols[j] |= n;
+                grids[i/3*3+j/3] |= n;
+            }
+        }
+        return true;
+    }
+}

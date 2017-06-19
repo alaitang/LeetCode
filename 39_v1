@@ -1,0 +1,29 @@
+public class Solution {
+    public IList<IList<int>> CombinationSum(int[] candidates, int target) {
+        Array.Sort(candidates);
+        IList<IList<int>> result = new List<IList<int>>();
+
+        Helper(result,new List<int>(),candidates,target,0,candidates.Length);
+        return result;
+    }
+
+    private void Helper(IList<IList<int>> result, List<int> r,int[] candidates,int target,int index,int len){
+        if(target == 0){
+            if(r.Any()){
+                result.Add(new List<int>(r));
+            }
+        }
+
+        for(int i = index;i<len;i++){
+            if(candidates[i] > target)
+                return;
+
+            r.Add(candidates[i]);
+
+            Helper(result,r,candidates,target-candidates[i],i,len);
+            r.RemoveAt(r.Count-1);
+        }
+
+
+    }
+}

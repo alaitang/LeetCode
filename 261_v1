@@ -1,0 +1,36 @@
+public class Solution {
+    public bool ValidTree(int n, int[,] edges) {
+        int rows = edges.GetLength(0);
+
+        if(rows != n-1)
+            return false;
+
+        int[] heads = new int[n];
+        for(int i = 0;i<n;i++){
+            heads[i] = i;
+        }
+        for(int i = 0;i<rows;i++){
+            int h1 = FindHead(heads,edges[i,0]);
+            int h2 = FindHead(heads,edges[i,1]);
+
+            if(h1 != h2){
+                heads[h1] = h2;
+             }
+        }
+
+        int k = 0;
+        for(int i = 0;i<n;i++){
+            if(heads[i] == i)
+                k++;
+        }
+
+        return k == 1;
+    }
+
+    private int FindHead(int[] heads,int n){
+        if(heads[n] == n)
+            return n;
+
+        return FindHead(heads,heads[n]);
+    }
+}

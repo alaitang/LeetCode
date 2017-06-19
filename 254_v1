@@ -1,0 +1,25 @@
+public class Solution {
+    public IList<IList<int>> GetFactors(int n) {
+        var result = new List<IList<int>>();
+
+        Helper(result,new List<int>(),n,2);
+
+        return result;
+    }
+
+    private void Helper(IList<IList<int>> result,List<int> r,int n,int start){
+        if(r.Any() && n >= start){
+            var newList = new List<int>(r);
+            newList.Add(n);
+            result.Add(newList);
+        }
+
+        for(int i = start;i<n;i++){
+            if(n % i == 0){
+                r.Add(i);
+                Helper(result,r,n/i,i);
+                r.RemoveAt(r.Count-1);
+            }
+        }
+    }
+}
