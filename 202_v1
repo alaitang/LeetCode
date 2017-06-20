@@ -1,0 +1,25 @@
+public class Solution {
+    HashSet<int> visited = new HashSet<int>();
+    public bool IsHappy(int n) {
+           int k = 0;
+        while(!visited.Contains(n)){
+
+        if(n == 1 || n == 0)
+            return true;
+
+        if(n < 0 || visited.Contains(n))
+            return false;
+
+            var nextN = 0;
+            visited.Add(n);
+            while(n > 0){
+                nextN += (n%10) * (n%10);
+                n/=10;
+            }
+            n = nextN;
+
+        }
+
+        return false;
+    }
+}

@@ -1,0 +1,30 @@
+public class Solution {
+    public IList<string> FindMissingRanges(int[] nums, int lower, int upper) {
+
+        var result = new List<string>();
+
+        long p = (long)lower-1;
+
+        foreach(var n in nums){
+            Helper(p,Math.Min((long)upper+1,(long)n),result);
+            p = Math.Max(p,n);
+            if(n > upper)
+                break;
+        }
+        if(p <= upper){
+            Helper(p,(long)upper+1,result);
+        }
+
+        return result;
+    }
+
+    private void Helper(long low,long high,IList<string> result){
+        //Console.WriteLine(low+","+high);
+        if(low + 1 == high-1){
+            result.Add((low+1)+"");
+        }else if(low +1 < high-1){
+            result.Add((low+1) +"->"+(high-1));
+        }
+
+    }
+}

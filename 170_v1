@@ -1,0 +1,35 @@
+public class TwoSum {
+    HashSet<int> allNumbers = new HashSet<int>();
+    Dictionary<int,int> countNumber = new Dictionary<int,int>();
+
+    /** Initialize your data structure here. */
+    public TwoSum() {
+
+    }
+
+    /** Add the number to an internal data structure.. */
+    public void Add(int number) {
+        if(!allNumbers.Contains(number))
+        {
+            allNumbers.Add(number);
+            countNumber.Add(number,0);
+        }
+        countNumber[number]++;
+    }
+
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public bool Find(int value) {
+        foreach(var item in allNumbers){
+            if(value-item==item && countNumber[item] >= 2 || value-item!=item && allNumbers.Contains(value-item))
+                return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Your TwoSum object will be instantiated and called as such:
+ * TwoSum obj = new TwoSum();
+ * obj.Add(number);
+ * bool param_2 = obj.Find(value);
+ */

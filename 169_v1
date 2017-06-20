@@ -1,0 +1,19 @@
+public class Solution {
+    public int MajorityElement(int[] nums) {
+        int n = 0;
+        int c = 0;
+
+        foreach(var num in nums){
+            if(c == 0){
+                n = num;
+                c = 1;
+            }else if(n == num){
+                c++;
+            }else{
+                c--;
+            }
+        }
+
+        return n;
+    }
+}

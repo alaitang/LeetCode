@@ -1,0 +1,46 @@
+public class Solution {
+    public IList<string> FindWords(char[,] board, string[] words) {
+        var root = new TrieNode();
+
+        foreach(var w in words){
+            var current = root;
+            foreach(var c in w){
+                if(current.children[c-'a'] == null)
+                    current.children[c-'a'] = new TrieNode();
+                current = current.children[c-'a'];
+            }
+            current.word = w;
+        }
+        var result = new HashSet<string>();
+        int rows = board.GetLength(0);
+        int cols = board.GetLength(1);
+        var visited = new bool[rows,cols];
+        for(int i =0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                Helper(board,visited,i,j,rows,cols,root,result);
+            }
+        }
+        return result.ToList();
+    }
+
+    private void Helper(char[,] board,bool[,] visited,int i,int j,int rows,int cols,TrieNode current,HashSet<string> result){
+
+        if(current.word != ""){
+            result.Add(current.word);
+        }
+        if(i < 0 || j< 0 || i >= rows || j >= cols || visited[i,j] || current.children[board[i,j]-'a'] == null)
+            return;
+
+        visited[i,j] = true;
+        Helper(board,visited,i+1,j,rows,cols,current.children[board[i,j]-'a'],result);
+        Helper(board,visited,i-1,j,rows,cols,current.children[board[i,j]-'a'],result);
+        Helper(board,visited,i,j+1,rows,cols,current.children[board[i,j]-'a'],result);
+        Helper(board,visited,i,j-1,rows,cols,current.children[board[i,j]-'a'],result);
+        visited[i,j] = false;
+    }
+}
+
+public class TrieNode{
+    public TrieNode[] children = new TrieNode[26];
+    public string word = "";
+}
