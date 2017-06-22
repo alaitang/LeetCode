@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<int> RightSideView(TreeNode root) {
+        var result = new List<int>();
+        Helper(root,result,0);
+        return result;
+    }
+
+    private void Helper(TreeNode root,IList<int> result,int depth){
+        if(root == null)
+            return;
+
+        if(result.Count() == depth){
+            result.Add(root.val);
+        }else{
+            result[depth] = root.val;
+        }
+
+        Helper(root.left,result,depth+1);
+        Helper(root.right,result,depth+1);
+    }
+}

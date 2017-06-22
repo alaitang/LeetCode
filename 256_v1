@@ -1,0 +1,19 @@
+public class Solution {
+    public int MinCost(int[,] costs) {
+        int n1 = 0;
+        int n2 = 0;
+        int n3 = 0;
+        int rows =costs.GetLength(0);
+
+        for(int i = 0;i<rows;i++){
+            costs[i,0] += Math.Min(n2,n3);
+            costs[i,1] += Math.Min(n1,n3);
+            costs[i,2] += Math.Min(n2,n1);
+            n1 = costs[i,0];
+            n2 = costs[i,1];
+            n3 = costs[i,2];
+        }
+
+        return Math.Min(Math.Min(n1,n2),n3);
+    }
+}

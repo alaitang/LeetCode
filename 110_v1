@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public bool IsBalanced(TreeNode root) {
+        return GetHigh(root) >= 0;
+    }
+
+    private int GetHigh(TreeNode root){
+        if(root == null)
+            return 0;
+
+        int leftR = GetHigh(root.left);
+
+        if(leftR < 0)
+            return -1;
+
+        int rightR = GetHigh(root.right);
+
+        if(rightR < 0)
+            return -1;
+
+        if(Math.Abs(leftR-rightR) > 1)
+            return -1;
+
+        return Math.Max(leftR,rightR)+1;
+    }
+}

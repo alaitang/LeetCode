@@ -1,0 +1,20 @@
+public class Solution {
+    public bool IsStrobogrammatic(string num) {
+        int low = 0;
+        int high = num.Length-1;
+        while(low <= high){
+            if(num[low] == '9' && num[high] == '6'
+                || num[low] == '6' && num[high] == '9'
+                || num[low] == '1' && num[high] == '1'
+                || num[low] == '0' && num[high] == '0'
+                || num[low] == '8' && num[high] == '8'){
+                    low++;
+                    high--;
+                }
+            else
+                return false;
+        }
+
+        return true;
+    }
+}

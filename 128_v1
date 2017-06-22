@@ -1,0 +1,25 @@
+public class Solution {
+    public int LongestConsecutive(int[] nums) {
+        var mapping = new Dictionary<long,long>();
+        var hash = new HashSet<int>(nums);
+        int result = 0;
+
+        foreach(var n in hash){
+            long max = n;
+            long min = n;
+            mapping.Add(max,min);
+
+            if(mapping.ContainsKey((long)n+1))
+                max = mapping[(long)n+1];
+            if(mapping.ContainsKey((long)n-1))
+                min = mapping[(long)n-1];
+
+            result = Math.Max((int)(max-min+1),result);
+
+            mapping[max] = min;
+            mapping[min] = max;
+        }
+
+        return result;
+    }
+}

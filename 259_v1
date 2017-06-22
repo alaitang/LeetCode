@@ -1,0 +1,21 @@
+public class Solution {
+    public int ThreeSumSmaller(int[] nums, int target) {
+        Array.Sort(nums);
+        int result = 0;
+        int len = nums.Length;
+        for(int i = 0;i<len;i++){
+            int low = i+1;
+            int high = len-1;
+
+            while(low < high){
+                if(nums[i]+nums[low]+nums[high] < target){
+                    result += high-low;
+                    low++;
+                }else{
+                    high--;
+                }
+            }
+        }
+        return result;
+    }
+}

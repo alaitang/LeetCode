@@ -1,0 +1,42 @@
+public class WordDistance {
+    private Dictionary<string,List<int>> indexMapping = new Dictionary<string,List<int>>();
+
+    public WordDistance(string[] words) {
+        int len = words.Length;
+        for(int i = 0;i<len;i++){
+            if(!indexMapping.ContainsKey(words[i]))
+                indexMapping.Add(words[i],new List<int>());
+
+            indexMapping[words[i]].Add(i);
+        }
+    }
+
+    public int Shortest(string word1, string word2) {
+        var list1 = indexMapping[word1];
+        var list2 = indexMapping[word2];
+
+        int result = int.MaxValue;
+
+        int i = 0;
+        int j = 0;
+
+        int len1 = list1.Count;
+        int len2 = list2.Count;
+
+        while(i < len1 && j < len2){
+            result = Math.Min(result,Math.Abs(list1[i]-list2[j]));
+            if(list1[i] <list2[j])
+                i++;
+            else
+                j++;
+        }
+
+        return result;
+    }
+}
+
+/**
+ * Your WordDistance object will be instantiated and called as such:
+ * WordDistance obj = new WordDistance(words);
+ * int param_1 = obj.Shortest(word1,word2);
+ */

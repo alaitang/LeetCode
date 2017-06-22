@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list with a random pointer.
+ * public class RandomListNode {
+ *     public int label;
+ *     public RandomListNode next, random;
+ *     public RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    Dictionary<RandomListNode,RandomListNode> mapping = new Dictionary<RandomListNode,RandomListNode>();
+    public RandomListNode CopyRandomList(RandomListNode head) {
+        if(head == null)
+            return null;
+        if(!mapping.ContainsKey(head)){
+            mapping.Add(head,new RandomListNode(head.label));
+            if(head.random != null){
+                mapping[head].random = CopyRandomList(head.random);
+            }
+            if(head.next != null){
+                mapping[head].next = CopyRandomList(head.next);
+            }
+        }
+
+        return mapping[head];
+    }
+}

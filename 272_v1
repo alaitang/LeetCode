@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<int> ClosestKValues(TreeNode root, double target, int k) {
+
+        IList<int> result = new List<int>();
+
+        Helper(root,target,k,result);
+        return result;
+    }
+
+    private void Helper(TreeNode root,double target,int k,IList<int> result){
+        if(root == null)
+            return;
+
+        Helper(root.left,target,k,result);
+        if(result.Count < k){
+            result.Add(root.val);
+        }else{
+            double v = Math.Abs(target-root.val);
+            if(Math.Abs(target-result.First()) > v){
+                result.RemoveAt(0);
+                result.Add(root.val);
+            }else{
+                return;
+            }
+        }
+
+        Helper(root.right,target,k,result);
+    }
+
+
+}

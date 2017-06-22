@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public IList<string> BinaryTreePaths(TreeNode root) {
+        IList<string> result = new List<string>();
+
+        Helper(root,result,"");
+
+        return result;
+    }
+
+    private void Helper(TreeNode root, IList<string> result,string r){
+        if(root == null)
+            return;
+
+        if(root.left == null && root.right == null){
+            result.Add(r+root.val);
+        }
+
+        Helper(root.left,result,r+root.val+"->");
+        Helper(root.right,result,r+root.val+"->");
+    }
+}

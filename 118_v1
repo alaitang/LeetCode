@@ -1,0 +1,23 @@
+public class Solution {
+    public IList<IList<int>> Generate(int numRows) {
+        if(numRows == 0)
+            return new List<IList<int>>();
+
+        if(numRows == 1)
+            return new List<IList<int>>(){new List<int>(){1}};
+
+        if(numRows == 2)
+            return new List<IList<int>>(){new List<int>(){1},new List<int>(){1,1}};
+
+        var result = Generate(numRows-1);
+        var r = new List<int>(){1};
+
+        for(int i = 1;i<numRows-1;i++){
+            r.Add(result.Last()[i]+result.Last()[i-1]);
+        }
+
+        r.Add(1);
+        result.Add(r);
+        return result;
+    }
+}

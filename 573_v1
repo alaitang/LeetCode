@@ -1,0 +1,17 @@
+public class Solution {
+    public int MinDistance(int height, int width, int[] tree, int[] squirrel, int[,] nuts) {
+        int rows = nuts.GetLength(0);
+        var sum = 0;
+        int min = int.MaxValue;
+        for(int i = 0;i<rows;i++){
+            var s1 = Math.Abs(nuts[i,0]-tree[0])+Math.Abs(nuts[i,1]-tree[1]);
+            var s2 = Math.Abs(nuts[i,0]-squirrel[0])+Math.Abs(nuts[i,1]-squirrel[1]);
+
+            sum += s1 * 2;
+
+            min = Math.Min(min,s2-s1);
+        }
+
+        return sum+min;
+    }
+}

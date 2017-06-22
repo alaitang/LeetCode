@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    int result = 0;
+    public int CountUnivalSubtrees(TreeNode root) {
+        result = 0;
+
+        Helper(root);
+
+        return result;
+    }
+
+    private bool Helper(TreeNode root){
+        if(root == null)
+            return true;
+
+        var leftR = Helper(root.left);
+        var rightR = Helper(root.right);
+
+        if(leftR && rightR){
+            if((root.left == null || root.left.val == root.val)
+            && (root.right == null || root.right.val == root.val)){
+                result++;
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+}

@@ -1,0 +1,25 @@
+public class Solution {
+    public int ShortestWordDistance(string[] words, string word1, string word2) {
+        int len = words.Length;
+
+        int n1 = -1;
+        int n2 = -1;
+        int result = len;
+        for(int i = 0;i<len;i++){
+            if(word1 == words[i]){
+                n1 = i;
+                if(n1 != -1 && n2 != -1 && n1 != n2){
+                    result = Math.Min(result,Math.Abs(n1-n2));
+                }
+            }
+
+            if(word2 == words[i]){
+                n2 = i;
+                if(n1 != -1 && n2 != -1 && n1 != n2){
+                    result = Math.Min(result,Math.Abs(n1-n2));
+                }
+            }
+        }
+        return result;
+    }
+}
