@@ -1,0 +1,32 @@
+/* The Knows API is defined in the parent class Relation.
+      bool Knows(int a, int b); */
+
+public class Solution : Relation {
+    public int FindCelebrity(int n) {
+        var dp = new bool[n];
+
+        for(int i = 0;i<n;i++){
+            if(dp[i])
+                continue;
+            int k = 0;
+            for(int j = 0;j<n;j++){
+                if(i == j)
+                    continue;
+                if(Knows(i,j)){
+                    dp[i] = true;
+                    break;
+                }else{
+                    dp[j] = true;
+                    if(Knows(j,i)){
+                        k++;
+                    }else{
+                        break;
+                    }
+                }
+            }
+            if(k == n-1)
+                return i;
+        }
+        return -1;
+    }
+}

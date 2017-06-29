@@ -1,0 +1,111 @@
+public class AllOne {
+
+    private CountLinkNode head = new CountLinkNode();
+    private HashMap<String,CountLinkNode> mapping = new HashMap<String,CountLinkNode>();
+
+    /** Initialize your data structure here. */
+    public AllOne() {
+        head.next = head;
+        head.prev = head;
+    }
+
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+        if(mapping.get(key) == null){
+            mapping.put(key,head);
+        }
+
+        int nextIndex = mapping.get(key).count+1;
+        CountLinkNode currentNode = mapping.get(key);
+        if(currentNode.next.count != nextIndex){
+            CountLinkNode newNode = new CountLinkNode();
+            newNode.count = nextIndex;
+            newNode.prev = currentNode;
+            newNode.next = currentNode.next;
+            currentNode.next.prev = newNode;
+            currentNode.next = newNode;
+        }
+        currentNode.allValues.remove(key);
+        currentNode.next.allValues.add(key);
+        mapping.put(key,currentNode.next);
+
+        if(currentNode != head && currentNode.allValues.size() == 0){
+            CountLinkNode prevNode = currentNode.prev;
+            CountLinkNode nextNode = currentNode.next;
+            nextNode.prev = prevNode;
+            prevNode.next = nextNode;
+        }
+    }
+
+    /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+    public void dec(String key) {
+        if(mapping.get(key) == null)
+            return;
+
+        CountLinkNode currentNode = mapping.get(key);
+
+        currentNode.allValues.remove(key);
+        if(currentNode.count-1 == 0){
+            mapping.remove(key);
+        }else{
+            if(currentNode.prev.count != currentNode.count -1){
+                CountLinkNode newNode = new CountLinkNode();
+                newNode.count = currentNode.count-1;
+                newNode.prev = currentNode.prev;
+                newNode.next = currentNode;
+                currentNode.prev.next = newNode;
+                currentNode.prev = newNode;
+            }
+            mapping.put(key,currentNode.prev);
+            currentNode.prev.allValues.add(key);
+        }
+
+        if(currentNode.allValues.size() == 0){
+            CountLinkNode prevNode = currentNode.prev;
+            CountLinkNode nextNode = currentNode.next;
+            nextNode.prev = prevNode;
+            prevNode.next = nextNode;
+        }
+        //System.out.println(mapping.get(key).count);
+    }
+
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+        if(head.prev == head)
+            return "";
+
+        for(String s : head.prev.allValues){
+            //System.out.println(s);
+            return s;
+        }
+        return "";
+    }
+
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+        if(head.next == head)
+            return "";
+
+        for(String s : head.next.allValues){
+            //System.out.println(s);
+            return s;
+        }
+        return "";
+    }
+
+    class CountLinkNode{
+        public CountLinkNode prev;
+        public CountLinkNode next;
+        public int count = 0;
+        public HashSet<String> allValues = new HashSet<String>();
+    }
+}
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne obj = new AllOne();
+ * obj.inc(key);
+ * obj.dec(key);
+ * String param_3 = obj.getMaxKey();
+ * String param_4 = obj.getMinKey();
+ */

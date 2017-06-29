@@ -1,0 +1,35 @@
+public class Solution {
+    public int FindBlackPixel(char[,] picture, int N) {
+        var mapping = new Dictionary<string,int[]>();
+
+        int rows= picture.GetLength(0);
+        int cols = picture.GetLength(1);
+        int[] dp = new int[cols];
+        for(int i = 0;i<rows;i++){
+            var s = "";
+            var c = 0;
+            for(int j = 0 ;j<cols;j++){
+
+                s+=picture[i,j];
+                if(picture[i,j] == 'B'){
+                    c++;
+                    dp[j]++;
+                }
+            }
+            if(!mapping.ContainsKey(s))
+                mapping.Add(s,new int[]{c,0});
+            mapping[s][1]++;
+        }
+
+        var newList = mapping.Where(x=>x.Value[1] == N && x.Value[0] == N);
+        int result = 0;
+        foreach(var item in newList){
+            for(int j = 0;j<cols;j++){
+                if(item.Key[j] == 'B' && dp[j] == N){
+                    result+=N;
+                }
+            }
+        }
+        return result;
+    }
+}

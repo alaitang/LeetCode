@@ -1,0 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode InorderSuccessor(TreeNode root, TreeNode p) {
+
+        var stack = new Stack<TreeNode>();
+        bool found = false;
+        TreeNode result = null;
+        stack.Push(root);
+        while(stack.Any()){
+            var current = stack.Pop();
+            if(found){
+                result = current;
+                break;
+            }else if(current == p){
+                found = true;
+                if(current.right != null){
+                    current = current.right;
+                    while(current != null){
+                        stack.Push(current);
+                        current =current.left;
+                    }
+                }
+            }else if(current.val < p.val){
+                if(current.right != null)
+                    stack.Push(current.right);
+            }else{
+                stack.Push(current);
+                if(current.left != null){
+                    stack.Push(current.left);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+}
