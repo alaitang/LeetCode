@@ -1,0 +1,33 @@
+public class Solution {
+    public int[] SortTransformedArray(int[] nums, int a, int b, int c) {
+
+        int len = nums.Length;
+        int[] result = new int[len];
+        int low = 0;
+        int high = len-1;
+        int index = a >= 0 ? len-1: 0;
+        while(low <= high){
+            int lowv = a*nums[low]*nums[low] + b * nums[low]+c;
+            int highv = a*nums[high]*nums[high] + b * nums[high]+c;
+
+            if(a <0){
+                result[index++] = Math.Min(lowv,highv);
+                if(lowv < highv){
+                    low++;
+                }else{
+                    high--;
+                }
+            }else{
+                result[index--] = Math.Max(lowv,highv);
+                if(lowv < highv){
+                    high--;
+                }else{
+                    low++;
+                }
+            }
+        }
+
+        return result;
+
+    }
+}

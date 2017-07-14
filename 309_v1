@@ -1,0 +1,18 @@
+public class Solution {
+    public int MaxProfit(int[] prices) {
+        int len = prices.Length;
+        if(len <= 1)
+            return 0;
+
+        int[] dpbuy = new int[len];
+        int[] dpsell = new int[len];
+        dpbuy[0] = -prices[0];
+        for(int i = 1;i<len;i++){
+            dpbuy[i] = Math.Max((i>= 2 ? dpsell[i-2] : 0)-prices[i],dpbuy[i-1]);
+
+            dpsell[i] = Math.Max(dpbuy[i-1] + prices[i],dpsell[i-1]);
+        }
+
+        return dpsell[len-1];
+    }
+}

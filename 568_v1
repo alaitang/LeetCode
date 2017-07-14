@@ -1,0 +1,27 @@
+public class Solution {
+    public int MaxVacationDays(int[,] flights, int[,] days) {
+        int N = flights.GetLength(0);
+        int K = days.GetLength(1);
+
+        var dp = new int[K+1,N];
+        var cities = new HashSet<int>();
+        cities.Add(0);
+        int result = 0;
+        //Console.WriteLine(N+","+K);
+        for(int i = 1;i<=K;i++){
+            var nextCities = new HashSet<int>();
+            foreach(var c in cities){
+                for(int n = 0;n<N;n++){
+                    if(n == c || flights[c,n] == 1){
+                        //Console.WriteLine(c+","+n);
+                        dp[i,n] = Math.Max(dp[i-1,c]+days[n,i-1],dp[i,n]);
+                        nextCities.Add(n);
+                        result = Math.Max(result,dp[i,n]);
+                    }
+                }
+            }
+            cities = nextCities;
+        }
+        return result;
+    }
+}

@@ -1,0 +1,33 @@
+public class Solution {
+    HashSet<string> canWin = new HashSet<string>();
+
+    public bool CanWin(string s) {
+        if(canWin.Contains(s))
+            return true;
+
+        var arr = s.ToCharArray();
+        int len = s.Length;
+        bool  v = false;
+        for(int i = 1;i<len;i++){
+            if(arr[i] == '+' && arr[i-1] == '+'){
+                arr[i] = '-';
+                arr[i-1] = '-';
+
+                if(!CanWin(new string(arr))){
+                    v = true;
+                    break;
+                }
+                arr[i] = '+';
+                arr[i-1] = '+';
+            }
+        }
+
+        if(v){
+            canWin.Add(s);
+        }
+
+        return v;
+    }
+
+
+}

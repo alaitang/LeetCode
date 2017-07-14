@@ -1,0 +1,35 @@
+public class ZigzagIterator {
+    int[] indexArr = null;
+    List<IList<int>> list = new List<IList<int>>();
+    int index = 0;
+    public ZigzagIterator(IList<int> v1, IList<int> v2) {
+        indexArr = new int[2];
+        list.Add(v1);
+        list.Add(v2);
+        if(list[index%2].Count <= indexArr[index%2]){
+            index++;
+        }
+    }
+
+    public bool HasNext() {
+        return list[index%2].Count > indexArr[index%2];
+    }
+
+    public int Next() {
+        int r = list[index%2][indexArr[index%2]];
+        indexArr[index%2]++;
+
+        index++;
+
+        if(list[index%2].Count <= indexArr[index%2]){
+            index++;
+        }
+        return r;
+    }
+}
+
+/**
+ * Your ZigzagIterator will be called like this:
+ * ZigzagIterator i = new ZigzagIterator(v1, v2);
+ * while (i.HasNext()) v[f()] = i.Next();
+ */

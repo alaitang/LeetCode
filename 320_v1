@@ -1,0 +1,36 @@
+public class Solution {
+    public IList<string> GenerateAbbreviations(string word) {
+        int len = word.Length;
+        int max = 1 << len;
+        IList<string> result = new List<string>();
+        for(int i = 0;i<max;i++){
+            result.Add(Helper(word,i,len));
+        }
+        return result;
+    }
+
+    private string Helper(string word,int n,int len){
+        int count = 0;
+
+        string result = "";
+
+        while(len > 0){
+
+            if(n % 2 == 0){
+                count++;
+            }else{
+                if(count != 0)
+                    result = count+result;
+                count=0;
+
+                result=word[len-1]+result;
+            }
+            n/=2;
+            len--;
+        }
+
+        if(count != 0)
+            result=count+result;
+        return result;
+    }
+}

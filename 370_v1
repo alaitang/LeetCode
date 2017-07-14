@@ -1,0 +1,20 @@
+public class Solution {
+    public int[] GetModifiedArray(int length, int[,] updates) {
+        int[] result = new int[length];
+        int rows = updates.GetLength(0);
+
+        for(int i = 0;i<rows;i++){
+            result[updates[i,0]]+=updates[i,2];
+            if(updates[i,1]+1 < length)
+                result[updates[i,1]+1] -= updates[i,2];
+        }
+
+        int sum = 0;
+        for(int i = 0;i<length;i++){
+            sum+=result[i];
+            result[i] = sum;
+        }
+
+        return result;
+    }
+}

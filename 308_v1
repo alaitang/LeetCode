@@ -1,0 +1,47 @@
+public class NumMatrix {
+    int[,] sumdp = null;
+    int rows = 0;
+    int cols = 0;
+    int[,] matrix = null;
+    public NumMatrix(int[,] matrix) {
+        rows = matrix.GetLength(0);
+        cols = matrix.GetLength(1);
+
+        sumdp = new int[rows,cols+1];
+        this.matrix = matrix;
+
+        for(int i = 0;i<rows;i++){
+            int sum = 0;
+            for(int j = 0;j<cols;j++){
+                sum+=matrix[i,j];
+                sumdp[i,j+1] = sum;
+            }
+        }
+
+    }
+
+    public void Update(int row, int col, int val) {
+        for(int j = col ; j<cols;j++){
+            sumdp[row,j+1] += val-matrix[row,col];
+        }
+
+        matrix[row,col] = val;
+    }
+
+    public int SumRegion(int row1, int col1, int row2, int col2) {
+        int result = 0;
+        for(int i = row1;i<=row2;i++){
+            result += sumdp[i,col2+1]-sumdp[i,col1];
+        }
+
+        return result;
+
+    }
+}
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * obj.Update(row,col,val);
+ * int param_2 = obj.SumRegion(row1,col1,row2,col2);
+ */

@@ -1,0 +1,67 @@
+public class Solution {
+    private string result = "";
+    private int totalSteps = 0;
+    public string FindShortestWay(int[,] maze, int[] ball, int[] hole) {
+        int rows = maze.GetLength(0);
+        int cols = maze.GetLength(1);
+
+        var visited = new int[rows,cols];
+
+        Helper(maze,visited,ball[0],ball[1],hole,rows,cols,"",0);
+
+        if(result != "")
+            return result;
+        else
+            return "impossible";
+    }
+
+    private void Helper(int[,] maze,int[,] visited,int i,int j,int[] hole,int rows,int cols,string path,int steps){
+        //Console.WriteLine(i+" , "+j+" , "+steps+" , "+path);
+        if(i <0 || j <0 || i>=rows || j >= cols || maze[i,j] == 1 || visited[i,j] !=0 && visited[i,j]< steps)
+            return;
+
+        visited[i,j] = steps;
+
+        //left
+        Helper(maze,visited,i,j,hole,rows,cols,path+"l",steps,0,-1);
+        //right
+        Helper(maze,visited,i,j,hole,rows,cols,path+"r",steps,0,1);
+        //up
+        Helper(maze,visited,i,j,hole,rows,cols,path+"u",steps,-1,0);
+        //down
+        Helper(maze,visited,i,j,hole,rows,cols,path+"d",steps,1,0);
+    }
+
+    private void Helper(int[,] maze,int[,] visited,int i,int j,int[] hole,
+        int rows,int cols,string path,int steps,int add_i,int add_j)
+    {
+
+        //Console.WriteLine(i+" , "+j+" , "+steps+" , -"+path);
+        int next_i = i;
+        int next_j = j;
+        int nextSteps = steps;
+
+        next_j+=add_j;
+        next_i+=add_i;
+        while(next_j >= 0 && next_j < cols && next_i >= 0 && next_i < rows && maze[next_i,next_j] != 1)
+        {
+            nextSteps++;
+            if(hole[0] == next_i && hole[1] == next_j)
+            {
+                if(result == "" || nextSteps < totalSteps || nextSteps==totalSteps && result.CompareTo(path) > 0){
+                    //Console.WriteLine(i+" , "+j+" , "+steps+" , "+nextSteps+" , "+path);
+                    result = path;
+                    totalSteps = nextSteps;
+                }
+                return;
+            }
+            next_j+=add_j;
+            next_i+=add_i;
+        }
+
+        if(nextSteps != steps){
+            Helper(maze,visited,next_i-add_i,next_j-add_j,hole,rows,cols,path,nextSteps);
+        }
+
+    }
+}

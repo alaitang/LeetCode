@@ -1,0 +1,65 @@
+public class Solution {
+    public int[] SortTransformedArray(int[] nums, int a, int b, int c) {
+        var list = new List<int>();
+        int len = nums.Length;
+        int index = 0;
+        int maxIndex = 0;
+        long min = ((long)int.MaxValue )+1;
+        long max = ((long)int.MinValue )-1;
+        for(int i = 0;i<len;i++){
+            var n = nums[i];
+            var r = a * n * n + b * n + c;
+            list.Add(r);
+
+            if(r < min){
+                index = i;
+                min = r;
+            }
+
+            if(r > max){
+                maxIndex = i;
+                max = r;
+            }
+        }
+
+        var result = new List<int>();
+        //Console.WriteLine(string.Join(",",list));
+        //Console.WriteLine(maxIndex+" -- "+ len);
+        if(a < 0){
+
+            int ii = maxIndex;
+            int jj = maxIndex+1;
+
+            while(ii >=0 || jj < len){
+                if(ii < 0){
+                    result.Insert(0,list[jj++]);
+                }else if(jj >= len){
+                    result.Insert(0,list[ii--]);
+                }else if(list[ii] <= list[jj]){
+                    result.Insert(0,list[jj++]);
+                }else{
+                    result.Insert(0,list[ii--]);
+                }
+            }
+        }else{
+
+            int ii = index;
+            int jj = index+1;
+
+            while(ii >=0 || jj < len){
+                if(ii < 0){
+                    result.Add(list[jj++]);
+                }else if(jj >= len){
+                    result.Add(list[ii--]);
+                }else if(list[ii] <= list[jj]){
+                    result.Add(list[ii--]);
+                }else{
+                    result.Add(list[jj++]);
+                }
+            }
+        }
+
+
+        return result.ToArray();
+    }
+}

@@ -1,0 +1,35 @@
+public class ValidWordAbbr {
+
+    Dictionary<string,string> mapping = new Dictionary<string,string>();
+    HashSet<string> allWords = new HashSet<string>();
+    public ValidWordAbbr(string[] dictionary) {
+        allWords = new HashSet<string>(dictionary);
+        foreach(var s in dictionary){
+            var k = Helper(s);
+            if(!mapping.ContainsKey(k)){
+                mapping.Add(k,s);
+            }else{
+                if(mapping[k] != "" && mapping[k] != s){
+                    mapping[k] = "";
+                }
+            }
+        }
+    }
+
+    public bool IsUnique(string word) {
+        return !mapping.ContainsKey(Helper(word)) || mapping[Helper(word)] == word;
+    }
+
+    private string Helper(string s){
+        if(s.Length < 3)
+            return s;
+
+        return s[0]+""+(s.Length-2)+""+s[s.Length-1];
+    }
+}
+
+/**
+ * Your ValidWordAbbr object will be instantiated and called as such:
+ * ValidWordAbbr obj = new ValidWordAbbr(dictionary);
+ * bool param_1 = obj.IsUnique(word);
+ */
