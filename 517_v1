@@ -1,0 +1,23 @@
+public class Solution {
+    public int FindMinMoves(int[] machines) {
+        int len = machines.Length;
+        int sum = machines.Sum();
+
+        if(sum % len != 0)
+            return -1;
+
+        int avg = sum/len;
+
+        int remind = 0;
+        int result = 0;
+
+        for(int i = 0;i<len;i++){
+
+            remind = machines[i]+remind-avg;
+
+            result = Math.Max(Math.Max(result,Math.Abs(remind)),machines[i]-avg);
+
+        }
+        return result;
+    }
+}

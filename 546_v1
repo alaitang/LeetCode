@@ -1,0 +1,31 @@
+public class Solution {
+    public int RemoveBoxes(int[] boxes) {
+        int len = boxes.Length;
+        var dp = new int[len*len,len];
+        return Helper(boxes,0,len-1,0,dp,len);
+    }
+
+    private int Helper(int[] boxes,int low,int high,int k,int[,] dp,int cols){
+        if(low > high)
+            return 0;
+
+        if(dp[low*cols+high,k] != 0)
+            return dp[low*cols+high,k];
+
+        while(high > low && boxes[high] == boxes[high-1])
+        {
+            high--;
+            k++;
+        }
+
+        dp[low*cols+high,k] = Helper(boxes,low,high-1,0,dp,cols)+(k+1)*(k+1);
+
+        for(int i = low;i<high;i++){
+            if(boxes[i] == boxes[high]){
+                dp[low*cols+high,k] = Math.Max(dp[low*cols+high,k],Helper(boxes,low,i,k+1,dp,cols)+Helper(boxes,i+1,high-1,0,dp,cols));
+            }
+        }
+
+        return dp[low*cols+high,k];
+    }
+}

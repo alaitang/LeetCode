@@ -1,0 +1,46 @@
+public class Solution {
+    public IList<IList<string>> WordSquares(string[] words) {
+        var result = new List<IList<string>>();
+        if(!words.Any())
+            return result;
+
+        int wLen = words.First().Length;
+
+        var mapping = new Dictionary<string,List<string>>(){{"",new List<string>()}};
+
+        foreach(var word in words){
+            string s = "";
+            foreach(var c in word){
+                if(!mapping.ContainsKey(s))
+                    mapping.Add(s,new List<string>());
+
+                mapping[s].Add(word);
+                s+=c;
+            }
+        }
+
+        Helper(result,new List<string>(),"",wLen,mapping,0);
+
+        return result;
+    }
+
+    private void Helper(IList<IList<string>> result,List<string> r,
+        string startWith,int wLen,Dictionary<string,List<string>> mapping,int index){
+
+        if(!mapping.ContainsKey(startWith))
+            return;
+
+        foreach(var item in mapping[startWith]){
+            r.Add(item);
+            if(index+1 == wLen)
+                result.Add(new List<string>(r));
+            else{
+                string nextStart = "";
+                for(int i = 0;i<index+1;i++)
+                    nextStart+=r[i][index+1];
+                Helper(result,r,nextStart,wLen,mapping,index+1);
+            }
+            r.RemoveAt(r.Count-1);
+        }
+    }
+}

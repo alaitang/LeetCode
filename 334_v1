@@ -1,0 +1,21 @@
+public class Solution {
+    public bool IncreasingTriplet(int[] nums) {
+        int len = nums.Length;
+        if(len <= 2)
+            return false;
+
+        int min = nums[0];
+        long max = ((long)int.MaxValue)+1;
+
+        for(int i =1;i<len;i++){
+            if(nums[i] <= min){
+                min = nums[i];
+            }else if(nums[i] > max){
+                return true;
+            }else{
+                max = nums[i];
+            }
+        }
+        return false;
+    }
+}

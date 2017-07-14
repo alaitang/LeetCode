@@ -1,0 +1,24 @@
+public class Solution {
+    public int MinArea(char[,] image, int x, int y) {
+        int rows = image.GetLength(0);
+        int cols = image.GetLength(1);
+
+        int top = rows;
+        int bottom = 0;
+        int left = cols;
+        int right = 0;
+
+        for(int i = 0;i<rows;i++){
+            for(int j = 0;j<cols;j++){
+                if(image[i,j] == '1'){
+                    top = Math.Min(top,i);
+                    left = Math.Min(left,j);
+                    bottom = Math.Max(bottom,i);
+                    right = Math.Max(right,j);
+                }
+            }
+        }
+
+        return Math.Max(0,(bottom-top+1)*(right-left+1));
+    }
+}

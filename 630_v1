@@ -1,0 +1,81 @@
+public class Solution {
+    public int ScheduleCourse(int[,] courses) {
+        int rows = courses.GetLength(0);
+        Sort(courses,0,rows-1);
+
+        var list = new List<int>();
+
+        int result =0;
+        int max = 0;
+        for(int i = 0;i<rows;i++){
+            max += courses[i,0];
+            Insert(list,courses[i,0]);
+
+            if(max > courses[i,1])
+            {
+                max -= list.Last();
+                list.RemoveAt(list.Count-1);
+            }
+
+            result = Math.Max(list.Count(),result);
+        }
+
+        return result;
+    }
+
+    private void Insert(List<int> list,int v){
+        if(!list.Any() || list.Last() <= v)
+        {
+            list.Add(v);
+            return;
+        }
+
+        int low = 0;
+        int high = list.Count-1;
+
+        while(low < high-1){
+            int mid = low + (high-low)/2;
+            if(list[mid] == v){
+                list.Insert(mid,v);
+                return;
+            }else if(list[mid] < v){
+                low = mid;
+            }else{
+                high = mid;
+            }
+        }
+
+        if(list[low] >= v)
+            list.Insert(low,v);
+        else if(list[high] >= v)
+            list.Insert(high,v);
+        else
+            list.Insert(high+1,v);
+    }
+
+    private void Sort(int[,] course,int low,int high){
+        if(low >= high)
+            return;
+        int index = low;
+
+        for(int i = low+1;i<=high;i++){
+            if(course[i,1] < course[low,1] || course[i,1] == course[low,1] && course[i,0] < course[low,0])
+                swap(course,++index,i);
+        }
+
+        swap(course,index,low);
+
+        Sort(course,low,index-1);
+        Sort(course,index+1,high);
+    }
+
+    private void swap(int[,] course,int i,int j){
+        int t0 = course[i,0];
+        int t1 = course[i,1];
+
+        course[i,0] = course[j,0];
+        course[i,1] = course[j,1];
+        course[j,0] = t0;
+        course[j,1] = t1;
+    }
+}

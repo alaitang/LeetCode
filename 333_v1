@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    int totalResult = 0;
+    public int LargestBSTSubtree(TreeNode root) {
+        totalResult = 0;
+
+        Helper(root);
+
+        return totalResult;
+    }
+
+    //[isBST,totalNodes,low,high]
+    private int[] Helper(TreeNode root){
+        if(root == null){
+            return new int[]{1,0,0,0};
+        }
+
+        var result = new int[]{1,1,root.val,root.val};
+        var leftR = Helper(root.left);
+        if(leftR[0] == 0 || leftR[1] > 0 && leftR[3] >= root.val)
+            result[0] = 0;
+        else if(leftR[1] > 0){
+            result[1]+=leftR[1];
+            result[2]=leftR[2];
+        }
+
+        var rightR = Helper(root.right);
+        if(rightR[0] == 0 ||rightR[1] > 0 &&  rightR[2] <= root.val)
+            result[0] = 0;
+        else if(rightR[1] > 0){
+            result[1]+=rightR[1];
+            result[3]=rightR[3];
+        }
+
+        if(result[0] == 1)
+            totalResult = Math.Max(totalResult,result[1]);
+
+        //Console.WriteLine(string.Join(",",result)+" ------ "+root.val);
+        return result;
+    }
+}

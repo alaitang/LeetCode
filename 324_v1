@@ -1,0 +1,61 @@
+public class Solution {
+    public void WiggleSort(int[] nums) {
+        int len = nums.Length;
+        SortHelp(nums,(len+1)/2-1,0,len-1);
+        //Console.WriteLine(string.Join(",",nums));
+        int left = 0;
+        int right = len-1;
+
+        int mid = nums[(len+1)/2-1];
+        int midIndex = len/2;
+
+        int i = 0;
+        while(i <= right){
+            //Console.WriteLine(i+","+findVIndex(i,midIndex));
+            if(nums[findVIndex(i,midIndex)] > mid){
+                swap(nums,findVIndex(left++,midIndex),findVIndex(i++,midIndex));
+            }else if(nums[findVIndex(i,midIndex)] < mid){
+                swap(nums,findVIndex(right--,midIndex),findVIndex(i,midIndex));
+            }else{
+                i++;
+            }
+        }
+
+
+    }
+
+    private int findVIndex(int i,int midIndex){
+        if(i < midIndex){
+            return 1 + i*2;
+        }else{
+            return (i-midIndex)*2;
+        }
+    }
+
+    private void SortHelp(int[] nums,int k,int low,int high){
+        if(low >= high)
+            return;
+
+        int index = low;
+        for(int i = low+1;i<=high;i++){
+            if(nums[i] > nums[low]){
+                swap(nums,i,++index);
+            }
+        }
+
+        swap(nums,index,low);
+        if(index == k)
+            return;
+        else if(index < k){
+            SortHelp(nums,k,index+1,high);
+        }else{
+            SortHelp(nums,k,low,index-1);
+        }
+    }
+
+    private void swap(int[] nums,int i,int j){
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+}

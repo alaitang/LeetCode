@@ -1,0 +1,14 @@
+public class Solution {
+    public bool JudgeSquareSum(int c) {
+        int max = (int)Math.Sqrt(c);
+
+        for(long i = 0;i<=max;i++){
+            long k = (long)Math.Sqrt(c-i*i);
+
+            if(k*k == c-i*i)
+                  return true;
+        }
+
+        return false;
+    }
+}

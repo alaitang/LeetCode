@@ -1,0 +1,58 @@
+public class Solution {
+    public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList) {
+        var newSet = new HashSet<string>(wordList);
+        var result = new List<IList<string>>();
+        if(!newSet.Contains(endWord))
+            return result;
+
+        var mapping = new Dictionary<string,List<IList<string>>>(){
+            {beginWord,new List<IList<string>>(){new List<string>(){beginWord}}}
+        };
+        newSet.Remove(beginWord);
+        bool found = false;
+        int wLen = beginWord.Length;
+        while(newSet.Any() && mapping.Any() && !found)
+        {
+            var nextMapping = new Dictionary<string,List<IList<string>>>();
+
+            foreach(var item in mapping){
+                var arr = item.Key.ToCharArray();
+
+                for(int i = 0;i<wLen;i++){
+                    for(char c='a';c<='z';c++){
+                        if(c == item.Key[i])
+                            continue;
+                        arr[i] = c;
+                        var newS = new string(arr);
+
+                        if(newS == endWord){
+                            found = true;
+                            foreach(var allv in item.Value){
+                                //Console.WriteLine(string.Join(",",allv));
+                                var newR = new List<string>(allv);
+                                newR.Add(endWord);
+                                result.Add(newR);
+                            }
+                        }else if(newSet.Contains(newS)){
+                            if(!nextMapping.ContainsKey(newS))
+                                nextMapping.Add(newS,new List<IList<string>>());
+
+                            foreach(var allv in item.Value){
+                                //Console.WriteLine(string.Join(",",allv));
+                                var newR = new List<string>(allv);
+                                newR.Add(newS);
+                                nextMapping[newS].Add(newR);
+                            }
+                        }
+                    }
+                    arr[i] = item.Key[i];
+                }
+            }
+
+            mapping = nextMapping;
+            newSet.ExceptWith(nextMapping.Keys);
+        }
+
+        return result;
+    }
+}

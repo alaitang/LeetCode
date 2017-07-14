@@ -1,0 +1,25 @@
+public class Solution {
+    public int WordsTyping(string[] sentence, int rows, int cols) {
+        string s = string.Join(" ",sentence)+" ";
+
+        int len = s.Length;
+        int index = 0;
+
+        for(int i = 0;i<rows;i++){
+            int nextIndex = index+cols;
+
+            while(nextIndex >= 0 && s[nextIndex%len] != ' '){
+                nextIndex--;
+            }
+
+            nextIndex++;
+
+            index = nextIndex;
+        }
+
+        int result = index/len;
+
+        return result;
+
+    }
+}

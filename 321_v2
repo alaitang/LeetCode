@@ -1,0 +1,66 @@
+public class Solution {
+    public int[] MaxNumber(int[] nums1, int[] nums2, int k) {
+
+        int[] result = new int[k];
+
+
+        for(int i = 0;i<=k;i++){
+            if(i > nums1.Length || k-i > nums2.Length){
+                continue;
+            }
+
+            var v1 = GetMaxK(nums1,i);
+            var v2 = GetMaxK(nums2,k-i);
+
+            var v = Merge(v1,v2);
+
+            if(CompareArr(v,0,result,0)){
+                result = v;
+            }
+        }
+        return result;
+    }
+
+    private int[] Merge(int[] nums1,int[] nums2){
+        int len1 = nums1.Length;
+        int len2 = nums2.Length;
+        int i = 0;
+        int j = 0;
+        int index = 0;
+        var result = new int[len1+len2];
+
+        while(i < len1 || j < len2){
+            if(CompareArr(nums1,i,nums2,j)){
+                result[index++] = nums1[i++];
+            }else{
+                result[index++] = nums2[j++];
+            }
+        }
+
+        return result;
+    }
+
+    private bool CompareArr(int[] nums1,int i,int[] nums2,int j){
+        while(i<nums1.Length && j < nums2.Length && nums1[i] == nums2[j]){
+            i++;
+            j++;
+        }
+
+        return j>=nums2.Length || i< nums1.Length && nums1[i] > nums2[j];
+    }
+
+    private int[] GetMaxK(int[] nums,int k){
+        var result = new List<int>();
+
+        int len = nums.Length;
+
+        for(int i = 0;i<len;i++){
+            while(result.Any() && result.Last() < nums[i] && result.Count+len-i > k){
+                result.RemoveAt(result.Count-1);
+            }
+            if(result.Count < k)
+                result.Add(nums[i]);
+        }
+        return result.ToArray();
+    }
+}

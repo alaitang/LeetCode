@@ -1,0 +1,53 @@
+public class Solution {
+    public string AddBoldTag(string s, string[] dict) {
+        TireNode root = new TireNode();
+
+        foreach(var word in dict){
+            var current = root;
+            foreach(var c in word){
+                if(!current.children.ContainsKey(c))
+                    current.children.Add(c,new TireNode());
+
+                current = current.children[c];
+            }
+            current.isWord = true;
+        }
+
+        var dp = new bool[s.Length];
+        int len = s.Length;
+        for(int i = 0;i<len;i++){
+            var current = root;
+            int j = i;
+            while(j < len && current.children.ContainsKey(s[j])){
+                current = current.children[s[j]];
+                j++;
+            }
+
+            if(current.isWord){
+                for(int k = i;k<j;k++){
+                    dp[k] = true;
+                }
+            }
+        }
+
+        var result = s.ToCharArray().Select(x=>x+"").ToList();
+        bool p = false;
+        for(int i = len-1;i>=0;i--){
+            if(dp[i] && !p){
+                result.Insert(i+1,"</b>");
+            }
+
+            if(dp[i] && (i == 0 || !dp[i-1])){
+                result.Insert(i,"<b>");
+            }
+            p = dp[i];
+        }
+
+        return string.Join("",result);
+    }
+}
+
+public class TireNode{
+    public Dictionary<char,TireNode> children = new Dictionary<char,TireNode>();
+    public bool isWord = false;
+}

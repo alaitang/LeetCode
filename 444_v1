@@ -1,0 +1,46 @@
+public class Solution {
+    public bool SequenceReconstruction(int[] org, IList<IList<int>> seqs) {
+        int max = org.Length;
+
+        var depends = new int[org.Length+1];
+
+        var mapping = new Dictionary<int,HashSet<int>>();
+        var currentValue = new HashSet<int>(seqs.Where(x => x.Any()).Select( x=>x.First() ));
+        foreach(var list in seqs){
+            int ll = list.Count();
+            if(ll == 0)
+                continue;
+            if(list.Any(x=>x < 1 || x > max))
+                return false;
+
+            int p = list[0];
+            for(int i = 1;i<ll;i++){
+                if(!mapping.ContainsKey(p))
+                    mapping.Add(p,new HashSet<int>());
+
+                if(!mapping[p].Contains(list[i]))
+                    depends[list[i]]++;
+                mapping[p].Add(list[i]);
+                p = list[i];
+                currentValue.Remove(p);
+
+            }
+        }
+
+        foreach(var n in org){
+            if(currentValue.Count() != 1 || currentValue.First() != n)
+                return false;
+
+            currentValue.Remove(n);
+
+            if(mapping.ContainsKey(n)){
+                foreach(var nextV in mapping[n]){
+                    if(--depends[nextV] == 0)
+                        currentValue.Add(nextV);
+                }
+            }
+        }
+
+        return true;
+    }
+}
